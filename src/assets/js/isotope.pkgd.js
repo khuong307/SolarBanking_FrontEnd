@@ -3344,7 +3344,7 @@ var trim = String.prototype.trim ?
     if ( !this.options.sortBy ) {
       return;
     }
-    // keep track of sortBy Transaction
+    // keep track of sortBy History
     var sortBys = utils.makeArray( this.options.sortBy );
     if ( !this._getIsSameSortBy( sortBys ) ) {
       // concat all sortBy and sortHistory, add to front, oldest goes in last

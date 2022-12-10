@@ -35,14 +35,6 @@ setTimeout(function(){
             $(".js-programmatic-disable").on("click", function() {
                 $(".js-example-disabled").prop("disabled", true);
             });
-            $(".select-mode-chose").select2({
-                minimumResultsForSearch: Infinity,
-                placeholder: "Mode"
-            });
-            $(".select-mode-version").select2({
-                minimumResultsForSearch: Infinity,
-                placeholder: "Version"
-            });
         });
     }
     ,350);

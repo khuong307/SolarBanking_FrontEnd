@@ -30,127 +30,7 @@ $(document).ready(function(){
         autoFill: true
     } );
     var table = $('#basic-row-reorder').DataTable( {
-        rowReorder: true,
-        order: [[ 5, 'desc' ]]
-    } );
-    var table = $('#economy-kis').DataTable( {
-        rowReorder: true,
-        order: [[ 0, 'desc' ]],
-
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
-    } );
-    var table = $('#economy-kis-1').DataTable( {
-        rowReorder: true,
-        order: [[ 0, 'desc' ]],
-
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
-    } );
-    var table = $('#economy-kis-spend-raw').DataTable( {
-        rowReorder: true,
-        order: [[ 0, 'desc' ]],
-        aLengthMenu: [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, "All"]
-            ],
-        iDisplayLength: -1,
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
-    } );
-    var table = $('#economy-kis-spend-by-src').DataTable( {
-        rowReorder: true,
-        order: [[ 0, 'desc' ]],
-        aLengthMenu: [
-        [10, 25, 50, 100, -1],
-        [10, 25, 50, 100, "All"]
-        ],
-        iDisplayLength: -1,
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
-    } );
-    var table = $('#economy-kis-earn-by-src').DataTable( {
-        rowReorder: true,
-        order: [[ 0, 'desc' ]],
-        aLengthMenu: [
-            [10, 25, 50, 100, -1],
-            [10, 25, 50, 100, "All"]
-        ],
-        iDisplayLength: -1,
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
-    } );
-     var table = $('#economy-kis-earn-raw').DataTable( {
-        rowReorder: true,
-        order: [[ 0, 'desc' ]],
-        aLengthMenu: [
-            [10, 25, 50, 100, -1],
-            [10, 25, 50, 100, "All"]
-        ],
-    iDisplayLength: -1,
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
-    } );
-    var table = $('#economy-kis-2').DataTable( {
-        rowReorder: true,
-        order: [[ 0, 'desc' ]],
-
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
-    } );
-    var table = $('#economy-kis-flow').DataTable( {
-            rowReorder: true,
-            order: [[ 0, 'desc' ]],
-            aLengthMenu: [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, "All"]
-            ],
-        iDisplayLength: -1,
-            buttons: [
-                'excelHtml5',
-                'csvHtml5',
-            ]
-        } );
-    var table = $('#economy-he-1').DataTable( {
-        rowReorder: true,
-        order: [[ 0, 'desc' ]],
-
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
-    } );
-    var table = $('#economy-he-2').DataTable( {
-        rowReorder: true,
-        order: [[ 0, 'desc' ]],
-
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
-    } );
-    var table = $('#data-export').DataTable( {
-        rowReorder: true,
-        order: [[ 0, 'asc' ]],
-        dom: 'Bfrtip',
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
+        rowReorder: true
     } );
 //full row selection
     var table = $('#full-row').DataTable( {
@@ -239,7 +119,7 @@ $(document).ready(function(){
         keys:    true
     } );
     $('#focus-cell').DataTable( {
-        keys: true,
+        keys: true
     } );
     $('#basic-scroller').DataTable( {
         ajax:           "../assets/json/datatable-extension/data.txt",
@@ -384,25 +264,6 @@ $(document).ready(function(){
             footer: true
         }
     } );
-
-    var table = $('#economy-kf-1').DataTable( {
-            rowReorder: true,
-            order: [[ 0, 'desc' ]],
-
-            buttons: [
-                'excelHtml5',
-                'csvHtml5',
-            ]
-        } );
-        var table = $('#economy-kf-2').DataTable( {
-            rowReorder: true,
-            order: [[ 0, 'desc' ]],
-
-            buttons: [
-                'excelHtml5',
-                'csvHtml5',
-            ]
-        } );
 });
 
 

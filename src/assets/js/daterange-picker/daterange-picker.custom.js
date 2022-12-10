@@ -2,11 +2,7 @@
 //DateRange Picker
 $(document).ready(function(){
     $(function() {
-        $('input[name="daterange"]').daterangepicker({
-            locale: {
-                format: 'YYYY-MM-DD'
-            }
-        });;
+        $('input[name="daterange"]').daterangepicker();
     });
 //Date and Time
     $(function() {

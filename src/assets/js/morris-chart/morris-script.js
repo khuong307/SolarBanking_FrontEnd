@@ -143,7 +143,37 @@ var morris_chart = {
             labels: ["Y"],
             barColors: ["#26c6da"]
         }), $(function() {
-
+            var b = [{
+                period: "2012-10-01",
+                licensed: 5000,
+                sorned: 4750
+            },
+                {
+                    period: "2012-09-30",
+                    licensed: 4500,
+                    sorned: 4250
+                },
+                {
+                    period: "2012-09-29",
+                    licensed: 4000,
+                    sorned: 3750
+                },
+                {
+                    period: "2012-09-20",
+                    licensed: 3500,
+                    sorned: 3250
+                },
+                {
+                    period: "2012-09-19",
+                    licensed: 3000,
+                    sorned: 2750
+                },
+                {
+                    period: "2012-09-18",
+                    licensed: 2500,
+                    sorned: 2250
+                }
+            ];
             Morris.Bar({
                 element: 'x-lable-morris-chart',
                 data: b,

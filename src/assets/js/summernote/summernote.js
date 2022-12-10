@@ -2671,14 +2671,14 @@ function createImage(url) {
     }).promise();
 }
 
-var Transaction = /** @class */ (function () {
-    function Transaction($editable) {
+var History = /** @class */ (function () {
+    function History($editable) {
         this.stack = [];
         this.stackOffset = -1;
         this.$editable = $editable;
         this.editable = $editable[0];
     }
-    Transaction.prototype.makeSnapshot = function () {
+    History.prototype.makeSnapshot = function () {
         var rng = range.create(this.editable);
         var emptyBookmark = { s: { path: [], offset: 0 }, e: { path: [], offset: 0 } };
         return {
@@ -2686,7 +2686,7 @@ var Transaction = /** @class */ (function () {
             bookmark: (rng ? rng.bookmark(this.editable) : emptyBookmark)
         };
     };
-    Transaction.prototype.applySnapshot = function (snapshot) {
+    History.prototype.applySnapshot = function (snapshot) {
         if (snapshot.contents !== null) {
             this.$editable.html(snapshot.contents);
         }
@@ -2699,7 +2699,7 @@ var Transaction = /** @class */ (function () {
     * Rewinds the history stack back to the first snapshot taken.
     * Leaves the stack intact, so that "Redo" can still be used.
     */
-    Transaction.prototype.rewind = function () {
+    History.prototype.rewind = function () {
         // Create snap shot if not yet recorded
         if (this.$editable.html() !== this.stack[this.stackOffset].contents) {
             this.recordUndo();
@@ -2713,7 +2713,7 @@ var Transaction = /** @class */ (function () {
     * @method reset
     * Resets the history stack completely; reverting to an empty editor.
     */
-    Transaction.prototype.reset = function () {
+    History.prototype.reset = function () {
         // Clear the stack.
         this.stack = [];
         // Restore stackOffset to its original value.
@@ -2726,7 +2726,7 @@ var Transaction = /** @class */ (function () {
     /**
      * undo
      */
-    Transaction.prototype.undo = function () {
+    History.prototype.undo = function () {
         // Create snap shot if not yet recorded
         if (this.$editable.html() !== this.stack[this.stackOffset].contents) {
             this.recordUndo();
@@ -2739,7 +2739,7 @@ var Transaction = /** @class */ (function () {
     /**
      * redo
      */
-    Transaction.prototype.redo = function () {
+    History.prototype.redo = function () {
         if (this.stack.length - 1 > this.stackOffset) {
             this.stackOffset++;
             this.applySnapshot(this.stack[this.stackOffset]);
@@ -2748,7 +2748,7 @@ var Transaction = /** @class */ (function () {
     /**
      * recorded undo
      */
-    Transaction.prototype.recordUndo = function () {
+    History.prototype.recordUndo = function () {
         this.stackOffset++;
         // Wash out stack after stackOffset
         if (this.stack.length > this.stackOffset) {
@@ -2757,7 +2757,7 @@ var Transaction = /** @class */ (function () {
         // Create new snapshot and push it to the end
         this.stack.push(this.makeSnapshot());
     };
-    return Transaction;
+    return History;
 }());
 
 var Style = /** @class */ (function () {
@@ -3721,7 +3721,7 @@ var Editor = /** @class */ (function () {
         this.table = new Table();
         this.typing = new Typing();
         this.bullet = new Bullet();
-        this.history = new Transaction(this.$editable);
+        this.history = new History(this.$editable);
         this.context.memo('help.undo', this.lang.help.undo);
         this.context.memo('help.redo', this.lang.help.redo);
         this.context.memo('help.tab', this.lang.help.tab);

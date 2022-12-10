@@ -1225,7 +1225,7 @@ Licensed under the BSD-2-Clause License.
         return this.options.lineColors.call(this, row, sidx, type);
       } else if (type === 'point') {
         return this.options.pointFillColors[sidx % this.options.pointFillColors.length] || this.options.lineColors[sidx % this.options.lineColors.length];
-      } else if (type === 'line' || type === 'label') {
+      } else if (type === 'line') {
         return this.options.lineColors[sidx % this.options.lineColors.length];
       } else {
         return this.options.trendLineColors[sidx % this.options.trendLineColors.length];

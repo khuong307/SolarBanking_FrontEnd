@@ -4470,7 +4470,7 @@ function generateGuid() {
                 return e.exec(t).slice(1)
             }
         });
-        var m = i.Transaction = function() {
+        var m = i.History = function() {
                 this.handlers = [], s.bindAll(this, "checkUrl")
             },
             g = /^[#\/]/,
