@@ -1,7 +1,5 @@
 import React from 'react'
-import setTabID from "../redux/helper_functions.jsx";
 function Dashboard(){
-    setTabID(2)
     return (
         <div className="page-body">
             <div className="row">

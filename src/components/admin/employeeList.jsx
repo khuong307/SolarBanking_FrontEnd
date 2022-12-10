@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
-import setTabID from "../redux/helper_functions.jsx";
 function EmployeeList(){
-    setTabID(1)
     return (
         <div className="page-body">
             <div className="row">

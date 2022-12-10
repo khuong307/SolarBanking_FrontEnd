@@ -1,7 +1,5 @@
 import React from 'react'
-import setTabID from "../redux/helper_functions.jsx";
 function Contacts(){
-    setTabID(3)
     return (
         <div className="page-body">
             <div className="row">

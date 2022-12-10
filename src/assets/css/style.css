@@ -11525,7 +11525,7 @@ footer {
   bottom: 30px;
   border-radius: 2px; }
   .wizard-4 .msg-box .content {
-    padding: 0;
+    padding: 0px;
     float: left;
     padding-top: 3px;
     color: #fff; }
