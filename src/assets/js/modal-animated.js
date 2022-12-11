@@ -4,12 +4,12 @@ function testAnim(x) {
 };
 var modal_animate_custom = {
     init: function() {
-        $('#myModal').on('show.bs.modal', function (e) {
-            var anim = $('#entrance').val();
+        $('#successModal').on('show.bs.modal', function (e) {
+            var anim = "bounceInUp"
             testAnim(anim);
         })
-        $('#myModal').on('hide.bs.modal', function (e) {
-            var anim = $('#exit').val();
+        $('#successModal').on('hide.bs.modal', function (e) {
+            var anim = "slideOutRight"
             testAnim(anim);
         })
         $("a").tooltip();

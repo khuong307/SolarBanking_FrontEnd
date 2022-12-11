@@ -11585,13 +11585,13 @@ footer {
         padding-top: 0; }
       .wizard-4 ul.anchor li a.selected {
         color: #fff;
-        background: #ab8ce4;
+        background: #FFB800;
         cursor: text;
         border-radius: 5px; }
       .wizard-4 ul.anchor li a.done {
         position: relative;
         color: #fff;
-        background: #26c6da;
+        background: #000a61;
         z-index: 99;
         border-radius: 5px; }
       .wizard-4 ul.anchor li a.disabled {
@@ -23120,5 +23120,16 @@ svg{
 
 .activeTab {
   color: #FFB800!important;
+}
+
+
+.btn-wizard {
+  background-color: rgb(0, 10, 97);
+  color: white
+}
+
+.btn-wizard:hover {
+  background-color: #4F59B1 ;
+  color: white
 }
 

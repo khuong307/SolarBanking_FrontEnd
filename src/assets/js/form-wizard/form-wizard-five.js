@@ -10,9 +10,9 @@
                 n = a("<div>Loading</div>").addClass("loader");
                 k = a("<div></div>").addClass("action-bar");
                 p = a("<div></div>").addClass("step-container");
-                q = a("<a>" + c.labelNext + "</a>").attr("href", "#").addClass("btn btn-primary");
-                r = a("<a>" + c.labelPrevious + "</a>").attr("href", "#").addClass("btn btn-primary");
-                s = a("<a>" + c.labelFinish + "</a>").attr("href", "#").addClass("btn btn-primary");
+                q = a("<a>" + c.labelNext + "</a>").attr("href", "#").addClass("btn btn-wizard");
+                r = a("<a>" + c.labelPrevious + "</a>").attr("href", "#").addClass("btn btn-wizard");
+                s = a("<button>" + c.labelFinish + "</button>").attr("type", "submit").addClass("btn btn-wizard");
                 c.errorSteps && 0 < c.errorSteps.length && a.each(c.errorSteps, function(a, b) {
                     y(b, !0)
                 });
@@ -33,16 +33,6 @@
                     B();
                     return !1
                 });
-                a(s).click(function() {
-                    if (!a(this).hasClass("buttonDisabled"))
-                        if (a.isFunction(c.onFinish)) c.onFinish.call(this,
-                            a(f));
-                            else {
-                                var d = b.parents("form");
-                                d && d.length && d.submit()
-                            }
-                            return !1
-                        });
                 a(f).bind("click", function(a) {
                     if (f.index(this) == h) return !1;
                     a = f.index(this);
@@ -68,24 +58,7 @@
                 g = c.contentURL,
                 h = d.data("hasContent");
                 stepNum = e + 1;
-                g && 0 < g.length ? c.contentCache && h ? w(e) : a.ajax({
-                    url: g,
-                    type: "POST",
-                    data: {
-                        step_number: stepNum
-                    },
-                    dataType: "text",
-                    beforeSend: function() {
-                        n.show()
-                    },
-                    error: function() {
-                        n.hide()
-                    },
-                    success: function(c) {
-                        n.hide();
-                        c && 0 < c.length && (d.data("hasContent", !0), a(a(d, b).attr("href"), b).html(c), w(e))
-                    }
-                }) : w(e)
+                g && 0 < g.length ? c.contentCache && h ? w(e) : "" : w(e)
             }
             function w(e) {
                 var d = f.eq(e),
