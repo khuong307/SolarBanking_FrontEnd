@@ -2,23 +2,31 @@ import React, {useState, useEffect } from 'react'
 import Axios from 'axios'
 import {useForm} from "react-hook-form";
 import SuccessModal from "./successModal.jsx";
+import InvalidModal from "./invalidModal.jsx";
+import {useNavigate} from "react-router-dom";
+import {Helmet} from "react-helmet";
+
 function AddNewCustomer(){
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm()
+    const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm()
     const [account_number, setAccount] = useState("")
-    useEffect(function (){$.ajax({
+
+    function generate(){$.ajax({
         url: 'http://localhost:3030/api/employee/bank_account',
         type: 'GET',
     }).done(function (res) {
         setAccount(res.spend_account)
     }).fail(function (err){
         alert(JSON.parse(err.responseText).message)
-    })},[])
+    })}
+    useEffect(generate,[])
 
     setValue("spend_account", account_number)
 
-    const [info, setInfo] = useState("1234")
+    const [info, setInfo] = useState("")
+    const navigate = useNavigate ();
+
     const onSubmit = (data) => {
-        alert(JSON.stringify(data))
+        setInfo(data)
         if (data.password != data.confirmPassword){
             alert('Password does not match!')
             return
@@ -29,16 +37,13 @@ function AddNewCustomer(){
                 method: "POST",
             })
             promise.then((result)=>{
+                $("#successModal").modal("show")
             })
             promise.catch((err)=>{
-                setInfo(data)
-                const status = err.response.status
-                if (status === 409){
-                    alert('This email or username has already been used!')
-                }
-                else if (status === 500){
-                    alert('Internal Server Error')
-                }
+                $("#invalidModal").modal("show")
+                reset()
+                generate()
+                $("#btn-step-1").click()
             })
         }
     }
@@ -50,9 +55,6 @@ function AddNewCustomer(){
                         <h4>ADD NEW CUSTOMER</h4>
                         <small style={{fontFamily: "Jost", fontSize: "15px", color: "gray"}}>Solar Banking Employee Panel</small>
                     </div>
-                    <button data-toggle="modal" data-target="#successModal" className="btn btn-primary">
-                        Run
-                    </button>
                 </div>
             </div>
             <div className="container-fluid">
@@ -63,7 +65,7 @@ function AddNewCustomer(){
                                 <div id="wizard" className="wizard-4" >
                                     <ul>
                                         <li>
-                                            <a href="#step-1">
+                                            <a id="btn-step-1" href="#step-1">
                                                 Step 1:
                                                 <small>Personal Information</small>
                                             </a>
@@ -190,6 +192,12 @@ function AddNewCustomer(){
                 </div>
             </div>
             <SuccessModal info={info}/>
+            <InvalidModal info={info}/>
+            <Helmet>
+                <script src="/src/assets/js/form-wizard/form-wizard-five.js"/>
+                <script src="/src/assets/js/autoNumeric.js" />
+                <script src="/src/assets/js/modal-animated.js" />
+            </Helmet>
         </div>
     )
 }

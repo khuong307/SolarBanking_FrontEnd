@@ -12,6 +12,14 @@ var modal_animate_custom = {
             var anim = "slideOutRight"
             testAnim(anim);
         })
+        $('#invalidModal').on('show.bs.modal', function (e) {
+            var anim = "shake"
+            testAnim(anim);
+        })
+        $('#invalidModal').on('hide.bs.modal', function (e) {
+            var anim = "tada"
+            testAnim(anim);
+        })
         $("a").tooltip();
     }
 };

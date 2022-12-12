@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
+import { ConnectedRouter } from 'react-router-redux'
 //--------- Common Account Features -------------//
 import LoginForm from "./components/LoginForm.jsx";
 
@@ -22,6 +22,8 @@ import CustomerTemplate from "../template/customer_template";
 import EmployeeTemplate from "../template/employee_template";
 import { Provider } from "react-redux";
 import store from "./components/redux/store.jsx";
+import history from "./jump.jsx";
+
 import Dashboard from "./components/admin/dashboard.jsx";
 import EmployeeList from "./components/admin/employeeList.jsx";
 import AdminTemplate from "../template/admin_template";
@@ -29,8 +31,8 @@ import AdminTemplate from "../template/admin_template";
 ReactDOM.createRoot(document.getElementById('solar-banking')).render(
     <React.StrictMode>
         <Provider store={store}>
-            <BrowserRouter>
-                <Routes >
+            <BrowserRouter history={history}>
+                <Routes>
                     <Route path="account">
                         <Route path="login" element={<LoginForm />}>
 

@@ -4333,7 +4333,7 @@ input[type="button"].btn-block {
 
 button.close {
   padding: 0;
-  background-color: transparent;
+  background-color: white;
   border: 0;
   -webkit-appearance: none; }
 
