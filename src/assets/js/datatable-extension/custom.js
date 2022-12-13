@@ -1,5 +1,10 @@
 "use strict";
 $(document).ready(function(){
+    $("#accountList").DataTable( {
+        rowReorder: true,
+        order: [[ 0, 'desc' ]],
+        searching: false,
+    } );
     $('#auto-fill').DataTable( {
         autoFill: true
     } );

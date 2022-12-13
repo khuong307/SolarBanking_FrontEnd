@@ -8405,12 +8405,12 @@ div.dt-button-background {
     .dataTables_wrapper .dataTables_paginate .paginate_button {
       margin: 0; }
       .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button:active {
-        background: #ab8ce4;
+        background: rgb(0, 10, 97);
         color: #fff !important;
         -webkit-box-shadow: none;
                 box-shadow: none; }
       .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        border: 1px solid #ab8ce4;
+        border: 1px solid rgb(0, 10, 97);
         color: #2a3142 !important;
         background: transparent !important; }
   .dataTables_wrapper .dataTables_length {
@@ -8490,8 +8490,8 @@ code.api {
   color: #00c292 !important; }
 
 .dt-ext .dataTables_wrapper .page-item.active .page-link {
-  background-color: #ab8ce4;
-  border-color: #ab8ce4;
+  background-color: rgb(0, 10, 97);
+  border-color: rgb(0, 10, 97);
   color: #fff; }
 
 .dt-ext .dataTables_wrapper .dataTables_paginate {
@@ -8503,11 +8503,11 @@ code.api {
       border: none !important; }
   .dt-ext .dataTables_wrapper .dataTables_paginate .page-link {
     margin-left: 0px;
-    color: #ab8ce4; }
+    color: rgb(0, 10, 97); }
 
 .dt-ext .dataTables_wrapper button.dt-button, .dt-ext .dataTables_wrapper div.dt-button, .dt-ext .dataTables_wrapper a.dt-button, .dt-ext .dataTables_wrapper button.dt-button:focus:not(.disabled), .dt-ext .dataTables_wrapper div.dt-button:focus:not(.disabled), .dt-ext .dataTables_wrapper a.dt-button:focus:not(.disabled), .dt-ext .dataTables_wrapper button.dt-button:active:not(.disabled), .dt-ext .dataTables_wrapper button.dt-button.active:not(.disabled), .dt-ext .dataTables_wrapper div.dt-button:active:not(.disabled), .dt-ext .dataTables_wrapper div.dt-button.active:not(.disabled), .dt-ext .dataTables_wrapper a.dt-button:active:not(.disabled), .dt-ext .dataTables_wrapper a.dt-button.active:not(.disabled) {
-  background-color: #ab8ce4;
-  border-color: #ab8ce4;
+  background-color: rgb(0, 10, 97);
+  border-color: rgb(0, 10, 97);
   border-radius: 2px;
   color: #fff;
   background-image: none;

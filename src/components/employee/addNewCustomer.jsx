@@ -5,6 +5,7 @@ import SuccessModal from "./successModal.jsx";
 import InvalidModal from "./invalidModal.jsx";
 import {useNavigate} from "react-router-dom";
 import {Helmet} from "react-helmet";
+import AddMultiModal from "./addMultiModal.jsx";
 
 function AddNewCustomer(){
     const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm()
@@ -55,6 +56,9 @@ function AddNewCustomer(){
                         <h4>ADD NEW CUSTOMER</h4>
                         <small style={{fontFamily: "Jost", fontSize: "15px", color: "gray"}}>Solar Banking Employee Panel</small>
                     </div>
+                    <button className="btn btn-success" data-toggle="modal" data-target ="#addMultiModal">
+                        CSV File
+                    </button>
                 </div>
             </div>
             <div className="container-fluid">
@@ -193,6 +197,7 @@ function AddNewCustomer(){
             </div>
             <SuccessModal info={info}/>
             <InvalidModal info={info}/>
+            <AddMultiModal generate={generate}/>
             <Helmet>
                 <script src="/src/assets/js/form-wizard/form-wizard-five.js"/>
                 <script src="/src/assets/js/autoNumeric.js" />
