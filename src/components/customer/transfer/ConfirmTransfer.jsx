@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import converter from "number-to-words"
 
 export default function ConfirmTransfer() {
     return (
@@ -11,42 +12,38 @@ export default function ConfirmTransfer() {
 
                 <div className="container mt-3">
                     <form>
-                        <h5 className="p-3" style={{ fontFamily: "Jost", backgroundColor: "red", width: "max-content" }}>INFORMATION TRANSFER</h5>
                         <div className="form-group">
-                            <label htmlFor="exampleFormControlInput1">Account Transfer</label>
-                            <input disabled type="email" className="form-control" id="exampleFormControlInput1" value="09242552226" />
+                            <label>Account Transfer</label>
+                            <input disabled type="email" className="form-control" value="09242552226" />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="exampleFormControlSelect1">Type transfer</label>
-                            <input disabled type="email" className="form-control" id="exampleFormControlInput1" value={"Paid Sender"} />
+                            <label >Type transfer</label>
+                            <input disabled type="email" className="form-control" value={"Paid Sender"} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="exampleFormControlInput1">Money by number (VND)</label>
-                            <input disabled type="email" className="form-control" id="exampleFormControlInput1" value="9242552226" />
+                            <label>Money by number (VND)</label>
+                            <input disabled type="email" className="form-control" value="9242552226" />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="exampleFormControlTextarea1">Money in words</label>
-                            <textarea disabled className="form-control" id="exampleFormControlTextarea1" rows={3} defaultValue={"9 million VND"} />
+                            <label >Money in words</label>
+                            <textarea disabled className="form-control" rows={3} value={converter.toWords(9000000).toUpperCase()+ " VND"} />
                         </div>
 
-
-                        <h5 className="p-3" style={{ fontFamily: "Jost", backgroundColor: "red", width: "max-content" }}>INFORMATION RECIPIENT</h5>
-
                         <div className="form-group">
-                            <label htmlFor="exampleFormControlInput1">Account Receiver</label>
-                            <input disabled type="email" className="form-control" id="exampleFormControlInput1" value="08242522626"/>
+                            <label >Account Receiver</label>
+                            <input disabled type="email" className="form-control"  value="08242522626"/>
                         </div>
                         <div className='form-group'>
-                            <label htmlFor="exampleFormControlInput1">Receiver's Full Name</label>
-                            <input disabled type="email" className="form-control" id="exampleFormControlInput1" value="Nguyen Van A"/>
+                            <label >Receiver's Full Name</label>
+                            <input disabled type="email" className="form-control" value="Nguyen Van A"/>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="exampleFormControlSelect1">Bank</label>
-                            <input disabled type="email" className="form-control" id="exampleFormControlInput1" value="ACB"/>
+                            <label>Bank</label>
+                            <input disabled type="email" className="form-control" value="ACB"/>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="exampleFormControlTextarea1">Content</label>
-                            <textarea disabled className="form-control" id="exampleFormControlTextarea1" rows={3} defaultValue={"Money transfer"} />
+                            <label>Content</label>
+                            <textarea disabled className="form-control"  rows={3} defaultValue={"Money transfer"} />
                         </div>
                         <div className="row justify-content-center p-5">
                             <NavLink to="/customer/transfer/otp" className="btn btn-danger pr-5 pl-5 pt-3 pb-3">CONFIRM</NavLink>

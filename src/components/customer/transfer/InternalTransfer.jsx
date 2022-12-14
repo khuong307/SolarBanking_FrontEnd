@@ -1,7 +1,42 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import converter from "number-to-words"
+import * as Yup from "yup"
+import { useFormik } from 'formik'
 
 export default function InternalTransfer() {
+    const navigate = useNavigate()
+
+    const toCurrency = (number) => {
+        return new Intl.NumberFormat('en-US').format(number);
+    }
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            accountTransfer: "",
+            typeTransfer: "Paid Sender",
+            moneyNumber: 0,
+            accountReceive: "",
+            bank: "ACB",
+            content: "",
+        },
+        validationSchema: Yup.object().shape({
+            accountTransfer: Yup.string().min(15, "Must be exactly 15 digits").max(15, "Must be exactly 15 digits")
+                .required("Required").matches(/^[0-9]+$/, "Must be only digits"),
+
+            moneyNumber: Yup.number().required("Required").positive("Must be positive number").integer(),
+
+            accountReceive: Yup.string().min(15, "Must be exactly 15 digits").max(15, "Must be exactly 15 digits")
+                .required("Required").matches(/^[0-9]+$/, "Must be only digits"),
+        }),
+        onSubmit: values => {
+            console.log(values)
+        }
+    })
+
+
+
     return (
         <div className="page-body">
             <div className="row">
@@ -11,48 +46,47 @@ export default function InternalTransfer() {
             </div>
 
             <div className="container mt-3">
-                <form>
-                    <h5 className="p-3" style={{ fontFamily: "Jost", backgroundColor: "red", width: "max-content" }}>INFORMATION TRANSFER</h5>
+                <form onSubmit={formik.handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlInput1">Account Transfer</label>
-                        <input type="email" className="form-control" id="exampleFormControlInput1" />
+                        <label>Account Transfer</label>
+                        <input name='accountTransfer' type="text" className="form-control" onChange={formik.handleChange} />
+                        {formik.touched.accountTransfer && formik.errors.accountTransfer ? <div className='text-danger'>{formik.errors.accountTransfer}</div> : null}
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlSelect1">Type transfer</label>
-                        <select className="form-control" id="exampleFormControlSelect1">
-                            <option>Paid Sender</option>
-                            <option>Paid Recipient</option>
+                        <label>Type transfer</label>
+                        <select name='typeTransfer' className="form-control" onChange={formik.handleChange}>
+                            <option value="SRC">Paid Sender</option>
+                            <option value="DES">Paid Recipient</option>
                         </select>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlInput1">Money by number (VND)</label>
-                        <input type="email" className="form-control" id="exampleFormControlInput1" />
+                        <label>Money by number (VND)</label>
+                        <input name="moneyNumber" type="number" className="form-control" onChange={formik.handleChange}/>
+                        {formik.touched.moneyNumber && formik.errors.moneyNumber ? <div className='text-danger'>{formik.errors.moneyNumber}</div> : null}
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlTextarea1">Money in words</label>
-                        <textarea className="form-control" id="exampleFormControlTextarea1" rows={3} defaultValue={""} />
+                        <label >Money in words</label>
+                        <textarea name="moneyWord" disabled className="form-control" rows={3} value={converter.toWords(Number(formik.values.moneyNumber)).toUpperCase() + " VND"} />
                     </div>
 
-
-                    <h5 className="p-3" style={{ fontFamily: "Jost", backgroundColor: "red", width: "max-content" }}>INFORMATION RECIPIENT</h5>
-
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlInput1">Account Receiver</label>
-                        <input type="email" className="form-control" id="exampleFormControlInput1"/>
+                        <label>Account Receiver</label>
+                        <input name='accountReceive' type="text" className="form-control" onChange={formik.handleChange} />
+                        {formik.touched.accountReceive && formik.errors.accountReceive ? <div className='text-danger'>{formik.errors.accountReceive}</div> : null}
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlSelect1">Bank</label>
-                        <select className="form-control" id="exampleFormControlSelect1">
-                            <option>ACB</option>
-                            <option>Techcombank</option>
+                        <label>Bank</label>
+                        <select name='bank' className="form-control" onChange={formik.handleChange}>
+                            <option value="ACB">ACB</option>
+                            <option value="Techcombank">Techcombank</option>
                         </select>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlTextarea1">Content</label>
-                        <textarea className="form-control" id="exampleFormControlTextarea1" rows={3} defaultValue={""} />
+                        <label>Content</label>
+                        <textarea name='content' className="form-control" rows={3} defaultValue={""} onChange={formik.handleChange} />
                     </div>
                     <div className="row justify-content-center p-5">
-                        <NavLink to="/customer/transfer/confirm" className="btn btn-danger pr-5 pl-5 pt-3 pb-3">Continue</NavLink>
+                        <button type='submit' className="btn btn-danger pr-5 pl-5 pt-3 pb-3" onClick={formik.handleSubmit}>CONTINUE</button>
                     </div>
                 </form>
             </div>

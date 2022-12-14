@@ -10,6 +10,7 @@ export default function OtpTransfer() {
                         <h1 className="mb-2">OTP VERIFICATION</h1>
                         <div>
                             <h3>code has been send to ******1258</h3>
+                            <img src="/src/assets/img/phone.png" style={{height:300}}  alt="phone.png" />
                         </div>
                     </div>
                     <div className="input-container d-flex flex-row justify-content-center mt-2">
@@ -18,11 +19,12 @@ export default function OtpTransfer() {
                         <input type="text" className="m-1 text-center form-control rounded " style={{fontSize:30}}  maxLength={1} />
                         <input type="text" className="m-1 text-center form-control rounded" style={{fontSize:30}}  maxLength={1} />
                         <input type="text" className="m-1 text-center form-control rounded" style={{fontSize:30}}  maxLength={1} />
+                        <input type="text" className="m-1 text-center form-control rounded" style={{fontSize:30}} maxLength={1} />
                     </div>
                     <div>
                         <h5>
                             Didn't get the OTP
-                            <a href="#" className="ml-2 text-decoration-none">Resend</a>
+                            <NavLink to="#" className="ml-2 text-decoration-none">Resend</NavLink>
                         </h5>
                     </div>
                     <div className="row justify-content-center p-5">

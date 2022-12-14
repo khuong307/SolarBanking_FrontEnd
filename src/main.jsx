@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import 'antd/dist/reset.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ConnectedRouter } from 'react-router-redux'
 //--------- Common Account Features -------------//
