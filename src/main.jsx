@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import 'antd/dist/reset.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ConnectedRouter } from 'react-router-redux'
 //--------- Common Account Features -------------//
@@ -16,6 +17,7 @@ import Transfer from "./components/customer/transfer.jsx";
 import Contacts from "./components/customer/contacts.jsx";
 import DebtList from "./components/customer/debtList.jsx";
 import HistoryTransaction from "./components/customer/historyTransaction.jsx";
+import InternalTransfer from "./components/customer/transfer/InternalTransfer"
 
 //--------- UI layout -----------//
 import CustomerTemplate from "../template/customer_template";
@@ -27,9 +29,11 @@ import history from "./jump.jsx";
 import Dashboard from "./components/admin/dashboard.jsx";
 import EmployeeList from "./components/admin/employeeList.jsx";
 import AdminTemplate from "../template/admin_template";
+import InterbankTransfer from './components/customer/transfer/InterbankTransfer.jsx';
+import ConfirmTransfer from './components/customer/transfer/ConfirmTransfer.jsx';
+import OtpTransfer from './components/customer/transfer/OtpTransfer.jsx';
 
 ReactDOM.createRoot(document.getElementById('solar-banking')).render(
-    <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter history={history}>
                 <Routes>
@@ -43,10 +47,18 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                         <CustomerTemplate />
                     }>
                         <Route path="cardList" element={<CardList />} />
-                        <Route path="transfer" element={<Transfer />} />
+                        <Route path="transfer" element={<Transfer />}/>
+                        {/* Customer transfer routes*/}
+                        <Route path="transfer/internal" element={<InternalTransfer />} />
+                        <Route path="transfer/confirm" element={<ConfirmTransfer />} />
+                        <Route path="transfer/otp" element={<OtpTransfer />} />
+                        <Route path="transfer/interbank" element={<InterbankTransfer />} />
+                        {/* end */}
                         <Route path="debtList" element={<DebtList />} />
                         <Route path="contacts" element={<Contacts />} />
                         <Route path="transaction" element={<HistoryTransaction />} />
+                       
+
                     </Route>
                     {/*Employee Routes*/}
                     <Route path="employee" element={
@@ -66,5 +78,4 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                 </Routes>
             </BrowserRouter>
         </Provider>
-    </React.StrictMode>
 )
