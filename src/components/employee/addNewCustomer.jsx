@@ -6,9 +6,13 @@ import InvalidModal from "./invalidModal.jsx";
 import {useNavigate} from "react-router-dom";
 import {Helmet} from "react-helmet";
 import AddMultiModal from "./addMultiModal.jsx";
+import StatusMultiModal from "./statusMultiModal.jsx";
+
+import "/src/assets/css/scrollable.css"
+
 
 function AddNewCustomer(){
-    const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm()
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm()
     const [account_number, setAccount] = useState("")
 
     function generate(){$.ajax({
@@ -26,8 +30,14 @@ function AddNewCustomer(){
     const [info, setInfo] = useState("")
     const navigate = useNavigate ();
 
+    //prevent space in username
+    const preventSpace = function (e) {
+        if(e.code === 'Space') e.preventDefault()
+    }
+
     const onSubmit = (data) => {
         setInfo(data)
+        console.log(data)
         if (data.password != data.confirmPassword){
             alert('Password does not match!')
             return
@@ -39,25 +49,39 @@ function AddNewCustomer(){
             })
             promise.then((result)=>{
                 $("#successModal").modal("show")
-            })
-            promise.catch((err)=>{
-                $("#invalidModal").modal("show")
                 reset()
                 generate()
                 $("#btn-step-1").click()
             })
+            promise.catch((err)=>{
+                $("#invalidModal").modal("show")
+            })
         }
+    }
+    const [successMulti, setSuccess] = useState([])
+    const [failMulti, setFail] = useState([])
+
+    const [isSuccess, setIsSuccess] = useState(false)
+    const [isFail, setIsFail] = useState(false)
+
+    function updateSuccess(value){
+        setSuccess(value)
+        setIsSuccess(true)
+    }
+    function updateFail(value){
+        setFail(value)
+        setIsFail(true)
     }
     return (
         <div className="page-body">
             <div className="container-fluid">
-                <div className="row">
-                    <div className="col-lg-12 mt-2" style={{fontFamily: "Jost"}}>
+                <div className="row d-flex align-items-center align-content-center justify-content-between">
+                    <div className="col-lg-4 mt-2" style={{fontFamily: "Jost"}}>
                         <h4>ADD NEW CUSTOMER</h4>
                         <small style={{fontFamily: "Jost", fontSize: "15px", color: "gray"}}>Solar Banking Employee Panel</small>
                     </div>
-                    <button className="btn btn-success" data-toggle="modal" data-target ="#addMultiModal">
-                        CSV File
+                    <button className="btn btnLogin mr-3" data-toggle="modal" data-target ="#addMultiModal" style={{fontFamily: "Jost"}}>
+                        <i className="fa fa-plus-circle mr-1"></i>CSV File
                     </button>
                 </div>
             </div>
@@ -130,7 +154,7 @@ function AddNewCustomer(){
                                         <div className="col-sm-12 pl-0">
                                             <div className="form-group m-t-15">
                                                 <label><i className="fa fa-user mr-2"></i>Username:</label>
-                                                <input type="text" className="form-control"
+                                                <input type="text" className="form-control" onKeyDown={preventSpace}
                                                        placeholder="solar_banking2022"
                                                        {...register("username", {
                                                            required: true,
@@ -197,11 +221,12 @@ function AddNewCustomer(){
             </div>
             <SuccessModal info={info}/>
             <InvalidModal info={info}/>
-            <AddMultiModal generate={generate}/>
+            <AddMultiModal updateSucess={updateSuccess} updateFail = {updateFail} />
+            <StatusMultiModal success={successMulti} fail ={failMulti} isSuccess={isSuccess} isFail={isFail}/>
             <Helmet>
                 <script src="/src/assets/js/form-wizard/form-wizard-five.js"/>
                 <script src="/src/assets/js/autoNumeric.js" />
-                <script src="/src/assets/js/modal-animated.js" />
+                <script src="/src/assets/js/modal-animated.js"/>
             </Helmet>
         </div>
     )

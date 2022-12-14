@@ -10515,6 +10515,13 @@ header {
   background-color: #FF5370;
   color: #fff; }
 
+.nav-solar .nav-link, .nav-pills.nav-solar .nav-link {
+  color: #FFB800; }
+
+.nav-solar .nav-link.active, .nav-solar .show > .nav-link, .nav-pills.nav-solar .nav-link.active, .nav-pills.nav-solar .show > .nav-link {
+  background-color: #FFB800;
+  color: #fff; }
+
 .nav-info .nav-link, .nav-pills.nav-info .nav-link {
   color: #4099ff; }
 
@@ -23134,4 +23141,5 @@ svg{
   background-color: #4F59B1 ;
   color: white
 }
+
 
