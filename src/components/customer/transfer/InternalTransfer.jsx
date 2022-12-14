@@ -3,29 +3,24 @@ import { useNavigate } from 'react-router-dom'
 import converter from "number-to-words"
 import * as Yup from "yup"
 import { useFormik } from 'formik'
+import { NumericFormat } from 'react-number-format';
 
 export default function InternalTransfer() {
     const navigate = useNavigate()
 
-    const toCurrency = (number) => {
-        return new Intl.NumberFormat('en-US').format(number);
-    }
-
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            accountTransfer: "",
+            accountTransfer: "092422526673773",
             typeTransfer: "Paid Sender",
-            moneyNumber: 0,
+            moneyNumber: "",
             accountReceive: "",
             bank: "ACB",
             content: "",
         },
         validationSchema: Yup.object().shape({
-            accountTransfer: Yup.string().min(15, "Must be exactly 15 digits").max(15, "Must be exactly 15 digits")
-                .required("Required").matches(/^[0-9]+$/, "Must be only digits"),
-
-            moneyNumber: Yup.number().required("Required").positive("Must be positive number").integer(),
+            moneyNumber: Yup.string().min(5, "Must be lowest 5 digits")
+                .required("Required"),
 
             accountReceive: Yup.string().min(15, "Must be exactly 15 digits").max(15, "Must be exactly 15 digits")
                 .required("Required").matches(/^[0-9]+$/, "Must be only digits"),
@@ -49,8 +44,8 @@ export default function InternalTransfer() {
                 <form onSubmit={formik.handleSubmit}>
                     <div className="form-group">
                         <label>Account Transfer</label>
-                        <input name='accountTransfer' type="text" className="form-control" onChange={formik.handleChange} />
-                        {formik.touched.accountTransfer && formik.errors.accountTransfer ? <div className='text-danger'>{formik.errors.accountTransfer}</div> : null}
+                        <input disabled name='accountTransfer' type="text" className="form-control" value={formik.values.accountTransfer}/>
+                        {formik.errors.accountTransfer ? <div className='text-danger'>{formik.errors.accountTransfer}</div> : null}
                     </div>
                     <div className="form-group">
                         <label>Type transfer</label>
@@ -60,26 +55,26 @@ export default function InternalTransfer() {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label>Money by number (VND)</label>
-                        <input name="moneyNumber" type="number" className="form-control" onChange={formik.handleChange}/>
-                        {formik.touched.moneyNumber && formik.errors.moneyNumber ? <div className='text-danger'>{formik.errors.moneyNumber}</div> : null}
+                        <label>Money in number (VND)</label>
+                        <NumericFormat name='moneyNumber' className='form-control' thousandSeparator="," onChange={formik.handleChange} />
+                        {formik.errors.moneyNumber ? <div className='text-danger'>{formik.errors.moneyNumber}</div> : null}
                     </div>
                     <div className="form-group">
                         <label >Money in words</label>
-                        <textarea name="moneyWord" disabled className="form-control" rows={3} value={converter.toWords(Number(formik.values.moneyNumber)).toUpperCase() + " VND"} />
+                        <textarea name="moneyWord" disabled className="form-control" rows={3}
+                            value={
+                                formik.values.moneyNumber === "" ? "0 VND" :
+                                    converter.toWords(Number(formik.values.moneyNumber.replace(/,/g, ""))).toUpperCase() + " VND"
+                            } />
                     </div>
-
                     <div className="form-group">
                         <label>Account Receiver</label>
                         <input name='accountReceive' type="text" className="form-control" onChange={formik.handleChange} />
-                        {formik.touched.accountReceive && formik.errors.accountReceive ? <div className='text-danger'>{formik.errors.accountReceive}</div> : null}
+                        {formik.errors.accountReceive ? <div className='text-danger'>{formik.errors.accountReceive}</div> : null}
                     </div>
                     <div className="form-group">
                         <label>Bank</label>
-                        <select name='bank' className="form-control" onChange={formik.handleChange}>
-                            <option value="ACB">ACB</option>
-                            <option value="Techcombank">Techcombank</option>
-                        </select>
+                        <input disabled type="email" className="form-control" value="ACB" />
                     </div>
                     <div className="form-group">
                         <label>Content</label>
