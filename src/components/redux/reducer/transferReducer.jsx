@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     banks: [
         {
-            value: 'TCB',
+            value: 'Techcombank',
             label: 'Techcombank',
         },
         {
@@ -21,18 +21,37 @@ const initialState = {
             bank: "Techcombank"
         },
         {
-            accountReceiver: "99225092524226",
+            accountReceiver: "333533636",
             bank: "VPBank"
         },
-    ]
+    ],
+    defaultReceivers: [
+        {
+            accountReceiver: "992250925226",
+            bank: "Techcombank"
+        },
+        {
+            accountReceiver: "333533636",
+            bank: "VPBank"
+        },
+    ],
 }
 
 const transferReducer = createSlice({
     name: "transferReducer",
     initialState,
-    reducers: {}
+    reducers: {
+        searchReceiver: (state,action)=>{
+            const textSearch= action.payload
+            if(textSearch === ""){
+                state.receivers = state.defaultReceivers
+            }else{
+                state.receivers = state.receivers.filter(item => item.accountReceiver.trim().toLowerCase().includes(textSearch.trim().toLowerCase()))
+            }
+        }
+    }
 });
 
-export const { } = transferReducer.actions
+export const {searchReceiver } = transferReducer.actions
 
 export default transferReducer.reducer

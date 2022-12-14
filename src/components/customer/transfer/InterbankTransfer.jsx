@@ -5,27 +5,18 @@ import * as Yup from "yup"
 import { useFormik } from 'formik'
 import { NumericFormat } from 'react-number-format';
 import { AutoComplete, Select } from 'antd'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { searchReceiver } from '../../redux/reducer/transferReducer'
 
 export default function InterbankTransfer() {
     const navigate = useNavigate()
 
     const banks = useSelector(state => state.transferReducer.banks)
-    const receiver = useSelector(state => state.transferReducer.receiver)
+    const receivers = useSelector(state => state.transferReducer.receivers)
 
-    const [value, setValue] = useState('');
-    const [options, setOptions] = useState(receiver);
-    const onSearch = (searchText) => {
-      
-    };
-    const onSelect = (data) => {
-      console.log('onSelect', data);
-    };
+    const [selectedBank,setSelectedBank] = useState("")
 
-    const onChange = (value) => {
-        console.log(`selected ${value}`);
-        formik.setFieldValue("bank", value)
-    };
+    const dispatch = useDispatch()
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -34,14 +25,14 @@ export default function InterbankTransfer() {
             typeTransfer: "Paid Sender",
             moneyNumber: "",
             accountReceive: "",
-            bank: "ACB",
+            bank: "",
             content: "",
         },
         validationSchema: Yup.object().shape({
             moneyNumber: Yup.string().min(5, "Must be lowest 5 digits")
                 .required("Required"),
 
-            accountReceive: Yup.string().min(15, "Must be exactly 15 digits").max(15, "Must be exactly 15 digits")
+            accountReceive: Yup.string().max(15, "Maximum 15 digits")
                 .required("Required").matches(/^[0-9]+$/, "Must be only digits"),
         }),
         onSubmit: values => {
@@ -90,11 +81,26 @@ export default function InterbankTransfer() {
                     <div className="form-group">
                         <label>Account Receiver</label>
                         <AutoComplete
-                            options={options}
+                            options={receivers?.map((user)=>{
+                                return {label:user.accountReceiver,value:user.accountReceiver}
+                            })}
                             name="accountReceive"
-                            className="form-control"
-                            onSelect={onSelect}
-                            onSearch={onSearch}
+                            style={{width:"100%",height:"100%"}}
+                            onSelect={(value,option)=>{
+                                console.log(option)
+                                const receiver = receivers.find(item => item.accountReceiver === value)
+                                console.log(receiver.bank)
+                                formik.setFieldValue("bank",receiver.bank)
+                                formik.setFieldValue("accountReceive",value)
+                            }}
+                            onSearch={(text)=>{
+                                console.log("text: ",text)
+                                dispatch(searchReceiver(text))
+                            }}
+                            onChange={(data)=>{
+                                formik.handleChange
+                                formik.setFieldValue("accountReceive",data)
+                            }}
                             placeholder="input here"
                         />
                         {formik.errors.accountReceive ? <div className='text-danger'>{formik.errors.accountReceive}</div> : null}
@@ -103,12 +109,15 @@ export default function InterbankTransfer() {
                     <div className="form-group">
                         <label>Bank</label>
                         <Select
-                            className='form-control'
                             showSearch
                             placeholder="Select a bank"
+                            style={{width:"100%",height:"100%"}}
                             optionFilterProp="children"
                             name="bank"
-                            onChange={onChange}
+                            value={formik.values.bank}
+                            onChange={(value,option)=>{
+                                formik.setFieldValue("bank",value)
+                            }}
                             filterOption={(input, option) =>
                                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                             }
