@@ -8,11 +8,13 @@ import { AutoComplete, Select } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { searchReceiver } from '../../redux/reducer/transferReducer'
 
-export default function InternalTransfer() {
+export default function InterbankTransfer() {
     const navigate = useNavigate()
 
     const banks = useSelector(state => state.transferReducer.banks)
     const receivers = useSelector(state => state.transferReducer.receivers)
+
+    const [selectedBank,setSelectedBank] = useState("")
 
     const dispatch = useDispatch()
 
@@ -23,7 +25,7 @@ export default function InternalTransfer() {
             typeTransfer: "Paid Sender",
             moneyNumber: "",
             accountReceive: "",
-            bank: "ACB",
+            bank: "",
             content: "",
         },
         validationSchema: Yup.object().shape({
@@ -70,10 +72,10 @@ export default function InternalTransfer() {
                     <div className="form-group">
                         <label >Money in words</label>
                         <textarea name="moneyWord" disabled className="form-control" rows={3}
-                            value={
-                                formik.values.moneyNumber === "" ? "0 VND" :
-                                    converter.toWords(Number(formik.values.moneyNumber.replace(/,/g, ""))).toUpperCase() + " VND"
-                            } />
+                                  value={
+                                      formik.values.moneyNumber === "" ? "0 VND" :
+                                          converter.toWords(Number(formik.values.moneyNumber.replace(/,/g, ""))).toUpperCase() + " VND"
+                                  } />
                     </div>
 
                     <div className="form-group">
@@ -86,6 +88,9 @@ export default function InternalTransfer() {
                             style={{width:"100%",height:"100%"}}
                             onSelect={(value,option)=>{
                                 console.log(option)
+                                const receiver = receivers.find(item => item.accountReceiver === value)
+                                console.log(receiver.bank)
+                                formik.setFieldValue("bank",receiver.bank)
                                 formik.setFieldValue("accountReceive",value)
                             }}
                             onSearch={(text)=>{
@@ -103,7 +108,21 @@ export default function InternalTransfer() {
 
                     <div className="form-group">
                         <label>Bank</label>
-                        <input name='bank' disabled className='form-control' value={formik.values.bank} />
+                        <Select
+                            showSearch
+                            placeholder="Select a bank"
+                            style={{width:"100%",height:"100%"}}
+                            optionFilterProp="children"
+                            name="bank"
+                            value={formik.values.bank}
+                            onChange={(value,option)=>{
+                                formik.setFieldValue("bank",value)
+                            }}
+                            filterOption={(input, option) =>
+                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
+                            options={banks}
+                        />
                     </div>
 
                     <div className="form-group">

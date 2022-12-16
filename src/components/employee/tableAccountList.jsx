@@ -43,15 +43,11 @@ function TableAccountList(props){
                         <Helmet>
                             <script src="/src/assets/js/datatables/jquery.dataTables.min.js"/>
                             <script src="/src/assets/js/datatable-extension/dataTables.buttons.min.js"/>
-                            <script src="/src/assets/js/datatable-extension/buttons.colVis.min.js"/>
-                            <script src="/src/assets/js/datatable-extension/dataTables.autoFill.min.js"/>
                             <script src="/src/assets/js/datatable-extension/dataTables.select.min.js"/>
                             <script src="/src/assets/js/datatable-extension/dataTables.bootstrap4.min.js"/>
                             <script src="/src/assets/js/datatable-extension/dataTables.responsive.min.js"/>
-                            <script src="/src/assets/js/datatable-extension/responsive.bootstrap4.min.js"/>
                             <script src="/src/assets/js/datatable-extension/dataTables.keyTable.min.js"/>
                             <script src="/src/assets/js/datatable-extension/custom.js"/>
-                            <script src="/src/assets/js/scrollable/scrollable-custom.js"/>
                         </Helmet>
                     </div>
                 )

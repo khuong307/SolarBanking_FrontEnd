@@ -24,12 +24,12 @@ function StatusMultiModal(props){
                             </div>
                             <ul className="nav nav-tabs border-tab nav-solar" id="top-tab" role="tablist" >
                                 <li className="nav-item">
-                                    <a className="nav-link active" id="top-home-tab" data-toggle="tab" style={{fontSize: "13px"}}
+                                    <a className="nav-link active" data-toggle="tab" style={{fontSize: "14px", color: "rgb(0, 10, 97)"}}
                                        href="#top-success" role="tab" aria-controls="top-home" aria-selected="true">
                                         <i className="fa fa-check-circle-o"></i>Success</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" id="profile-top-tab" data-toggle="tab" style={{fontSize: "13px"}}
+                                    <a className="nav-link" data-toggle="tab" style={{color:"#FFB800" ,fontSize: "14px"}}
                                        href="#top-fail" role="tab" aria-controls="top-profile"
                                        aria-selected="false"><i className="fa fa-times-circle-o"></i>Invalid</a>
                                 </li>
@@ -97,13 +97,9 @@ function StatusMultiModal(props){
                                                     </table>
                                                     <Helmet>
                                                         <script src="/src/assets/js/datatables/jquery.dataTables.min.js"/>
-                                                        <script src="/src/assets/js/datatable-extension/dataTables.buttons.min.js"/>
-                                                        <script src="/src/assets/js/datatable-extension/buttons.colVis.min.js"/>
-                                                        <script src="/src/assets/js/datatable-extension/dataTables.autoFill.min.js"/>
                                                         <script src="/src/assets/js/datatable-extension/dataTables.select.min.js"/>
                                                         <script src="/src/assets/js/datatable-extension/dataTables.bootstrap4.min.js"/>
                                                         <script src="/src/assets/js/datatable-extension/dataTables.responsive.min.js"/>
-                                                        <script src="/src/assets/js/datatable-extension/responsive.bootstrap4.min.js"/>
                                                         <script src="/src/assets/js/datatable-extension/dataTables.keyTable.min.js"/>
                                                         <script src="/src/assets/js/success_fail_table.js"/>
                                                         <script src="/src/assets/js/scrollable/scrollable-custom.js"/>
