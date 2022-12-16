@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {useForm} from "react-hook-form";
 import ChargeInfoForm from "./chargeInfoForm.jsx";
 import Axios from "axios";
-import NotFound from "./not_found";
+import NotFound from "./not_found.jsx";
 import CompleteTransferModal from "./completeTransferModal.jsx";
 function ChargeMoney(){
     const { register, handleSubmit, formState: { errors }} = useForm()

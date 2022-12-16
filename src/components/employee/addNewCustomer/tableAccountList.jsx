@@ -1,6 +1,6 @@
 import {Helmet} from "react-helmet";
 import React from "react";
-import {formatMoney} from "../redux/helper_functions.jsx";
+import {formatMoney} from "../../redux/helper_functions.jsx";
 
 import '/src/assets/css/datatables.css'
 import '/src/assets/css/datatable-extension.css'

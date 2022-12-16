@@ -6,8 +6,8 @@ import { ConnectedRouter } from 'react-router-redux'
 import LoginForm from "./components/LoginForm.jsx";
 
 //--------- Employee Features -----------//
-import AddNewCustomer from "./components/employee/addNewCustomer.jsx";
-import ChargeMoney from "./components/employee/chargeMoney.jsx";
+import AddNewCustomer from "./components/employee/addNewCustomer/addNewCustomer.jsx";
+import ChargeMoney from "./components/employee/chargeMoney/chargeMoney.jsx";
 import CustomerTransaction from "./components/employee/customerTransaction.jsx";
 
 //--------- Customer Features -----------//

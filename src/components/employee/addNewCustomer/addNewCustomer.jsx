@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from 'react'
 import Axios from 'axios'
 import {useForm} from "react-hook-form";
-import SuccessModal from "./successModal.jsx";
+import SuccessModal from "../chargeMoney/successModal.jsx";
 import InvalidModal from "./invalidModal.jsx";
 import {useNavigate} from "react-router-dom";
 import {Helmet} from "react-helmet";
