@@ -50,6 +50,7 @@ function AddMultiModal(props){
             props.updateSucess(result.data.success_array)
         })
         promise.catch((err)=>{
+            alert("Internal Server Error")
         })
     }
     return (

@@ -24,7 +24,6 @@ import CustomerTemplate from "../template/customer_template";
 import EmployeeTemplate from "../template/employee_template";
 import { Provider } from "react-redux";
 import store from "./components/redux/store.jsx";
-import history from "./jump.jsx";
 
 import Dashboard from "./components/admin/dashboard.jsx";
 import EmployeeList from "./components/admin/employeeList.jsx";

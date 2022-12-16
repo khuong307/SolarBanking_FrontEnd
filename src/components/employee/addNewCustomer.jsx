@@ -37,7 +37,6 @@ function AddNewCustomer(){
 
     const onSubmit = (data) => {
         setInfo(data)
-        console.log(data)
         if (data.password != data.confirmPassword){
             alert('Password does not match!')
             return
