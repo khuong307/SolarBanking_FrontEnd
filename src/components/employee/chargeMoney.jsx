@@ -3,10 +3,12 @@ import {useForm} from "react-hook-form";
 import ChargeInfoForm from "./chargeInfoForm.jsx";
 import Axios from "axios";
 import NotFound from "./not_found";
+import CompleteTransferModal from "./completeTransferModal.jsx";
 function ChargeMoney(){
     const { register, handleSubmit, formState: { errors }} = useForm()
     const [customerData, setCustomerData] = useState('')
     const [isFound, setFound] = useState('')
+    const [transaction_info, setTransactionInfo] = useState('')
     const  onSubmitSearch = (data) =>{
         let promise = Axios({
             url: `http://localhost:3030/api/employee/customer/${data.account_number}`,
@@ -57,8 +59,9 @@ function ChargeMoney(){
                             }
                         </div>
                     </div>
-                    <ChargeInfoForm customerData={customerData} setCustomerData={setCustomerData}/>
+                    <ChargeInfoForm customerData={customerData} setCustomerData={setCustomerData} setTransactionInfo={setTransactionInfo}/>
                     <NotFound isFound={isFound}/>
+                    <CompleteTransferModal transaction_info={transaction_info}/>
                 </div>
             </div>
         </div>

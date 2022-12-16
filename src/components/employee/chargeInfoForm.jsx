@@ -23,9 +23,12 @@ function ChargeInfoForm(props){
             method: "POST",
         })
         promise.then((result)=>{
+            alert(JSON.stringify(result.data))
+            props.setTransactionInfo(result.data.transaction_info)
+            $("#confirmModal").modal("hide")
+            $("#completeTransferModal").modal("show")
             reset()
             props.setCustomerData('')
-            $("#confirmModal").modal("hide")
         })
         promise.catch((err)=>{
             alert(err)
