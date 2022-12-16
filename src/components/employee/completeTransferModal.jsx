@@ -25,7 +25,7 @@ function CompleteTransferModal(props){
                                             <div><i className="fa fa-envelope mr-1 mb-2"></i> {props.transaction_info.email}</div>
                                         </div>
 
-                                        <textarea  row="3" cols="50" className="form-control textarea" readOnly value={props.transaction_info.transaction_message}/>
+                                        <textarea  row="3" cols="50" className="form-control textarea" style={{fontFamily: "Jost"}} readOnly value={props.transaction_info.transaction_message}/>
                                         <div className="card-footer row" style={{fontFamily: "Jost"}}>
                                             <div className="col-6 col-sm-6">
                                                 <small>Account Number:</small>

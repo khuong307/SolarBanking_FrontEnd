@@ -23,7 +23,6 @@ function ChargeInfoForm(props){
             method: "POST",
         })
         promise.then((result)=>{
-            alert(JSON.stringify(result.data))
             props.setTransactionInfo(result.data.transaction_info)
             $("#confirmModal").modal("hide")
             $("#completeTransferModal").modal("show")
@@ -87,7 +86,7 @@ function ChargeInfoForm(props){
                                     </div>
                                     <div className="col-lg-4 form-group">
                                         <label><i className="fa fa-plus-circle mr-1"></i>Amount of money (VND):</label>
-                                        <input type="text" className="form-control digits number-separator" style={{fontFamily: "Jost"}}
+                                        <input type="text" className="form-control digits number-separator" style={{fontFamily: "Jost"}} value={numeral(10000).format('0,0')}
                                                {...register("amount_of_money", {
                                                    required: true,
                                                    minLength: 6
