@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import IntrabankTransfer from './transfer/IntrabankTransfer'
-import InternalTransfer from "./transfer/InternalTransfer"
+import InterbankTransfer from "./transfer/InterbankTransfer"
 
 function Transfer() {
     const navigate = useNavigate()
@@ -27,7 +27,7 @@ function Transfer() {
                                 <IntrabankTransfer />
                             </div>
                             <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
-                                <InternalTransfer />
+                                <InterbankTransfer />
                             </div>
                         </div>
                     </div>
