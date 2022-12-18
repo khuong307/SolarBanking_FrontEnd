@@ -16,7 +16,6 @@ import Transfer from "./components/customer/transfer.jsx";
 import Contacts from "./components/customer/contacts.jsx";
 import DebtList from "./components/customer/debtList.jsx";
 import HistoryTransaction from "./components/customer/historyTransaction.jsx";
-import InternalTransfer from "./components/customer/transfer/InternalTransfer"
 
 //--------- UI layout -----------//
 import CustomerTemplate from "../template/customer_template";
@@ -27,7 +26,6 @@ import store from "./components/redux/store.jsx";
 import Dashboard from "./components/admin/dashboard.jsx";
 import EmployeeList from "./components/admin/employeeList.jsx";
 import AdminTemplate from "../template/admin_template";
-import InterbankTransfer from './components/customer/transfer/InterbankTransfer.jsx';
 import ConfirmTransfer from './components/customer/transfer/ConfirmTransfer.jsx';
 import OtpTransfer from './components/customer/transfer/OtpTransfer.jsx';
 
@@ -47,10 +45,8 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                         <Route path="cardList" element={<CardList />} />
                         <Route path="transfer" element={<Transfer />}/>
                         {/* Customer transfer routes*/}
-                        <Route path="transfer/internal" element={<InternalTransfer />} />
                         <Route path="transfer/confirm" element={<ConfirmTransfer />} />
                         <Route path="transfer/otp" element={<OtpTransfer />} />
-                        <Route path="transfer/interbank" element={<InterbankTransfer />} />
                         {/* end */}
                         <Route path="debtList" element={<DebtList />} />
                         <Route path="contacts" element={<Contacts />} />
