@@ -5,6 +5,46 @@ $(document).ready(function(){
         order: [[ 0, 'desc' ]],
         searching: false,
     } );
+    $("#chargeSLBList").DataTable( {
+        rowReorder: true,
+        colReorder: true,
+        order: [[ 0, 'desc' ], [1, 'desc']],
+        searching: true,
+        info: true,
+        autoWidth: false
+    } );
+    $("#transferByCustomer").DataTable( {
+        rowReorder: true,
+        colReorder: true,
+        order: [[ 0, 'desc' ], [1, 'desc']],
+        searching: true,
+        info: true,
+        autoWidth: false
+    } );
+    $("#receiveFromOthers").DataTable( {
+        rowReorder: true,
+        colReorder: true,
+        order: [[ 0, 'desc' ], [1, 'desc']],
+        searching: true,
+        info: true,
+        autoWidth: false
+    } );
+    $("#paidDebt").DataTable( {
+        rowReorder: true,
+        colReorder: true,
+        order: [[ 0, 'desc' ], [1, 'desc']],
+        searching: true,
+        info: true,
+        autoWidth: false
+    } );
+    $("#receiveDebt").DataTable( {
+        rowReorder: true,
+        colReorder: true,
+        order: [[ 0, 'desc' ], [1, 'desc']],
+        searching: true,
+        info: true,
+        autoWidth: false
+    } );
     $('#auto-fill').DataTable( {
         autoFill: true
     } );
@@ -156,14 +196,6 @@ $(document).ready(function(){
     } );
     var table = $('#new-cons').DataTable();
 // new $.fn.dataTable.Responsive( table );
-    $('#show-hidden-row').DataTable( {
-        responsive: {
-            details: {
-                display: $.fn.dataTable.Responsive.display.childRowImmediate,
-                type: ''
-            }
-        }
-    } );
     $('#basic-colreorder').DataTable( {
         colReorder: true
     } );

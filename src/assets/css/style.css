@@ -10495,10 +10495,10 @@ header {
   color: #fff; }
 
 .nav-secondary .nav-link, .nav-pills.nav-secondary .nav-link {
-  color: #26c6da; }
+  color: #FFB800; }
 
 .nav-secondary .nav-link.active, .nav-secondary .show > .nav-link, .nav-pills.nav-secondary .nav-link.active, .nav-pills.nav-secondary .show > .nav-link {
-  background-color: #26c6da;
+  background-color: #FFB800;
   color: #fff; }
 
 .nav-success .nav-link, .nav-pills.nav-success .nav-link {
@@ -10544,10 +10544,10 @@ header {
   color: #fff; }
 
 .nav-warning .nav-link, .nav-pills.nav-warning .nav-link {
-  color: #f3d800; }
+  color: rgb(0, 10, 97); }
 
 .nav-warning .nav-link.active, .nav-warning .show > .nav-link, .nav-pills.nav-warning .nav-link.active, .nav-pills.nav-warning .show > .nav-link {
-  background-color: #f3d800;
+  background-color: rgb(0, 10, 97);
   color: #fff; }
 
 .nav-right {
@@ -10658,24 +10658,24 @@ header {
   color: #ab8ce4; }
 
 .border-tab.nav-secondary .nav-link.active, .border-tab.nav-secondary .nav-item.show, .border-tab.nav-secondary .nav-link:focus, .border-tab.nav-secondary .nav-link:hover {
-  color: #26c6da;
+  color: #FFB800;
   background-color: transparent; }
 
 .border-tab.nav-secondary .nav-item .nav-link {
   -webkit-transition: 0.3s;
   transition: 0.3s; }
   .border-tab.nav-secondary .nav-item .nav-link.active, .border-tab.nav-secondary .nav-item .nav-link.show, .border-tab.nav-secondary .nav-item .nav-link:focus {
-    border-bottom: 2px solid #26c6da; }
+    border-bottom: 2px solid #FFB800; }
   .border-tab.nav-secondary .nav-item .nav-link.active, .border-tab.nav-secondary .nav-item .nav-link.show, .border-tab.nav-secondary .nav-item .nav-link:focus, .border-tab.nav-secondary .nav-item .nav-link:hover {
-    color: #26c6da; }
+    color: #FFB800; }
 
 .border-tab.nav-left.nav-secondary .nav-link.active, .border-tab.nav-left.nav-secondary .show > .nav-link {
-  border-left-color: #26c6da;
-  color: #26c6da; }
+  border-left-color: #FFB800;
+  color: #FFB800; }
 
 .border-tab.nav-right.nav-secondary .nav-link.active, .border-tab.nav-right.nav-secondary .show > .nav-link {
-  border-right-color: #26c6da;
-  color: #26c6da; }
+  border-right-color: #FFB800;
+  color: #FFB800; }
 
 .border-tab.nav-success .nav-link.active, .border-tab.nav-success .nav-item.show, .border-tab.nav-success .nav-link:focus, .border-tab.nav-success .nav-link:hover {
   color: #00c292;

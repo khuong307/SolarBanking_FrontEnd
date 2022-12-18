@@ -8,7 +8,7 @@ import LoginForm from "./components/LoginForm.jsx";
 //--------- Employee Features -----------//
 import AddNewCustomer from "./components/employee/addNewCustomer/addNewCustomer.jsx";
 import ChargeMoney from "./components/employee/chargeMoney/chargeMoney.jsx";
-import CustomerTransaction from "./components/employee/customerTransaction.jsx";
+import CustomerTransaction from "./components/employee/customerTransaction/customerTransaction.jsx";
 
 //--------- Customer Features -----------//
 import CardList from "./components/customer/cardList";
