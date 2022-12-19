@@ -22,10 +22,6 @@
     width: 100%;
 }
 
-.login-btn:hover {
-    cursor: pointer;
-}
-
 .user-icon,
 .password-icon {
     font-size: 20px;
@@ -38,7 +34,7 @@
     right: 2%;
 }
 
-.email-input,
+.username-input,
 .password-input {
     font-family:  "Jost";
     width: 100%;
@@ -62,5 +58,31 @@
 .forget_password_link {
     text-decoration: underline;
     color: #000000;
+}
+
+.close-btn {
+    background-color: transparent;
+    color: #856404;
+    border: none;
+    font-size: 20px;
+    position: absolute;
+    top: 16%;
+    left: 94%;
+}
+
+.close-btn:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.close-btn:focus {
+    outline: none;
+    border: none;
+}
+
+.err-wrapper {
+    margin-left: 20px;
+    margin-right: 48px;
+    position: relative;
 }
 /* LOGIN SCREEN */
