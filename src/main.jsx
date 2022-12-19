@@ -15,7 +15,6 @@ import CardList from "./components/customer/cardList";
 import Transfer from "./components/customer/transfer.jsx";
 import Contacts from "./components/customer/contacts.jsx";
 import DebtList from "./components/customer/debtList.jsx";
-import HistoryTransaction from "./components/customer/historyTransaction.jsx";
 
 //--------- UI layout -----------//
 import CustomerTemplate from "../template/customer_template";
@@ -28,6 +27,7 @@ import EmployeeList from "./components/admin/employeeList.jsx";
 import AdminTemplate from "../template/admin_template";
 import ConfirmTransfer from './components/customer/transfer/ConfirmTransfer.jsx';
 import OtpTransfer from './components/customer/transfer/OtpTransfer.jsx';
+import HistoryTransaction from "./components/customer/history_transaction/historyTransaction.jsx";
 
 ReactDOM.createRoot(document.getElementById('solar-banking')).render(
         <Provider store={store}>
