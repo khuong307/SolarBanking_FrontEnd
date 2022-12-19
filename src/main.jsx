@@ -33,11 +33,7 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
         <Provider store={store}>
             <BrowserRouter history={history}>
                 <Routes>
-                    <Route path="account">
-                        <Route path="login" element={<LoginForm />}>
-
-                        </Route>
-                    </Route>
+                    <Route path="/" element={<LoginForm />} />
                     {/*Customer Routes*/}
                     <Route path="customer" element={
                         <CustomerTemplate />

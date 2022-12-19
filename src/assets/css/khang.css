@@ -1,0 +1,66 @@
+/* LOGIN SCREEN */
+.logo-heading {
+    font-family: "iCielBCCubano";
+    font-size: 40px;
+    color: #FFB800;
+}
+
+.logo-description {
+    font-family: "Jost";
+    color: gray;
+}
+
+.login-page-title {
+    font-family: "Jost";
+    font-size: 30px;
+    text-align: center;
+}
+
+.login-btn {
+    font-family: "Jost";
+    margin-left: 20px;
+    width: 100%;
+}
+
+.login-btn:hover {
+    cursor: pointer;
+}
+
+.user-icon,
+.password-icon {
+    font-size: 20px;
+}
+
+.eye-icon {
+    color: #FFB800;
+    position: absolute;
+    bottom: 12px;
+    right: 2%;
+}
+
+.email-input,
+.password-input {
+    font-family:  "Jost";
+    width: 100%;
+}
+
+.error-input {
+    font-family: "Jost";
+    color: #FFB800;
+}
+
+.recaptcha-wrapper {
+    font-family: "Jost";
+    margin-left: 20px;
+}
+
+.recaptcha {
+    font-family: "Jost";
+    background-color: transparent;
+}
+
+.forget_password_link {
+    text-decoration: underline;
+    color: #000000;
+}
+/* LOGIN SCREEN */
