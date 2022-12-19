@@ -7,7 +7,6 @@ import CompleteTransferModal from "./completeTransferModal.jsx";
 function ChargeMoney(){
     const { register, handleSubmit, formState: { errors }} = useForm()
     const [customerData, setCustomerData] = useState('')
-    const [isFound, setFound] = useState('')
     const [transaction_info, setTransactionInfo] = useState('')
     const  onSubmitSearch = (data) =>{
         let promise = Axios({
@@ -17,10 +16,9 @@ function ChargeMoney(){
         promise.then((result)=>{
             if(result.data.isFound === true){
                 setCustomerData(result.data.customer_info)
-                setFound(true)
             }else{
                 setCustomerData("")
-                setFound(false)
+                $("#notFoundModal").modal("show")
             }
         })
         promise.catch((err)=>{
@@ -60,7 +58,7 @@ function ChargeMoney(){
                         </div>
                     </div>
                     <ChargeInfoForm customerData={customerData} setCustomerData={setCustomerData} setTransactionInfo={setTransactionInfo}/>
-                    <NotFound isFound={isFound}/>
+                    <NotFound/>
                     <CompleteTransferModal transaction_info={transaction_info}/>
                 </div>
             </div>

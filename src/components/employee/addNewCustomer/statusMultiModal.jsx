@@ -3,8 +3,31 @@ import React from "react";
 import '/src/assets/css/datatables.css'
 import '/src/assets/css/datatable-extension.css'
 import '/src/assets/css/data-table.css'
+import {formateDateTime, formatMoney} from "../../redux/helper_functions.jsx";
 
 function StatusMultiModal(props){
+
+    function loadData(){
+        if (typeof props.success == "object"){
+            $("#successList").DataTable().rows().remove().draw();
+            for (const c of props.success){
+                const ans = []
+                ans.push(c.email)
+                ans.push(c.username)
+                $("#successList").DataTable().row.add(ans).draw(false)
+            }
+        }
+        if (typeof props.fail == "object"){
+            $("#failList").DataTable().rows().remove().draw();
+            for (const c of props.fail){
+                const ans = []
+                ans.push(c.email)
+                ans.push(c.username)
+                $("#failList").DataTable().row.add(ans).draw(false)
+            }
+        }
+    }
+    setTimeout(loadData, 500)
     return (
         <div id="statusMultiModal" className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="statusMultiModal" style={{fontFamily: "Jost"}}
              aria-hidden="true">
@@ -48,17 +71,6 @@ function StatusMultiModal(props){
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        {
-                                                            props.success.map(function (item) {
-                                                                return (
-                                                                    <tr key={item.id}>
-                                                                        <td>{item.email}</td>
-                                                                        <td>{item.username}</td>
-                                                                    </tr>
-
-                                                                );
-                                                            })
-                                                        }
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -82,17 +94,6 @@ function StatusMultiModal(props){
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        {
-                                                            props.fail.map(function (item) {
-                                                                return (
-                                                                    <tr key={item.id}>
-                                                                        <td>{item.email}</td>
-                                                                        <td>{item.username}</td>
-                                                                    </tr>
-
-                                                                );
-                                                            })
-                                                        }
                                                         </tbody>
                                                     </table>
                                                     <Helmet>

@@ -1,11 +1,27 @@
 import {Helmet} from "react-helmet";
 import React from "react";
-import {formatMoney} from "../../redux/helper_functions.jsx";
+import {formateDateTime, formatMoney} from "../../redux/helper_functions.jsx";
 
 import '/src/assets/css/datatables.css'
 import '/src/assets/css/datatable-extension.css'
 import '/src/assets/css/data-table.css'
 function TableAccountList(props){
+    function loadData(){
+        if (typeof props.accountList == "object"){
+            $("#accountList").DataTable().rows().remove().draw();
+            for (const c of props.accountList){
+                const ans = []
+                ans.push(c.full_name)
+                ans.push(c.email)
+                ans.push(c.phone)
+                ans.push(c.username)
+                ans.push(c.password)
+                ans.push(formatMoney(c.initial_balance))
+                $("#accountList").DataTable().row.add(ans).draw(false)
+            }
+        }
+    }
+    setTimeout(loadData, 500)
     return(
         <div className="container-fluid mt-4">
             {
@@ -23,21 +39,6 @@ function TableAccountList(props){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {
-                                        props.accountList.map(function (item) {
-                                            return (
-                                                <tr>
-                                                    <td>{item.full_name}</td>
-                                                    <td>{item.email}</td>
-                                                    <td>{item.phone}</td>
-                                                    <td>{item.username}</td>
-                                                    <td>{item.password}</td>
-                                                    <td>{formatMoney(item.initial_balance)} VND</td>
-                                                </tr>
-
-                                            );
-                                        })
-                                    }
                                 </tbody>
                         </table>
                         <Helmet>

@@ -8,6 +8,7 @@ import {formateDateTime, formatMoney} from "../../redux/helper_functions.jsx";
 import TabelReceiveOthersList from "./table_receivedOthers_list";
 import TablePaidDebtList from "./table_paid_debt_list";
 import TableReceiveDebtList from "./table_receive_debt_list.jsx";
+import NotFound from "../chargeMoney/not_found";
 
 function CustomerTransaction(){
     const { register, handleSubmit, formState: { errors }} = useForm()
@@ -23,12 +24,17 @@ function CustomerTransaction(){
             method: "GET",
         })
         promise.then((result)=> {
-            setClick(true)
-            setchargeSLBList(result.data.charge_by_SLB)
-            setTransferList(result.data.transfer_list_by_customer)
-            setReceiveOthersList(result.data.received_from_others)
-            setPaidDebtList(result.data.paid_debt_list)
-            setReceiveDebtList(result.data.recevied_debt_list)
+            if (result.data.isFound == true){
+                setClick(true)
+                setchargeSLBList(result.data.charge_by_SLB)
+                setTransferList(result.data.transfer_list_by_customer)
+                setReceiveOthersList(result.data.received_from_others)
+                setPaidDebtList(result.data.paid_debt_list)
+                setReceiveDebtList(result.data.recevied_debt_list)
+            }else{
+                setClick(false)
+                $("#notFoundModal").modal("show")
+            }
         })
         promise.catch((err)=>{
             alert(err)
@@ -156,6 +162,7 @@ function CustomerTransaction(){
                     </div>
                 }
             </div>
+            <NotFound/>
         </div>
     )
 }

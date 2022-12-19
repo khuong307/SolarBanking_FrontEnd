@@ -23,6 +23,7 @@ function AddMultiModal(props){
             return eachObject
         })
         setCSVArray(newArray)
+        console.log(csvArray)
     }
     const submit = function(){
         const file = csvFile
