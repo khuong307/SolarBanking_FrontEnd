@@ -4,6 +4,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ErrorMessage from "./ErrorMessage.jsx";
 
 function LoginForm(){
     const navigate = useNavigate();
@@ -112,7 +113,7 @@ function LoginForm(){
                                         <p className="error-input"><i className="fa fa-warning mr-2"></i>Password is required!</p>
                                     }
                                     {!loginFailed.isSuccess &&
-                                        <ErrorMessage error={loginFailed.message} changeLoginFailedToDefault={changeLoginFailedToDefault} />}
+                                        <ErrorMessage error={loginFailed.message} resetState={changeLoginFailedToDefault} />}
                                     <div className="mr-lg-5 d-flex justify-content-between align-content-center align-items-center recaptcha-wrapper">
                                         <ReCAPTCHA className="recaptcha" sitekey={RECAPTCHA_SITE_KEY} onChange={captchaChanged} />
                                         <Link to="/forgotPassword/email" className="forget_password_link">
@@ -130,21 +131,6 @@ function LoginForm(){
                     </div>
                 </div>
             </div>
-        </div>
-    );
-}
-
-function ErrorMessage({ error, changeLoginFailedToDefault }) {
-    const handleCloseClicked = function() {
-        changeLoginFailedToDefault();
-    }
-
-    return (
-        <div className="err-wrapper alert alert-warning alert-dismissible fade show" role="alert">
-            {error}
-            <button onClick={handleCloseClicked} type="button" className="close-btn" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     );
 }

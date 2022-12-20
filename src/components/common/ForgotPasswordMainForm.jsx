@@ -1,10 +1,49 @@
 import {useForm} from "react-hook-form";
+import {useLocation, useNavigate} from "react-router-dom";
+import ErrorMessage from "./ErrorMessage.jsx";
+import {useState} from "react";
+import axios from "axios";
 
 function ForgotPasswordMainForm(){
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }} = useForm();
+    const { state } = useLocation();
+    const { resetPasswordToken, userId } = state;
+    const [resetFailed, setResetFailed] = useState({
+        isSuccess: true,
+        message: ''
+    });
 
     const onSubmit = function(data) {
+        if (data.newPassword !== data.verifiedPassword) {
+            setResetFailed({
+               isSuccess: false,
+               message: 'The password and verified password do not match!'
+            });
+        }
+        else {
+            axios.post('http://localhost:3030/api/accounts/password', {
+                password: data.newPassword,
+                reset_password_token: resetPasswordToken,
+                user_id: userId
+            })
+                .then((res) => {
+                    navigate('/');
+                })
+                .catch((err) => {
+                    setResetFailed({
+                        isSuccess: false,
+                        message: err.response.data.message
+                    });
+                });
+        }
+    }
 
+    const changeResetFailedToDefault = function() {
+        setResetFailed({
+            isSuccess: true,
+            message: ''
+        });
     }
 
     return (
@@ -52,6 +91,8 @@ function ForgotPasswordMainForm(){
                                     {errors?.verifiedPassword?.type === "required" &&
                                         <p className="error-input"><i className="fa fa-warning mr-2 ml-4"></i>Verified password is required!</p>
                                     }
+                                    {!resetFailed.isSuccess &&
+                                        <ErrorMessage error={resetFailed.message} resetState={changeResetFailedToDefault} />}
                                     <div className="ml-1 mr-lg-5 mt-3 d-flex justify-content-between align-content-center align-items-center">
                                         <button type="submit" className="btn btnLogin mt-3 submit-password-btn">
                                             Submit

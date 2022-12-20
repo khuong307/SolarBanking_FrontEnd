@@ -101,8 +101,33 @@
 }
 
 .back-link,
-.resend-otp-link {
+.resend-otp-link-active {
+    font-family: "Jost";
     color: #000000;
     text-decoration: underline;
 }
 
+.resend-otp-link-active {
+    font-size: 15px;
+}
+
+.resend-otp-link-active span:hover {
+    cursor: pointer;
+    color: #0056b3 !important;
+}
+
+.resend-otp-link-disabled {
+    font-family: "Jost";
+    color: #DFE3E8;
+    text-decoration: underline;
+}
+
+.time-remaining {
+    font-family: "Jost";
+    font-size: 15px;
+    color: #000000;
+}
+
+.time-counter {
+    color: red;
+}

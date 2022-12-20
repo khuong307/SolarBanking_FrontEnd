@@ -1,12 +1,83 @@
 import {useForm} from "react-hook-form";
-import {Link} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
+import ErrorMessage from "./ErrorMessage.jsx";
+import {useState, useEffect} from "react";
+import axios from "axios";
 
 function ForgotPasswordOtpForm(){
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }} = useForm();
+    const { state } = useLocation();
+    const { email, userId } = state;
+    const [invalidOtp, setInvalidOtp] = useState({
+        isSuccess: true,
+        message: ''
+    });
+    const [minutes, setMinutes] = useState(5);
+    const [seconds, setSeconds] = useState(0);
 
     const onSubmit = function(data) {
-
+        axios.post('http://localhost:3030/api/accounts/password/validation/otp', {
+            otp: data.otp,
+            user_id: userId
+        })
+            .then((res) => {
+                navigate('/forgotPassword/confirm', {
+                    state: {
+                        resetPasswordToken: res.data.reset_password_token,
+                        userId: res.data.user_id
+                    }
+                });
+            })
+            .catch((err) => {
+                setInvalidOtp({
+                    isSuccess: false,
+                    message: err.response.data.message
+                });
+            });
     }
+
+    const changeInvalidOtpToDefault = function() {
+        setInvalidOtp({
+            isSuccess: true,
+            message: ''
+        });
+    }
+
+    const resendOtpClickedHandler = function() {
+        axios.post('http://localhost:3030/api/accounts/password/otp', { email })
+            .then((res) => {
+                setMinutes(4);
+                setSeconds(59);
+            })
+            .catch((err) => {
+                setInvalidOtp({
+                    isSuccess: false,
+                    message: err.response.data.message
+                });
+            });
+    }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (seconds > 0) {
+                setSeconds(seconds - 1);
+            }
+
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    clearInterval(interval);
+                } else {
+                    setSeconds(59);
+                    setMinutes(minutes - 1);
+                }
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [seconds]);
 
     return (
         <div>
@@ -43,9 +114,30 @@ function ForgotPasswordOtpForm(){
                                     {errors?.otp?.type === "required" &&
                                         <p className="error-input"><i className="fa fa-warning mr-2 ml-4"></i>OTP code is required!</p>
                                     }
-                                    <Link className="resend-otp-link ml-4" to="/">
-                                        Resend OTP?
-                                    </Link>
+                                    <div className="d-flex justify-content-between ml-4">
+                                        {seconds > 0 || minutes > 0 ? (
+                                            <p className="time-remaining">
+                                                Time Remaining:
+                                                <span className="time-counter">
+                                                    {minutes < 10 ? ` 0${minutes}` : minutes}:
+                                                    {seconds < 10 ? `0${seconds}` : seconds}
+                                                </span>
+                                            </p>
+                                        ) : (
+                                            <p className="time-remaining">Didn't receive code?</p>
+                                        )}
+                                        {seconds > 0 || minutes > 0 ? (
+                                            <div className="resend-otp-link-disabled mr-5">
+                                                <span>Resend OTP?</span>
+                                            </div>
+                                        ) : (
+                                            <div className="resend-otp-link-active mr-5">
+                                                <span onClick={resendOtpClickedHandler}>Resend OTP?</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                    {!invalidOtp.isSuccess &&
+                                        <ErrorMessage error={invalidOtp.message} resetState={changeInvalidOtpToDefault} />}
                                     <div className="ml-1 mr-lg-5 mt-3 d-flex justify-content-between align-content-center align-items-center">
                                         <button type="submit" className="btn btnLogin mt-3 verify-otp-btn">
                                             Verify

@@ -1,11 +1,51 @@
 import {useForm} from "react-hook-form";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
+import {useState} from "react";
+import ErrorMessage from "./ErrorMessage.jsx";
 
 function ForgotPasswordEmailForm(){
+    const navigate = useNavigate();
+    const EMAIL_POSTFIX = "@gmail.com";
     const { register, handleSubmit, formState: { errors }} = useForm();
+    const [sendOtpFailed, setSendOtpFailed] = useState({
+        isSuccess: true,
+        message: ''
+    });
+
+    const changeSendOtpFailedToDefault = function() {
+        setSendOtpFailed({
+            isSuccess: true,
+            message: ''
+        });
+    }
 
     const onSubmit = function(data) {
+        const email = data.email;
 
+        if (!email.endsWith(EMAIL_POSTFIX)) {
+            setSendOtpFailed({
+                isSuccess: false,
+                message: 'The email must end with @gmail.com'
+            });
+        }
+        else {
+            axios.post('http://localhost:3030/api/accounts/password/otp', data)
+                .then((res) => {
+                    navigate('/forgotPassword/otp', {
+                        state: {
+                            email,
+                            userId: res.data.user_id
+                        }
+                    });
+                })
+                .catch((err) => {
+                    setSendOtpFailed({
+                        isSuccess: false,
+                        message: err.response.data.message
+                    });
+                });
+        }
     }
 
     return (
@@ -43,6 +83,8 @@ function ForgotPasswordEmailForm(){
                                     {errors?.email?.type === "required" &&
                                         <p className="error-input"><i className="fa fa-warning mr-2 ml-4"></i>Email is required!</p>
                                     }
+                                    {!sendOtpFailed.isSuccess &&
+                                        <ErrorMessage error={sendOtpFailed.message} resetState={changeSendOtpFailedToDefault} />}
                                     <div className="ml-1 mr-lg-5 d-flex justify-content-between align-content-center align-items-center">
                                         <button type="submit" className="btn btnLogin mt-3 send-email-btn">
                                             Send OTP code
