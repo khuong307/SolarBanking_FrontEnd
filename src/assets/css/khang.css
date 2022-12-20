@@ -1,4 +1,3 @@
-/* LOGIN SCREEN */
 .logo-heading {
     font-family: "iCielBCCubano";
     font-size: 40px;
@@ -16,7 +15,10 @@
     text-align: center;
 }
 
-.login-btn {
+.login-btn,
+.send-email-btn,
+.verify-otp-btn,
+.submit-password-btn {
     font-family: "Jost";
     margin-left: 20px;
     width: 100%;
@@ -35,7 +37,9 @@
 }
 
 .username-input,
-.password-input {
+.password-input,
+.email-input,
+.otp-input {
     font-family:  "Jost";
     width: 100%;
 }
@@ -85,4 +89,20 @@
     margin-right: 48px;
     position: relative;
 }
-/* LOGIN SCREEN */
+
+.forgot-password-label {
+    font-family: "Jost";
+    color: #000000;
+    font-weight: 600;
+}
+
+.back-link-wrapper {
+    margin-top: 100px;
+}
+
+.back-link,
+.resend-otp-link {
+    color: #000000;
+    text-decoration: underline;
+}
+

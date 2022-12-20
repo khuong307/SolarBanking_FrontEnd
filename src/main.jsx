@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ConnectedRouter } from 'react-router-redux'
 //--------- Common Account Features -------------//
-import LoginForm from "./components/LoginForm.jsx";
+import LoginForm from "./components/common/LoginForm.jsx";
+import ForgotPasswordEmailForm from "./components/common/ForgotPasswordEmailForm.jsx";
+import ForgotPasswordOtpForm from "./components/common/ForgotPasswordOtpForm.jsx";
+import ForgotPasswordMainForm from "./components/common/ForgotPasswordMainForm.jsx";
 
 //--------- Employee Features -----------//
 import AddNewCustomer from "./components/employee/addNewCustomer/addNewCustomer.jsx";
@@ -34,6 +37,9 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
             <BrowserRouter history={history}>
                 <Routes>
                     <Route path="/" element={<LoginForm />} />
+                    <Route path="/forgotPassword/email" element={<ForgotPasswordEmailForm />} />
+                    <Route path="/forgotPassword/otp" element={<ForgotPasswordOtpForm />} />
+                    <Route path="/forgotPassword/confirm" element={< ForgotPasswordMainForm />} />
                     {/*Customer Routes*/}
                     <Route path="customer" element={
                         <CustomerTemplate />

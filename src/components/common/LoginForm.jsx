@@ -115,7 +115,7 @@ function LoginForm(){
                                         <ErrorMessage error={loginFailed.message} changeLoginFailedToDefault={changeLoginFailedToDefault} />}
                                     <div className="mr-lg-5 d-flex justify-content-between align-content-center align-items-center recaptcha-wrapper">
                                         <ReCAPTCHA className="recaptcha" sitekey={RECAPTCHA_SITE_KEY} onChange={captchaChanged} />
-                                        <Link to="/a" className="forget_password_link">
+                                        <Link to="/forgotPassword/email" className="forget_password_link">
                                             Forget password?
                                         </Link>
                                     </div>
