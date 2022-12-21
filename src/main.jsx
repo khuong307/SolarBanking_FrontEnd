@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import SetupInterceptors from "./utils/SetupInterceptors.js";
 import { ConnectedRouter } from 'react-router-redux'
 //--------- Common Account Features -------------//
 import LoginForm from "./components/common/LoginForm.jsx";
@@ -32,9 +33,21 @@ import ConfirmTransfer from './components/customer/transfer/ConfirmTransfer.jsx'
 import OtpTransfer from './components/customer/transfer/OtpTransfer.jsx';
 import HistoryTransaction from "./components/customer/history_transaction/historyTransaction.jsx";
 
+function NavigateFunctionComponent() {
+    let navigate = useNavigate();
+    const [ran, setRan] = useState(false);
+
+    if (!ran) {
+        SetupInterceptors(navigate);
+        setRan(true);
+    }
+    return <></>;
+}
+
 ReactDOM.createRoot(document.getElementById('solar-banking')).render(
         <Provider store={store}>
             <BrowserRouter history={history}>
+                {<NavigateFunctionComponent />}
                 <Routes>
                     <Route path="/" element={<LoginForm />} />
                     <Route path="/forgotPassword/email" element={<ForgotPasswordEmailForm />} />
@@ -42,7 +55,9 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                     <Route path="/forgotPassword/confirm" element={< ForgotPasswordMainForm />} />
                     {/*Customer Routes*/}
                     <Route path="customer" element={
-                        <CustomerTemplate />
+                        <RequiredAuth>
+                            <CustomerTemplate />
+                        </RequiredAuth>
                     }>
                         <Route path="cardList" element={<CardList />} />
                         <Route path="transfer" element={<Transfer />}/>
@@ -58,7 +73,9 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                     </Route>
                     {/*Employee Routes*/}
                     <Route path="employee" element={
-                        <EmployeeTemplate />
+                        <RequiredAuth>
+                            <EmployeeTemplate />
+                        </RequiredAuth>
                     }>
                         <Route path="addNewCustomer" element={<AddNewCustomer />} />
                         <Route path="chargeMoney" element={<ChargeMoney />} />
@@ -66,7 +83,9 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                     </Route>
                     {/*Admin Routes*/}
                     <Route path="admin" element={
-                        <AdminTemplate />
+                        <RequiredAuth>
+                            <AdminTemplate />
+                        </RequiredAuth>
                     }>
                         <Route path="employeeList" element={<EmployeeList />} />
                         <Route path="dashboard" element={<Dashboard />} />
@@ -74,4 +93,26 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                 </Routes>
             </BrowserRouter>
         </Provider>
-)
+);
+
+function RequiredAuth({ children }) {
+    const location = useLocation();
+
+    if (!localStorage.solarBanking_accessToken || localStorage.solarBanking_accessToken === "undefined") {
+        return <Navigate to='/' state={{ from: location }}/>
+    }
+
+    if (localStorage.solarBanking_userRole !== "Customer" && location.pathname.includes("/customer")) {
+        return <Navigate to='/' state={{ from: location }}/>
+    }
+
+    if (localStorage.solarBanking_userRole !== "Employee" && location.pathname.includes("/employee")) {
+        return <Navigate to='/' state={{ from: location }}/>
+    }
+
+    if (localStorage.solarBanking_userRole !== "Admin" && location.pathname.includes("/admin")) {
+        return <Navigate to='/' state={{ from: location }}/>
+    }
+
+    return children;
+}

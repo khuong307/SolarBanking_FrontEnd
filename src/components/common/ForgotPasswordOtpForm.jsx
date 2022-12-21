@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form";
 import {useLocation, useNavigate} from "react-router-dom";
 import ErrorMessage from "./ErrorMessage.jsx";
 import {useState, useEffect} from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosConfig.js";
 
 function ForgotPasswordOtpForm(){
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ function ForgotPasswordOtpForm(){
     const [seconds, setSeconds] = useState(0);
 
     const onSubmit = function(data) {
-        axios.post('http://localhost:3030/api/accounts/password/validation/otp', {
+        axiosInstance.post('/accounts/password/validation/otp', {
             otp: data.otp,
             user_id: userId
         })
@@ -45,7 +45,7 @@ function ForgotPasswordOtpForm(){
     }
 
     const resendOtpClickedHandler = function() {
-        axios.post('http://localhost:3030/api/accounts/password/otp', { email })
+        axiosInstance.post('/accounts/password/otp', { email })
             .then((res) => {
                 setMinutes(4);
                 setSeconds(59);

@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form";
 import {useLocation, useNavigate} from "react-router-dom";
 import ErrorMessage from "./ErrorMessage.jsx";
 import {useState} from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosConfig.js";
 
 function ForgotPasswordMainForm(){
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ function ForgotPasswordMainForm(){
             });
         }
         else {
-            axios.post('http://localhost:3030/api/accounts/password', {
+            axiosInstance.post('/accounts/password', {
                 password: data.newPassword,
                 reset_password_token: resetPasswordToken,
                 user_id: userId

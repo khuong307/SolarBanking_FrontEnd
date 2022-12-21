@@ -1,6 +1,6 @@
 import {useForm} from "react-hook-form";
 import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosConfig.js";
 import {useState} from "react";
 import ErrorMessage from "./ErrorMessage.jsx";
 
@@ -30,7 +30,7 @@ function ForgotPasswordEmailForm(){
             });
         }
         else {
-            axios.post('http://localhost:3030/api/accounts/password/otp', data)
+            axiosInstance.post('/accounts/password/otp', data)
                 .then((res) => {
                     navigate('/forgotPassword/otp', {
                         state: {

@@ -1,4 +1,18 @@
+import {Link, useNavigate} from "react-router-dom";
+
 function CustomerFeature(props){
+    const navigate = useNavigate();
+
+    const logoutHandler = function() {
+        delete localStorage.solarBanking_accessToken;
+        delete localStorage.solarBanking_refreshToken;
+        delete localStorage.solarBanking_userId;
+        delete localStorage.solarBanking_username;
+        delete localStorage.solarBanking_userRole;
+
+        navigate('/');
+    }
+
     return (
         <li className="onhover-dropdown">
             <div className="media align-items-center">
@@ -11,18 +25,19 @@ function CustomerFeature(props){
             </div>
             <ul className="profile-dropdown onhover-show-div p-10" style={{width: "120%"}}>
                 <li>
-                    <a style={{fontFamily: "Jost"}}>
+                    <Link style={{fontFamily: "Jost"}}>
                         <i className="icon-lock"></i> Change password
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a style={{fontFamily: "Jost"}}>
+                    <Link onClick={logoutHandler} style={{fontFamily: "Jost"}}>
                         <i className="icon-power-off"></i>
                         Logout
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </li>
-    )
+    );
 }
-export default CustomerFeature
+
+export default CustomerFeature;

@@ -2,12 +2,13 @@ import {useForm} from "react-hook-form";
 import {useState} from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import {Link} from "react-router-dom";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosConfig.js";
+import { useNavigate, useLocation } from "react-router-dom";
 import ErrorMessage from "./ErrorMessage.jsx";
 
 function LoginForm(){
     const navigate = useNavigate();
+    const location = useLocation();
     const { register, handleSubmit, formState: { errors }} = useForm();
     const [passwordShown, setPasswordShown] = useState(false);
     const [verified, setVerified] = useState(false);
@@ -23,20 +24,29 @@ function LoginForm(){
     }
 
     const onSubmit = function(data) {
-        axios.post('http://localhost:3030/api/accounts/authentication', data)
+        axiosInstance.post('/accounts/authentication', data)
             .then((res) => {
-                localStorage.solarBanking_accessToken = res.data.access_token;
-                localStorage.solarBanking_refreshToken = res.data.refresh_token;
+                let retUrl = '';
+                localStorage.solarBanking_accessToken = res.data.accessToken;
+                localStorage.solarBanking_refreshToken = res.data.refreshToken;
                 localStorage.solarBanking_userId = res.data.account.user_id;
                 localStorage.solarBanking_username = res.data.account.username;
                 localStorage.solarBanking_userRole = res.data.account.role;
 
-                if (res.data.account.role === ROLE.CUSTOMER)
-                    navigate('/customer');
-                else if (res.data.account.role === ROLE.EMPLOYEE)
-                    navigate('/employee');
-                else
-                    navigate('/admin');
+                if (res.data.account.role === ROLE.CUSTOMER) {
+                    retUrl = location.state?.from?.pathname || '/customer';
+                    retUrl = retUrl.includes('/customer') ? retUrl : '/customer';
+                }
+                else if (res.data.account.role === ROLE.EMPLOYEE) {
+                    retUrl = location.state?.from?.pathname || '/employee';
+                    retUrl = retUrl.includes('/employee') ? retUrl : '/employee';
+                }
+                else {
+                    retUrl = location.state?.from?.pathname || '/admin';
+                    retUrl = retUrl.includes('/admin') ? retUrl : '/admin';
+                }
+
+                navigate(retUrl);
             })
             .catch((err) => {
                 setLoginFailed({

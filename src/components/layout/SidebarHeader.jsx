@@ -1,7 +1,21 @@
+import {useEffect, useState} from "react";
 import Notification from "./Notification.jsx"
 import AccountFeature from "./customer_layout/AccountFeature.jsx";
+import axiosInstance from "../../utils/axiosConfig.js";
 function SidebarHeader(props){
-    const username = "Nguyen Vu Duy Khuong"
+    const [username, setUsername] = useState("");
+
+    useEffect(function() {
+        const user_id = localStorage.solarBanking_userId;
+        axiosInstance.get(`/users/${user_id}`)
+            .then((res) => {
+                setUsername(res.data.full_name);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
+
     return (
         <div className="page-main-header">
             <div className="main-header-left mb-2" style={{justifyContent: "center"}}>
