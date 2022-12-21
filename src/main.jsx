@@ -8,6 +8,7 @@ import LoginForm from "./components/common/LoginForm.jsx";
 import ForgotPasswordEmailForm from "./components/common/ForgotPasswordEmailForm.jsx";
 import ForgotPasswordOtpForm from "./components/common/ForgotPasswordOtpForm.jsx";
 import ForgotPasswordMainForm from "./components/common/ForgotPasswordMainForm.jsx";
+import ChangePassword from "./components/common/ChangePassword.jsx";
 
 //--------- Employee Features -----------//
 import AddNewCustomer from "./components/employee/addNewCustomer/addNewCustomer.jsx";
@@ -53,6 +54,17 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                     <Route path="/forgotPassword/email" element={<ForgotPasswordEmailForm />} />
                     <Route path="/forgotPassword/otp" element={<ForgotPasswordOtpForm />} />
                     <Route path="/forgotPassword/confirm" element={< ForgotPasswordMainForm />} />
+
+                    <Route path="account" element={
+                        <RequiredAuth>
+                            {localStorage.solarBanking_userRole === "Customer" ? (<CustomerTemplate />) :
+                                (localStorage.solarBanking_userRole === "Employee" ? (<EmployeeTemplate />) : (<AdminTemplate />))
+                            }
+                        </RequiredAuth>
+                    }>
+                        <Route path="changePassword" element={<ChangePassword />} />
+                    </Route>
+
                     {/*Customer Routes*/}
                     <Route path="customer" element={
                         <RequiredAuth>
@@ -102,15 +114,24 @@ function RequiredAuth({ children }) {
         return <Navigate to='/' state={{ from: location }}/>
     }
 
-    if (localStorage.solarBanking_userRole !== "Customer" && location.pathname.includes("/customer")) {
+    if (location.pathname.includes("/account")) {
+        if (localStorage.solarBanking_userRole === "Customer")
+            return <CustomerTemplate />;
+        else if (localStorage.solarBanking_userRole === "Employee")
+            return <EmployeeTemplate />;
+        else if (localStorage.solarBanking_userRole === "Admin")
+            return <AdminTemplate />;
+    }
+
+    if (localStorage.solarBanking_userRole === "Customer" && !location.pathname.includes("/customer")) {
         return <Navigate to='/' state={{ from: location }}/>
     }
 
-    if (localStorage.solarBanking_userRole !== "Employee" && location.pathname.includes("/employee")) {
+    if (localStorage.solarBanking_userRole === "Employee" && !location.pathname.includes("/employee")) {
         return <Navigate to='/' state={{ from: location }}/>
     }
 
-    if (localStorage.solarBanking_userRole !== "Admin" && location.pathname.includes("/admin")) {
+    if (localStorage.solarBanking_userRole === "Admin" && !location.pathname.includes("/admin")) {
         return <Navigate to='/' state={{ from: location }}/>
     }
 

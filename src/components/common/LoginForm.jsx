@@ -27,11 +27,18 @@ function LoginForm(){
         axiosInstance.post('/accounts/authentication', data)
             .then((res) => {
                 let retUrl = '';
+
                 localStorage.solarBanking_accessToken = res.data.accessToken;
                 localStorage.solarBanking_refreshToken = res.data.refreshToken;
                 localStorage.solarBanking_userId = res.data.account.user_id;
                 localStorage.solarBanking_username = res.data.account.username;
                 localStorage.solarBanking_userRole = res.data.account.role;
+
+                if (location.state?.from?.pathname === '/account/changePassword') {
+                    retUrl = '/account/changePassword';
+                    navigate(retUrl);
+                    return;
+                }
 
                 if (res.data.account.role === ROLE.CUSTOMER) {
                     retUrl = location.state?.from?.pathname || '/customer';
