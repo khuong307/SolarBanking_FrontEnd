@@ -131,3 +131,31 @@
 .time-counter {
     color: red;
 }
+
+.change-password-wrapper {
+    font-family: "Jost";
+}
+
+.change-password-input {
+    width: 50%;
+}
+
+.change-password-submit-btn {
+    width: 100px;
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+.change-password-submit-btn:hover {
+    opacity: 0.7;
+}
+
+.change-password-reset-btn {
+    width: 100px;
+    background-color: #FFFFFF;
+    border-color: #000000;
+}
+
+.change-password-reset-btn:hover {
+    opacity: 0.5;
+}
