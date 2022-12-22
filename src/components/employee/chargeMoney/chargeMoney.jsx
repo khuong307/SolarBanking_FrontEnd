@@ -12,6 +12,11 @@ function ChargeMoney(){
         let promise = Axios({
             url: `http://localhost:3030/api/employee/customer/${data.account_number}`,
             method: "GET",
+            headers: {
+                "access_token": localStorage.getItem("solarBanking_accessToken"),
+                "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
+                "user_id" : localStorage.getItem("solarBanking_userId")
+            },
         })
         promise.then((result)=>{
             if(result.data.isFound === true){

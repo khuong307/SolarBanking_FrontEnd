@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import axiosInstance from "../../utils/axiosConfig.js";
 import { useNavigate, useLocation } from "react-router-dom";
 import ErrorMessage from "./ErrorMessage.jsx";
+import Axios from "axios";
 
 function LoginForm(){
     const navigate = useNavigate();
@@ -24,8 +25,12 @@ function LoginForm(){
     }
 
     const onSubmit = function(data) {
-        axiosInstance.post('/accounts/authentication', data)
-            .then((res) => {
+        let promise = Axios({
+            url: `http://localhost:3030/api/accounts/authentication`,
+            method: "POST",
+            data,
+        })
+        promise.then((res) => {
                 let retUrl = '';
 
                 localStorage.solarBanking_accessToken = res.data.accessToken;

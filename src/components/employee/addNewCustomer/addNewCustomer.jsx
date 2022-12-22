@@ -15,20 +15,29 @@ function AddNewCustomer(){
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm()
     const [account_number, setAccount] = useState("")
 
-    function generate(){$.ajax({
-        url: 'http://localhost:3030/api/employee/bank_account',
-        type: 'GET',
-    }).done(function (res) {
-        setAccount(res.spend_account)
-    }).fail(function (err){
-        alert(JSON.parse(err.responseText).message)
-    })}
+    function generate() {
+        let promise = Axios({
+            url: 'http://localhost:3030/api/employee/bank_account',
+            data: {userId: localStorage.getItem("solarBanking_userId")},
+            headers: {
+                "access_token": localStorage.getItem("solarBanking_accessToken"),
+                "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
+                "user_id" : localStorage.getItem("solarBanking_userId")
+            },
+            method: "GET",
+        })
+        promise.then((result) => {
+            setAccount(result.data.spend_account)
+        })
+        promise.catch((err) => {
+            alert(JSON.parse(err.responseText).message)
+        })
+    }
     useEffect(generate,[])
 
     setValue("spend_account", account_number)
 
     const [info, setInfo] = useState("")
-    const navigate = useNavigate ();
 
     //prevent space in username
     const preventSpace = function (e) {
@@ -44,6 +53,11 @@ function AddNewCustomer(){
             let promise = Axios({
                 url: "http://localhost:3030/api/employee/customer",
                 data: data,
+                headers: {
+                    "access_token": localStorage.getItem("solarBanking_accessToken"),
+                    "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
+                    "user_id" : localStorage.getItem("solarBanking_userId")
+                },
                 method: "POST",
             })
             promise.then((result)=>{

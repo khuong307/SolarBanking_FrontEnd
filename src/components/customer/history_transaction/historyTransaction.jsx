@@ -16,8 +16,14 @@ function HistoryTransaction(){
     const [paidDebtList, setPaidDebtList] = useState('')
     const [receiveDebtList, setReceiveDebtList] = useState('')
     function  getTransactionList (){
+        const user_id = localStorage.getItem("solarBanking_userId")
         let promise = Axios({
-            url: `http://localhost:3030/api/users/34/history`,
+            url: `http://localhost:3030/api/users/${user_id}/history`,
+            headers: {
+                "access_token": localStorage.getItem("solarBanking_accessToken"),
+                "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
+                "user_id" : localStorage.getItem("solarBanking_userId")
+            },
             method: "GET",
         })
         promise.then((result)=> {

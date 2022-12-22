@@ -23,7 +23,6 @@ function AddMultiModal(props){
             return eachObject
         })
         setCSVArray(newArray)
-        console.log(csvArray)
     }
     const submit = function(){
         const file = csvFile
@@ -40,6 +39,11 @@ function AddMultiModal(props){
         let promise = Axios({
             url: "http://localhost:3030/api/employee/customers",
             data: csvArray,
+            headers: {
+                "access_token": localStorage.getItem("solarBanking_accessToken"),
+                "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
+                "user_id" : localStorage.getItem("solarBanking_userId")
+            },
             method: "POST",
         })
         promise.then((result)=>{
