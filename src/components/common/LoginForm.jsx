@@ -25,12 +25,10 @@ function LoginForm(){
     }
 
     const onSubmit = function(data) {
-        let promise = Axios({
-            url: `http://localhost:3030/api/accounts/authentication`,
-            method: "POST",
-            data,
-        })
-        promise.then((res) => {
+        axiosInstance.post(`/accounts/authentication`, {
+            username: data.username,
+            password: data.password
+        }).then((res) => {
                 let retUrl = '';
 
                 localStorage.solarBanking_accessToken = res.data.accessToken;

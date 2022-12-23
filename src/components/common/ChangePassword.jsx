@@ -28,16 +28,16 @@ function ChangePassword() {
                 old_password: oldPassword,
                 new_password: newPassword
             })
-                .then((res) => {
-                    alert(res.data.message);
-                    navigate('/customer');
-                })
-                .catch((err) => {
-                    setChangeFailed({
-                        isSuccess: false,
-                        message: err.response.data.message
-                    });
+            .then((res) => {
+                alert(res.data.message);
+                navigate('/customer');
+            })
+            .catch((err) => {
+                setChangeFailed({
+                    isSuccess: false,
+                    message: err.response.data.message
                 });
+            });
         }
     }
 
