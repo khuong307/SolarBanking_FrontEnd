@@ -2,6 +2,7 @@ import {useState} from "react";
 import TableAccountList from "./tableAccountList.jsx";
 import Axios from "axios";
 import React from "react";
+import axiosInstance from "../../../utils/axiosConfig.js";
 
 function AddMultiModal(props){
     const [csvFile, setCSVFile] = useState('')
@@ -36,17 +37,7 @@ function AddMultiModal(props){
         reader.readAsText(file)
     }
     function createMany(){
-        let promise = Axios({
-            url: "http://localhost:3030/api/employee/customers",
-            data: csvArray,
-            headers: {
-                "access_token": localStorage.getItem("solarBanking_accessToken"),
-                "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
-                "user_id" : localStorage.getItem("solarBanking_userId")
-            },
-            method: "POST",
-        })
-        promise.then((result)=>{
+        axiosInstance.post(`/employee/customers`, csvArray).then((result)=>{
             $('#addMultiModal').modal('hide');
             $('#statusMultiModal').modal('show');
             setCSVArray([])
@@ -54,7 +45,7 @@ function AddMultiModal(props){
             props.updateFail(result.data.fail_array)
             props.updateSucess(result.data.success_array)
         })
-        promise.catch((err)=>{
+        .catch((err)=>{
             alert("Internal Server Error")
         })
     }

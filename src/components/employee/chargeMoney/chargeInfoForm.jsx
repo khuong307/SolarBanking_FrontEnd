@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import {Helmet} from "react-helmet";
 import numeral from "numeral";
 import Axios from "axios";
+import axiosInstance from "../../../utils/axiosConfig.js";
 
 function ChargeInfoForm(props){
     const { register, handleSubmit, formState: { errors }, reset} = useForm()
@@ -17,24 +18,14 @@ function ChargeInfoForm(props){
     }
 
     function conductTransfer(){
-        let promise = Axios({
-            url: `http://localhost:3030/api/employee/customer/${transfer.account_number}`,
-            data: transfer,
-            headers: {
-                "access_token": localStorage.getItem("solarBanking_accessToken"),
-                "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
-                "user_id" : localStorage.getItem("solarBanking_userId")
-            },
-            method: "POST",
-        })
-        promise.then((result)=>{
+        axiosInstance.post(`employee/customer/${transfer.account_number}`, transfer).then((result)=>{
             props.setTransactionInfo(result.data.transaction_info)
             $("#confirmModal").modal("hide")
             $("#completeTransferModal").modal("show")
             reset()
             props.setCustomerData('')
         })
-        promise.catch((err)=>{
+        .catch((err)=>{
             alert(err)
         })
     }

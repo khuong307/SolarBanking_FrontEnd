@@ -9,6 +9,7 @@ import AddMultiModal from "./addMultiModal.jsx";
 import StatusMultiModal from "./statusMultiModal.jsx";
 
 import "/src/assets/css/scrollable.css"
+import axiosInstance from "../../../utils/axiosConfig.js";
 
 
 function AddNewCustomer(){
@@ -50,23 +51,13 @@ function AddNewCustomer(){
             alert('Password does not match!')
             return
         }else{
-            let promise = Axios({
-                url: "http://localhost:3030/api/employee/customer",
-                data: data,
-                headers: {
-                    "access_token": localStorage.getItem("solarBanking_accessToken"),
-                    "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
-                    "user_id" : localStorage.getItem("solarBanking_userId")
-                },
-                method: "POST",
-            })
-            promise.then((result)=>{
+            axiosInstance.post(`/employee/customer`, data).then((result)=>{
                 $("#successModal").modal("show")
                 reset()
                 generate()
                 $("#btn-step-1").click()
             })
-            promise.catch((err)=>{
+            .catch((err)=>{
                 $("#invalidModal").modal("show")
             })
         }

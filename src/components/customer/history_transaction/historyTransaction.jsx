@@ -8,6 +8,7 @@ import {formateDateTime, formatMoney} from "../../redux/helper_functions.jsx";
 import TabelReceiveOthersList from "./table_receivedOthers_list";
 import TablePaidDebtList from "./table_paid_debt_list";
 import TableReceiveDebtList from "./table_receive_debt_list.jsx";
+import axiosInstance from "../../../utils/axiosConfig.js";
 
 function HistoryTransaction(){
     const [transferList, setTransferList] = useState('')
@@ -17,16 +18,7 @@ function HistoryTransaction(){
     const [receiveDebtList, setReceiveDebtList] = useState('')
     function  getTransactionList (){
         const user_id = localStorage.getItem("solarBanking_userId")
-        let promise = Axios({
-            url: `http://localhost:3030/api/users/${user_id}/history`,
-            headers: {
-                "access_token": localStorage.getItem("solarBanking_accessToken"),
-                "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
-                "user_id" : localStorage.getItem("solarBanking_userId")
-            },
-            method: "GET",
-        })
-        promise.then((result)=> {
+        axiosInstance.get(`/users/${user_id}/history`).then((result)=> {
             if (result.data.isFound == true){
                 setchargeSLBList(result.data.charge_by_SLB)
                 setTransferList(result.data.transfer_list_by_customer)
@@ -37,8 +29,7 @@ function HistoryTransaction(){
             else{
                 alert("User ID is invalid!")
             }
-        })
-        promise.catch((err)=>{
+        }).catch((err)=>{
             alert(err)
         })
     }

@@ -4,21 +4,13 @@ import ChargeInfoForm from "./chargeInfoForm.jsx";
 import Axios from "axios";
 import NotFound from "./not_found.jsx";
 import CompleteTransferModal from "./completeTransferModal.jsx";
+import axiosInstance from "../../../utils/axiosConfig.js";
 function ChargeMoney(){
     const { register, handleSubmit, formState: { errors }} = useForm()
     const [customerData, setCustomerData] = useState('')
     const [transaction_info, setTransactionInfo] = useState('')
     const  onSubmitSearch = (data) =>{
-        let promise = Axios({
-            url: `http://localhost:3030/api/employee/customer/${data.account_number}`,
-            method: "GET",
-            headers: {
-                "access_token": localStorage.getItem("solarBanking_accessToken"),
-                "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
-                "user_id" : localStorage.getItem("solarBanking_userId")
-            },
-        })
-        promise.then((result)=>{
+        axiosInstance.get(`employee/customer/${data.account_number}`).then((result)=>{
             if(result.data.isFound === true){
                 setCustomerData(result.data.customer_info)
             }else{
@@ -26,7 +18,7 @@ function ChargeMoney(){
                 $("#notFoundModal").modal("show")
             }
         })
-        promise.catch((err)=>{
+        .catch((err)=>{
             alert(err)
         })
     }

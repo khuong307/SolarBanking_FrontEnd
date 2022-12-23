@@ -5,9 +5,11 @@ const SetupInterceptors = (navigate) => {
         (config) => {
             const accessToken = localStorage.solarBanking_accessToken;
             const refreshToken = localStorage.solarBanking_refreshToken;
+            const user_id = localStorage.solarBanking_userId;
             if (accessToken !== "undefined" && refreshToken !== "undefined") {
                 config.headers["access_token"] = accessToken;
                 config.headers["refresh_token"] = refreshToken;
+                config.headers["user_id"] = user_id;
             }
             return config;
         },

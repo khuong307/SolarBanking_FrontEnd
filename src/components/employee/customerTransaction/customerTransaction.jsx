@@ -9,6 +9,7 @@ import TabelReceiveOthersList from "./table_receivedOthers_list";
 import TablePaidDebtList from "./table_paid_debt_list";
 import TableReceiveDebtList from "./table_receive_debt_list.jsx";
 import NotFound from "../chargeMoney/not_found";
+import axiosInstance from "../../../utils/axiosConfig.js";
 
 function CustomerTransaction(){
     const { register, handleSubmit, formState: { errors }} = useForm()
@@ -19,16 +20,7 @@ function CustomerTransaction(){
     const [paidDebtList, setPaidDebtList] = useState('')
     const [receiveDebtList, setReceiveDebtList] = useState('')
     const  onSubmitSearch = (data) =>{
-        let promise = Axios({
-            url: `http://localhost:3030/api/employee/customer/transactions/${data.account_number}`,
-            method: "GET",
-            headers: {
-                "access_token": localStorage.getItem("solarBanking_accessToken"),
-                "refresh_token": localStorage.getItem("solarBanking_refreshToken"),
-                "user_id" : localStorage.getItem("solarBanking_userId")
-            },
-        })
-        promise.then((result)=> {
+        axiosInstance.get(`employee/customer/transactions/${data.account_number}`).then((result)=> {
             if (result.data.isFound == true){
                 setClick(true)
                 setchargeSLBList(result.data.charge_by_SLB)
@@ -41,7 +33,7 @@ function CustomerTransaction(){
                 $("#notFoundModal").modal("show")
             }
         })
-        promise.catch((err)=>{
+        .catch((err)=>{
             alert(err)
         })
     }
