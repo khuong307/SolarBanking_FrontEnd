@@ -159,3 +159,9 @@
 .change-password-reset-btn:hover {
     opacity: 0.5;
 }
+
+.main-small-description {
+    font-family: "Jost";
+    font-size: 15px;
+    color: gray;
+}

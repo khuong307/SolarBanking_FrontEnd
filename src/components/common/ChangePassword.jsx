@@ -52,7 +52,7 @@ function ChangePassword() {
         <div className="page-body">
             <div className="row">
                 <div className="col-lg-6 mt-3 ml-3 change-password-wrapper">
-                    <h4>Change password</h4>
+                    <h4>CHANGE PASSWORD</h4>
                     <form className="mt-5" onSubmit={handleSubmit(onSubmit)}>
                         <div className="mr-lg-5 form-group">
                             <label>Old password</label>
