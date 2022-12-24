@@ -1,63 +1,96 @@
-import { useFormik } from 'formik'
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { useFormik } from 'formik';
+import moment from 'moment/moment';
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
+import * as Yup from "yup"
 
 export default function OtpTransfer() {
+    const transactionId = useSelector(state => state.transferReducer.transactionId)
+
+    const [minutes, setMinutes] = useState(5);
+    const [seconds, setSeconds] = useState(0);
+
     const formik = useFormik({
-        enableReinitialize:true,
-        initialValues:{
-            code1:"",
-            code2:"",
-            code3:"",
-            code4:"",
-            code5:"",
-            code6:""
+        enableReinitialize: true,
+        initialValues: {
+            otpCode: "",
         },
+        validationSchema: Yup.object().shape({
+            otpCode: Yup.string().matches(/^[0-9]+$/, "Must be only digits")
+                .min(6, "Must be exactly 6 Digits").max(6, "Must be exactly 6 Digits")
+                .required("Required"),
+        }),
         onSubmit: values => {
-            let otpCode = ""
-            for(const data in values) {
-                otpCode +=values[data]
-            }
-            console.log(otpCode)
+            const otpInfo = { ...values, created_at: moment(Date.now()).format("YYYY-MM-DD hh:mm:ss") }
+            console.log(otpInfo)
         }
     })
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (seconds > 0) {
+                setSeconds(seconds - 1);
+            }
+
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    clearInterval(interval);
+                } else {
+                    setSeconds(59);
+                    setMinutes(minutes - 1);
+                }
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [seconds]);
 
     return (
         <div className="page-body">
-            <div className="container d-flex justify-content-center align-items-center">
-                <div className="card text-center">
-                    <div className="card-header p-5">
-                        <h1 className="mb-2">OTP VERIFICATION</h1>
-                        <div>
-                            <h3>code has been send to ******1258</h3>
-                            <img src="/src/assets/img/phone.png" style={{height:300}}  alt="phone.png" />
+            <div className="card">
+                <div className="card-header" >
+                    <h1 style={{ fontFamily: "Jost" }}>OTP Required</h1>
+                </div>
+                <div className="card-body">
+                    <h5 className="card-title" style={{ fontFamily: "Jost" }}>Kindly enter the OTP code which sent to your
+                        provided email.</h5>
+                    <form onSubmit={formik.handleSubmit}>
+                        <div className="form-group">
+                            <input type="text" name='otpCode' className="form-control" placeholder="OTP Code" onChange={formik.handleChange} />
+                            {formik.errors.otpCode ? <div className='text-danger'>{formik.errors.otpCode}</div> : null}
                         </div>
-                    </div>
-                    <div className="input-container d-flex flex-row justify-content-center mt-2">
-                        <input type="text" name="code1" className="m-1 text-center form-control rounded" style={{fontSize:30}} 
-                        maxLength={1} onChange={formik.handleChange}/>
-                        <input type="text" name='code2' className="m-1 text-center form-control rounded " style={{fontSize:30}}  
-                        maxLength={1} onChange={formik.handleChange}/>
-                        <input type="text"  name='code3' className="m-1 text-center form-control rounded " style={{fontSize:30}}  
-                        maxLength={1} onChange={formik.handleChange}/>
-                        <input type="text"  name='code4' className="m-1 text-center form-control rounded" style={{fontSize:30}} 
-                         maxLength={1} onChange={formik.handleChange}/>
-                        <input type="text"  name='code5' className="m-1 text-center form-control rounded" style={{fontSize:30}}  
-                        maxLength={1} onChange={formik.handleChange}/>
-                        <input type="text"  name='code6' className="m-1 text-center form-control rounded" style={{fontSize:30}} 
-                        maxLength={1} onChange={formik.handleChange}/>
-                    </div>
-                    <div>
-                        <h5>
-                            Didn't get the OTP
-                            <NavLink to="#" className="ml-2 text-decoration-none">Resend</NavLink>
-                        </h5>
-                    </div>
-                    <div className="row justify-content-center p-5">
-                            <button type='submit' className="btn btn-danger pr-5 pl-5 pt-3 pb-3" onClick={formik.handleSubmit}>CONFIRM</button>
+                        <div className="form-group">
+                            <div className="d-flex justify-content-between ml-4">
+                                {seconds > 0 || minutes > 0 ? (
+                                    <p className="time-remaining">
+                                        Time Remaining:
+                                        <span className="time-counter">
+                                            {minutes < 10 ? ` 0${minutes}` : minutes}:
+                                            {seconds < 10 ? `0${seconds}` : seconds}
+                                        </span>
+                                    </p>
+                                ) : (
+                                    <p className="time-remaining">Didn't receive code?</p>
+                                )}
+                                {seconds > 0 || minutes > 0 ? (
+                                    <div className="resend-otp-link-disabled mr-5">
+                                        <span>Resend OTP?</span>
+                                    </div>
+                                ) : (
+                                    <div className="resend-otp-link-active mr-5">
+                                        <span>Resend OTP?</span>
+                                    </div>
+                                )}
+                            </div>
                         </div>
+                        <button type="submit" className="btn btn-success" onClick={formik.handleSubmit}>Confirm</button>
+                    </form>
                 </div>
             </div>
         </div>
     )
 }
+
+
+
