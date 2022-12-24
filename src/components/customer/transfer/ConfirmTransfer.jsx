@@ -97,7 +97,7 @@ export default function ConfirmTransfer() {
 
                         <div className='row'>
                             <div className='col-8'>
-                                <label style={{fontFamily:"Jost"}}>Charge for remittance:</label>
+                                <label style={{fontFamily:"Jost"}}>Charge for remittance (-15.000):</label>
                                 <div className='form-group'>
                                     <div className="form-check form-check-inline">
                                         <input readOnly className="form-check-input" type="radio"

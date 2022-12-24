@@ -1,11 +1,16 @@
 import { useFormik } from 'formik';
 import moment from 'moment/moment';
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup"
+import { getValidOtpApi } from '../../redux/reducer/transferReducer';
 
 export default function OtpTransfer() {
     const transactionId = useSelector(state => state.transferReducer.transactionId)
+    const dispatch = useDispatch()
+
+    const navigate = useNavigate()
 
     const [minutes, setMinutes] = useState(5);
     const [seconds, setSeconds] = useState(0);
@@ -22,10 +27,14 @@ export default function OtpTransfer() {
         }),
         onSubmit: values => {
             const otpInfo = { ...values, created_at: moment(Date.now()).format("YYYY-MM-DD hh:mm:ss") }
-            console.log(otpInfo)
+            dispatch(getValidOtpApi(transactionId,otpInfo,navigate))
         }
     })
     useEffect(() => {
+        if(transactionId === -1){
+            navigate("/")
+        }
+        
         const interval = setInterval(() => {
             if (seconds > 0) {
                 setSeconds(seconds - 1);
