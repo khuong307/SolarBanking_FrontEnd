@@ -29,6 +29,7 @@ function LoginForm(){
             username: data.username,
             password: data.password
         }).then((res) => {
+                console.log(res)
                 let retUrl = '';
 
                 localStorage.solarBanking_accessToken = res.data.accessToken;

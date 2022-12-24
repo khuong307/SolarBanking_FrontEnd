@@ -15,11 +15,11 @@ function Transfer() {
                     <div className="card-body">
                         <ul className="nav nav-tabs border-tab" id="top-tab" role="tablist">
                             <li className="nav-item">
-                                <a className="nav-link active" id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-controls="top-home" aria-selected="true">
+                                <a className="nav-link active" id="top-home-tab" data-toggle="tab" style={{fontFamily:"Jost"}} href="#top-home" role="tab" aria-controls="top-home" aria-selected="true">
                                     <i className="icofont icofont-ui-home" />Intra-Bank</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" id="profile-top-tab" data-toggle="tab" href="#top-profile" role="tab" aria-controls="top-profile" aria-selected="false"><i className="icofont icofont-man-in-glasses" />Inter-Bank</a>
+                                <a className="nav-link" id="profile-top-tab" data-toggle="tab" style={{fontFamily:"Jost"}} href="#top-profile" role="tab" aria-controls="top-profile" aria-selected="false"><i className="icofont icofont-man-in-glasses" />Inter-Bank</a>
                             </li>
                         </ul>
                         <div className="tab-content" id="top-tabContent">

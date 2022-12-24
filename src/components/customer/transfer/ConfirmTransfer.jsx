@@ -1,56 +1,126 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Navigate, NavLink, useNavigate } from 'react-router-dom'
 import converter from "number-to-words"
+import { useDispatch, useSelector } from 'react-redux'
+import _ from 'lodash'
+import { confirmTransactionApi } from '../../redux/reducer/transferReducer'
 
 export default function ConfirmTransfer() {
+    const userId = localStorage.getItem("solarBanking_userId")
+
+    const infoTransaction = useSelector(state => state.transferReducer.infoTransaction)
+    const dispatch = useDispatch()
+
+    const navigate = useNavigate()
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const sendTransaction = {...infoTransaction}
+        delete sendTransaction.full_name
+        delete sendTransaction.bank_code
+        dispatch(confirmTransactionApi(userId,sendTransaction,navigate))
+    }
+
+    useEffect(() => {
+        if (_.isEmpty(infoTransaction)) {
+            console.log("Hello")
+            navigate("/")
+        }
+    }, [])
+
     return (
-        <div className="page-body">
-            <div className="row">
+        <form className='page-body' onSubmit={handleSubmit} >
+            <div className='row'>
                 <div className="col-lg-12 mt-2" style={{ fontFamily: "Jost" }}>
-                    <h3 className="text-center">INFORMATION TRANSFER</h3>
+                    <h3 className="text-center" style={{fontFamily:"Jost"}}>INFORMATION TRANSFER</h3>
                 </div>
 
-                <div className="container mt-3">
-                    <form>
-                        <div className="form-group">
-                            <label>Account Transfer</label>
-                            <input disabled type="email" className="form-control" value="09242552226" />
-                        </div>
-                        <div className="form-group">
-                            <label >Type transfer</label>
-                            <input disabled type="email" className="form-control" value={"Paid Sender"} />
-                        </div>
-                        <div className="form-group">
-                            <label>Money by number (VND)</label>
-                            <input disabled type="email" className="form-control" value="9242552226" />
-                        </div>
-                        <div className="form-group">
-                            <label >Money in words</label>
-                            <textarea disabled className="form-control" rows={3} value={converter.toWords(9000000).toUpperCase()+ " VND"} />
+                <div className='card-body'>
+                    <div className="container m-3">
+                        <div className='row'>
+                            <div className='col-4'>
+                                <div className="form-group">
+                                    <label style={{fontFamily:"Jost"}}>Choose Account (*):</label>
+                                    <input readOnly type="text" className="form-control" value={infoTransaction?.src_account_number} />
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="form-group">
-                            <label >Account Receiver</label>
-                            <input disabled type="email" className="form-control"  value="08242522626"/>
+                        <div className='row'>
+                            <div className='col-4'>
+                                <div className="form-group">
+                                    <label style={{fontFamily:"Jost"}}>Bank</label>
+                                    <input readOnly type="text" className="form-control" value={infoTransaction?.bank_code} />
+                                </div>
+                            </div>
+                            <div className='col-4'>
+                                <div className="form-group">
+                                    <label style={{fontFamily:"Jost"}}>Receiver Account Number (*):</label>
+                                    <input readOnly type="text" className="form-control" value={infoTransaction?.des_account_number} />
+                                </div>
+                            </div>
                         </div>
-                        <div className='form-group'>
-                            <label >Receiver's Full Name</label>
-                            <input disabled type="email" className="form-control" value="Nguyen Van A"/>
+
+                        <div className='row'>
+                            <div className='col-4'>
+                                <label style={{fontFamily:"Jost"}}>Receiver Full Name:</label>
+                                <input readOnly type="text" className="form-control" value={infoTransaction?.full_name} />
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label>Bank</label>
-                            <input disabled type="email" className="form-control" value="ACB"/>
+
+                        <div className='row'>
+                            <div className='col-4'>
+                                <div className="form-group">
+                                    <label style={{fontFamily:"Jost"}}>Amount of money (*):</label>
+                                    <input readOnly type="number" className="form-control" value={infoTransaction?.transaction_amount} />
+                                </div>
+                            </div>
+                            <div className='col-4'>
+                                <div className="form-group">
+                                    <label style={{fontFamily:"Jost"}}>Money in words</label>
+                                    <textarea readOnly className="form-control" rows={3}
+                                        value={
+                                            _.isEmpty(infoTransaction) ? "0 VND" :
+                                                converter.toWords(infoTransaction?.transaction_amount).toUpperCase() + " VND"} />
+                                </div>
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label>Content</label>
-                            <textarea disabled className="form-control"  rows={3} defaultValue={"Money transfer"} />
+
+                        <div className='row'>
+                            <div className='col-8'>
+                                <div className="form-group">
+                                    <label style={{fontFamily:"Jost"}}>Content</label>
+                                    <textarea readOnly className="form-control" rows={3} defaultValue={infoTransaction?.transaction_message} />
+                                </div>
+                            </div>
                         </div>
-                        <div className="row justify-content-center p-5">
-                            <NavLink to="/customer/transfer/otp" className="btn btn-danger pr-5 pl-5 pt-3 pb-3">CONFIRM</NavLink>
+
+                        <div className='row'>
+                            <div className='col-8'>
+                                <label style={{fontFamily:"Jost"}}>Charge for remittance:</label>
+                                <div className='form-group'>
+                                    <div className="form-check form-check-inline">
+                                        <input readOnly className="form-check-input" type="radio"
+                                            name="pay_transaction_fee" defaultValue="SRC" checked={infoTransaction?.pay_transaction_fee === "SRC"} />
+                                        <label className="form-check-label" style={{fontFamily:"Jost"}}>Paid By Sender</label>
+                                    </div>
+                                    <div className="form-check form-check-inline">
+                                        <input readOnly className="form-check-input" type="radio"
+                                            name="pay_transaction_fee" defaultValue="DES" checked={infoTransaction?.pay_transaction_fee === "DES"} />
+                                        <label className="form-check-label" style={{fontFamily:"Jost"}}>Paid By Recipient</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </form>
+
+                        <div className='row'>
+                            <div className='col-8'>
+                                <button type='submit' className="btn btn-danger pr-5 pl-5 pt-3 pb-3" onClick={handleSubmit}>CONFIRM</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }

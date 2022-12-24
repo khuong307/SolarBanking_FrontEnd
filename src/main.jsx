@@ -33,6 +33,7 @@ import AdminTemplate from "../template/admin_template";
 import ConfirmTransfer from './components/customer/transfer/ConfirmTransfer.jsx';
 import OtpTransfer from './components/customer/transfer/OtpTransfer.jsx';
 import HistoryTransaction from "./components/customer/history_transaction/historyTransaction.jsx";
+import SuccessTransfer from './components/customer/transfer/SuccessTransfer.jsx';
 
 function NavigateFunctionComponent() {
     let navigate = useNavigate();
@@ -76,6 +77,7 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                         {/* Customer transfer routes*/}
                         <Route path="transfer/confirm" element={<ConfirmTransfer />} />
                         <Route path="transfer/otp" element={<OtpTransfer />} />
+                        <Route path="transfer/success" element={<SuccessTransfer />} />
                         {/* end */}
                         <Route path="debtList" element={<DebtList />} />
                         <Route path="contacts" element={<Contacts />} />

@@ -1,0 +1,1 @@
+export const SOLAR_BANK = "Solar Bank"
