@@ -19,7 +19,7 @@ function CustomerFeature(props){
                     </p>
                 </div>
             </div>
-            <ul className="profile-dropdown onhover-show-div p-10" style={{width: "120%"}}>
+            <ul className="profile-dropdown onhover-show-div p-10" style={{minWidth: "180px"}}>
                 <li>
                     <Link to='/account/changePassword' style={{fontFamily: "Jost"}}>
                         <i className="icon-lock"></i>Change password

@@ -12,27 +12,27 @@ function debtDetail(){
                         <div className="row">
                             <div className="form-group col-md-12">
                                 <label className="col-form-label">Account Number</label>
-                                <p className="account-number"></p>
+                                <p className="card-text"></p>
                             </div>
                             <div className="form-group col-md-12">
                                 <label className="col-form-label">Amount</label>
-                                <p className="debt-amount"></p>
+                                <p className="card-text"></p>
                             </div>
                             <div className="form-group col-md-12">
                                 <label className="col-form-label">Status</label>
-                                <p className="debt-status"></p>
+                                <p className="card-text"></p>
                             </div>
                             <div className="form-group col-md-12">
                                 <label className="col-form-label">Date</label>
-                                <p className="debt-date"></p>
+                                <p className="card-text"></p>
                             </div>
                             <div className="form-group col-md-12">
                                 <label className="col-form-label">Message</label>
-                                <p className="debt-message"></p>
+                                <p className="card-text"></p>
                             </div>
                             <div className="form-group col-md-12">
                                 <label className="col-form-label">Cancel Message</label>
-                                <p className="debt-cancel-message"></p>
+                                <p className="card-text"></p>
                             </div>
                         </div>
                     </div>

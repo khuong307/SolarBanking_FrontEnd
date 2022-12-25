@@ -2,34 +2,36 @@ import React,{useState,useEffect} from "react";
 import numeral from "numeral";
 import {Helmet} from "react-helmet";
 import {formateDateTime, formatMoney} from "../../redux/helper_functions.jsx";
+
 import '/src/assets/css/datatables.css'
 import '/src/assets/css/datatable-extension.css'
 import '/src/assets/css/data-table.css'
-function DebtListDetail(props){
+
+function TableDebtListOther(props){
     function loadData(){
         if (typeof props.debtList == "object"){
-            $("#paidDebt").DataTable().rows().remove().draw();
-            for (const debt of props.debtList) {
+            $("#paidDebtOther").DataTable().rows().remove().draw();
+            for (const c of props.debtList) {
                 const ans = [];
-                ans.push(debt.id)
-                ans.push(debt.debt_account_number)
-                ans.push(formatMoney(debt.debt_amount) + " VND")
-                ans.push(formateDateTime(debt.debt_created_at))
-                ans.push(debt.debt_status)
-                $("#paidDebt").DataTable().rows.add(ans).draw(false);
+                ans.push(c.id)
+                ans.push(c.debt_account_number)
+                ans.push(formatMoney(c.debt_amount) + " VND")
+                ans.push(formateDateTime(c.debt_created_at))
+                ans.push(c.debt_status)
+                $("#paidDebtOther").DataTable().rows.add(ans).draw(false);
             }
         }
     }
 
-    setTimeout(loadData(),500)
+    setTimeout(loadData,500)
     return (
         typeof props.debtList == "object" &&
         <div className="table-responsive">
-            <table id="paidDebt" className="display">
+            <table id="paidDebtOther" className="display">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Account Number</th>
+                    <th>User Id</th>
                     <th>Amount</th>
                     <th>Create Date</th>
                     <th>Status</th>
@@ -62,4 +64,4 @@ function DebtListDetail(props){
     )
 }
 
-export default DebtListDetail
+export default TableDebtListOther

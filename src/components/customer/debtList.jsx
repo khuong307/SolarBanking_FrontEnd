@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import axiosInstance  from '../../utils/axiosConfig.js'
-import debtListDetail from "./debt/debtListDetail.jsx";
-import DebtListDetail from "./debt/debtListDetail.jsx";
+import TableDebtListSelf from "./debt/table_debt_list_self.jsx";
+import TableDebtListOther from "./debt/table_debt_list_other.jsx";
 
 function DebtList(){
     const [debtList,setDebtList] = useState([]);
@@ -20,14 +20,15 @@ function DebtList(){
 
         axiosInstance.get(apiPath)
             .then((res) => {
-                if(res.data.isSuccess){
+                console.log(res);
+                if(res.data.isSuccess == true){
                     setDebtList(res.data.list_debt);
                 }
             })
             .catch((err) => {
                 console.log(err);
             });
-    },[isSelf]);
+    },[]);
 
     const handleSelfMadeClicked = function (){
         setIsSelf(true);
@@ -55,10 +56,10 @@ function DebtList(){
                         </ul>
                         <div className="tab-content" id="top-tabContent">
                             <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
-                                <DebtListDetail debtList={{debtList}}/>
+                                <TableDebtListSelf debtList={{debtList}}/>
                             </div>
                             <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
-                                <DebtListDetail debtList={{debtList}}/>
+                                <TableDebtListOther debtList={{debtList}}/>
                             </div>
                         </div>
 
