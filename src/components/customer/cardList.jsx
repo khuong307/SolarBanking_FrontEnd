@@ -54,10 +54,10 @@ function CardList() {
                         </ul>
                         <div className="tab-content" id="top-tabContent">
                             <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
-                                <CardDetail cardList={cardList} />
+
                             </div>
                             <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
-                                <CardDetail cardList={cardList} />
+                                <CardDetail cardList={cardList} isSpend={isSpend} />
                             </div>
                         </div>
                     </div>
