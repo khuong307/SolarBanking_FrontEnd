@@ -130,7 +130,7 @@ export default function IntrabankTransfer() {
 
                 <div className='row'>
                     <div className='col-8'>
-                        <label style={{fontFamily:"Jost"}}>Charge for remittance:</label>
+                        <label style={{fontFamily:"Jost"}}>Charge for remittance (-15.000):</label>
                         <div className='form-group'>
                             <div className="form-check form-check-inline">
                                 <input className="form-check-input" type="radio" name="pay_transaction_fee" defaultChecked defaultValue="SRC" onChange={formik.handleChange} />
