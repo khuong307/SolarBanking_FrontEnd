@@ -128,7 +128,9 @@ export const getValidOtpApi = (transactionId,otpInfo,navigate) => {
     return async dispatch => {
         try{
             const result = await axiosInstance.post(`/customers/intratransaction/${transactionId}`,otpInfo)
+            console.log(result)
             if(result.status===200){
+                
                 dispatch(getInfoTransaction(result.data.infoTransaction))
                 navigate("/customer/transfer/success")
             }else{

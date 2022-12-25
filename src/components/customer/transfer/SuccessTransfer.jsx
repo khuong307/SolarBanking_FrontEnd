@@ -11,7 +11,7 @@ export default function SuccessTransfer() {
 
     useEffect(()=>{
         if(_.isEmpty(infoTransaction)){
-            navigate("/")
+            navigate("/",{replace:true})
         }
     },[])
 
@@ -30,8 +30,8 @@ export default function SuccessTransfer() {
                     <p className="card-text" style={{ fontFamily: "Jost",fontSize:20 }}>Total:{infoTransaction.total}</p>
                 </div>
                 <div className='form-group'>
-                    <button className='btn btn-danger p-3'>Save Information Transaction</button>
-                    <button className='btn btn-outline-primary ml-3 p-3'>Cancel</button>
+                    <button className='btn btn-danger p-3' onClick={()=>navigate("/customer/transfer/save")}>Save Information Transaction</button>
+                    <button className='btn btn-outline-primary ml-3 p-3' onClick={()=>navigate("/customer")}>Cancel</button>
                 </div>
             </div>
         </div>

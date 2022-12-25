@@ -24,7 +24,7 @@ export default function ConfirmTransfer() {
     useEffect(() => {
         if (_.isEmpty(infoTransaction)) {
             console.log("Hello")
-            navigate("/")
+            navigate("/",{replace:true})
         }
     }, [])
 

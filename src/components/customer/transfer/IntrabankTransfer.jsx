@@ -36,8 +36,8 @@ export default function IntrabankTransfer() {
         }),
         onSubmit: values => {
             let transaction_amount = values.transaction_amount
-            transaction_amount = Number(transaction_amount.replace(",",""))
-            if(transaction_amount < 10000 || isNaN(transaction_amount)){
+            transaction_amount = Number(transaction_amount.replaceAll(",",""))
+            if(transaction_amount < 10000 || isNaN(transaction_amount) || transaction_amount > 30000000){
                 alert("Amount of Money must be lowest 10.000 and maximum 30.000.000")
             }else{
                 values={...values,transaction_amount}
@@ -77,7 +77,7 @@ export default function IntrabankTransfer() {
                             <label style={{fontFamily:"Jost"}}>Receiver Account Number (*):</label>
                             <AutoComplete
                                 options={recipients?.map((user) => {
-                                    return { label: user.account_number, value: user.account_number }
+                                    return { label: user.account_number + " - " + user.nick_name, value: user.account_number }
                                 })}
                                 name="des_account_number"
                                 style={{ width: "100%", height: "100%" }}

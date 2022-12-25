@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup"
 import { getValidOtpApi } from '../../redux/reducer/transferReducer';
+import axiosInstance from "../../../utils/axiosConfig.js";
 
 export default function OtpTransfer() {
     const transactionId = useSelector(state => state.transferReducer.transactionId)
@@ -26,15 +27,27 @@ export default function OtpTransfer() {
                 .required("Required"),
         }),
         onSubmit: values => {
-            const otpInfo = { ...values, created_at: moment(Date.now()).format("YYYY-MM-DD hh:mm:ss") }
-            dispatch(getValidOtpApi(transactionId,otpInfo,navigate))
+            const otpInfo = { ...values, created_at: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss") }
+            dispatch(getValidOtpApi(transactionId, otpInfo, navigate))
         }
     })
+
+    const resendOtpClickedHandler = function () {
+        axiosInstance.post(`/customers/transaction/${transactionId}/otp`)
+            .then((res) => {
+                setMinutes(4);
+                setSeconds(59);
+            })
+            .catch((err) => {
+                console.log(err)
+            });
+    }
+
     useEffect(() => {
-        if(transactionId === -1){
-            navigate("/")
+        if (transactionId === -1) {
+            navigate("/", { replace: true })
         }
-        
+
         const interval = setInterval(() => {
             if (seconds > 0) {
                 setSeconds(seconds - 1);
@@ -82,15 +95,9 @@ export default function OtpTransfer() {
                                 ) : (
                                     <p className="time-remaining">Didn't receive code?</p>
                                 )}
-                                {seconds > 0 || minutes > 0 ? (
-                                    <div className="resend-otp-link-disabled mr-5">
-                                        <span>Resend OTP?</span>
-                                    </div>
-                                ) : (
-                                    <div className="resend-otp-link-active mr-5">
-                                        <span>Resend OTP?</span>
-                                    </div>
-                                )}
+                                <div className="resend-otp-link-active mr-5">
+                                    <span onClick={resendOtpClickedHandler}>Resend OTP?</span>
+                                </div>
                             </div>
                         </div>
                         <button type="submit" className="btn btn-success" onClick={formik.handleSubmit}>Confirm</button>
