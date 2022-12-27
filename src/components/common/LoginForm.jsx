@@ -5,7 +5,6 @@ import {Link} from "react-router-dom";
 import axiosInstance from "../../utils/axiosConfig.js";
 import { useNavigate, useLocation } from "react-router-dom";
 import ErrorMessage from "./ErrorMessage.jsx";
-import Axios from "axios";
 
 function LoginForm(){
     const navigate = useNavigate();

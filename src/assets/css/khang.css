@@ -165,3 +165,8 @@
     font-size: 15px;
     color: gray;
 }
+
+.modal-message {
+    font-family: "Jost";
+    font-size: 15px;
+}
