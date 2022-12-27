@@ -56,10 +56,10 @@ function DebtList(){
                         </ul>
                         <div className="tab-content" id="top-tabContent">
                             <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
-                                <TableDebtListSelf debtList={{debtList}}/>
+                                <TableDebtListSelf debtListSelf={{debtList}}/>
                             </div>
                             <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
-                                <TableDebtListOther debtList={{debtList}}/>
+                                <TableDebtListOther debtListOther={{debtList}}/>
                             </div>
                         </div>
 

@@ -2,29 +2,42 @@ import React,{useState,useEffect} from "react";
 import axiosInstance from '../../../utils/axiosConfig.js';
 import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
+import {Button, Modal} from "antd";
 
 function createDebt(){
     const navigate = useNavigate();
     const [accountNumber,setAccountNumber] = useState("");
+    const [isShowModal,setIsShowModal] = useState(false);
     const { register, handleSubmit, formState: { errors }} = useForm();
     const userId = localStorage.solarBanking_userId;
-
-
+    let isSuccess = false;
+    const handleModalOk = ()=>{
+        setIsShowModal(false);
+    }
+    const handleModalCancel = ()=>{
+        setIsShowModal(false);
+    }
+    const handleAcceptBtn = ()=>{
+        if (isSuccess){
+            navigate('/debtList');
+        }
+    }
     const onSubmit = function (data){
         e.preventDefault();
         try {
             const apiPath = "/debtList";
             axiosInstance.post(apiPath,{
                 user_id: userId,
-                debt_account_number: data.accountNumber,
+                debt_account_number: data.account_number,
                 debt_amount: data.amount,
                 debt_message: data.message
             }).then(function(res){
                 console.log(res);
 
-                if (res.isSuccess === true){
-                    navigate('/debtList');
+                if (res.data.isSuccess === true){
+                    isSuccess = true;
                 }
+                setIsShowModal(true);
             })
             .catch((err)=>{
                 console.log(err.message())
@@ -50,11 +63,11 @@ function createDebt(){
                                 <div className="form-group col-md-12">
                                     <label className="col-form-label">Account Number <span className="required">(*)</span> </label>
                                     <input type="text" className="form-control" placeholder="Enter account number"
-                                           {...register("accountNumber", {
+                                           {...register("account_number", {
                                                required: true,
                                            })}
                                     />
-                                    {errors?.accountNumber?.type === "required" &&
+                                    {errors?.account_number?.type === "required" &&
                                         <p className="error-input"><i className="fa fa-warning mr-2"></i>Account Number is required!</p>
                                     }
                                 </div>
@@ -97,6 +110,19 @@ function createDebt(){
                             </form>
                         </div>
                     </div>
+                    <Modal title="Notification"
+                           centered
+                           open={isShowModal}
+                           onOk={handleModalOk}
+                           onCancel={handleModalCancel}
+                           footer={[
+                               <Button key="submit" type="primary" onClick={handleAcceptBtn}>
+                                   Ok
+                               </Button>,
+                           ]}
+                    >
+                        <p className="modal-message">Create debt reminder successfully</p>
+                    </Modal>
                 </div>
             </div>
         </div>
