@@ -43,6 +43,10 @@ function TableDebtListOther(props){
     }
 
     useEffect(function (){
+        setDebtListOther(props.debtListOther);
+    },[])
+
+    useEffect(function (){
         const buttonComponent = `
             <div class="d-flex">
                 <button class="btn btn-info btn-edit">
@@ -53,9 +57,9 @@ function TableDebtListOther(props){
                 </button>
             </div>
         `;
-        if (typeof props.debtListOther == "object"){
+        if (debtListOther.length !==0){
             $("#paidDebtOther").DataTable().rows().remove().draw();
-            for (const c of props.debtListOther) {
+            for (const c of debtListOther) {
                 const ans = [];
                 ans.push(c.id)
                 ans.push(c.debt_account_number)
@@ -71,10 +75,10 @@ function TableDebtListOther(props){
             deleteBtnArr[i].addEventListener('click', function(e) {
                 setShowDeleteModal({
                     isShow: true,
-                    debt_id: props.debtListOther[i].debt_id
+                    debt_id: debtListOther[i].debt_id
                 });
             });
-    },[]);
+    },[debtListOther]);
 
 
     return (

@@ -20,8 +20,8 @@ function DebtList(){
 
         axiosInstance.get(apiPath)
             .then((res) => {
-                console.log(res);
-                if(res.data.isSuccess == true){
+                if(res.data.isSuccess === true){
+
                     setDebtList(res.data.list_debt);
                 }
             })
@@ -41,8 +41,21 @@ function DebtList(){
         <div className="page-body">
             <div className="row">
                 <div className="col-lg-12 mt-2" style={{fontFamily: "Jost"}}>
-                    <h4>DEBT LIST</h4>
-                    <small style={{fontFamily: "Jost", fontSize: "15px", color: "gray"}}>Solar Banking Debt List</small>
+                    <div className="d-flex justify-content-between mt-2">
+                        <div className="title">
+                            <h4>DEBT LIST</h4>
+                            <small style={{fontFamily: "Jost", fontSize: "15px", color: "gray"}}>Solar Banking Debt List</small>
+                        </div>
+                        <div className="direction">
+                            <div className="float-right mr-3 mb-3">
+                                <button className="btn btn-success">
+                                    <i className="fa fa-plus mr-2"></i>
+                                    Create
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="card-body">
                         <ul className="nav nav-tabs border-tab" id="top-tab" role="tablist">
                             <li onClick={handleSelfMadeClicked} className="nav-item">
@@ -56,10 +69,10 @@ function DebtList(){
                         </ul>
                         <div className="tab-content" id="top-tabContent">
                             <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
-                                <TableDebtListSelf debtListSelf={{debtList}}/>
+                                <TableDebtListSelf debtListSelf={debtList}/>
                             </div>
                             <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
-                                <TableDebtListOther debtListOther={{debtList}}/>
+                                <TableDebtListOther debtListOther={debtList}/>
                             </div>
                         </div>
 

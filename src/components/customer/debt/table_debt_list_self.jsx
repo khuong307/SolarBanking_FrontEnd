@@ -14,7 +14,6 @@ import '/src/assets/css/data-table.css';
 function TableDebtListSelf(props){
     const userId = localStorage.solarBanking_userId;
     const [reasonCancel,setReasonCancel] = useState("");
-    const [debtListSelf,setDebtListSelf] = useState([]);
     const [showDeleteModal,setShowDeleteModal] = useState({
         isShow: false,
         debt_id: null
@@ -35,14 +34,13 @@ function TableDebtListSelf(props){
             debt_cancel_message: reasonCancel,
         })
             .then((res)=>{
-                setDebtListSelf(debtListSelf.filter(debt => debt.debt_id !== showDeleteModal.debt_id))
+                //setDebtListSelf(debtListSelf.filter(debt => debt.debt_id !== showDeleteModal.debt_id))
                 handleCloseDeleteModal();
             })
             .catch((err)=>{
                 console.log(err);
             })
     }
-
     useEffect(function (){
         const buttonComponent = `
             <div class="d-flex">
@@ -54,11 +52,12 @@ function TableDebtListSelf(props){
                 </button>
             </div>
         `;
-        if (typeof props.debtListSelf == "object"){
+        if (props.debtListSelf.length !== 0){
+
             $("#paidDebtSelf").DataTable().rows().remove().draw();
             for (const c of props.debtListSelf) {
                 const ans = [];
-                ans.push(c.id)
+                ans.push(c.debt_id)
                 ans.push(c.debt_account_number)
                 ans.push(formatMoney(c.debt_amount) + " VND")
                 ans.push(formateDateTime(c.debt_created_at))
