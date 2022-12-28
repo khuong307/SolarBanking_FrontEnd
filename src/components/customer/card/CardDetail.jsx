@@ -18,13 +18,13 @@ function CardDetail({ cardList, isSpend }) {
     }
 
     return (
-        <>
-            <table className="table table-card-list display" style={{fontFamily: "Jost"}}>
+        <div className="dt-ext table-responsive">
+            <table className="table-card-list display" id="transferByCustomer">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Account number</th>
-                    <th scope="col">Balance (VND)</th>
+                    <th scope="col" style={{textAlign: "center"}}>STT</th>
+                    <th scope="col" style={{textAlign: "center"}}>Account Number</th>
+                    <th scope="col" style={{textAlign: "center"}}>Balance (VND)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,7 +47,7 @@ function CardDetail({ cardList, isSpend }) {
                 <script src="/src/assets/js/datatable-extension/dataTables.keyTable.min.js"></script>
                 <script src="/src/assets/js/datatable-extension/custom.js"></script>
             </Helmet>
-        </>
+        </div>
     );
 }
 

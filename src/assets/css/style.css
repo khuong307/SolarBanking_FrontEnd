@@ -23182,3 +23182,22 @@ svg{
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.btnEdit {
+  background-color: #FFB800;
+  color: white
+}
+
+.btnEdit:hover {
+  background-color: #fff300 ;
+  color: white
+}
+.btnDel {
+  background-color: #a31705;
+  color: white
+}
+
+.btnDel:hover {
+  background-color: #e34c39 ;
+  color: white
+}
