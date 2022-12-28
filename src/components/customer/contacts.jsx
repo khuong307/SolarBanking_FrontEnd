@@ -1,15 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet';
+import {useForm} from 'react-hook-form';
 import axiosInstance from '../../utils/axiosConfig.js';
 import { Modal, Button } from 'antd';
+import ErrorMessage from '../common/ErrorMessage.jsx';
 import '/src/assets/css/datatables.css';
 import '/src/assets/css/datatable-extension.css';
 import '/src/assets/css/data-table.css';
 
 function Contacts() {
     const userId = localStorage.solarBanking_userId;
+    const {register, setValue, getValues,  handleSubmit, formState: { errors }} = useForm();
     const [contactList, setContactList] = useState([]);
     const [isShowAddModal, setIsShowAddModal] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState({
+        isShow: false,
+        userInfo: null
+    });
     const [showEditModal, setShowEditModal] = useState({
         isShow: false,
         contact: null
@@ -18,6 +25,10 @@ function Contacts() {
         isShow: false,
         account_number: null
     });
+    const [addFailed, setAddFailed] = useState({
+        isSuccess: true,
+        message: ''
+    });
 
     const showAddModal = function() {
         setIsShowAddModal(true);
@@ -25,11 +36,80 @@ function Contacts() {
 
     const handleAddModalOk = function() {
         setIsShowAddModal(false);
+        setValue('account_number', '');
+        setValue('nick_name', '');
     };
 
     const handleAddModalCancel = function() {
         setIsShowAddModal(false);
+        setValue('account_number', '');
+        setValue('nick_name', '');
     };
+
+    const handleGetContact = function(data) {
+        const account_number = data.account_number;
+
+        axiosInstance.get(`/employee/customer/${account_number}`)
+            .then((res) => {
+                if (res.status === 209) {
+                    setAddFailed({
+                        isSuccess: false,
+                        message: res.data.message
+                    });
+                }
+                else if (res.status === 200) {
+                    setShowConfirmModal({
+                        isShow: true,
+                        userInfo: res.data.customer_info
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    const changeAddFailedToDefault = function() {
+        setAddFailed({
+            isSuccess: true,
+            message: ''
+        });
+    }
+
+    const handleConfirmModalOk = function() {
+        setShowConfirmModal({
+            isShow: false,
+            userInfo: null
+        });
+    }
+
+    const handleConfirmModalCancel = function() {
+        setShowConfirmModal({
+            isShow: false,
+            userInfo: null
+        });
+    }
+
+    const handleAddContact = function() {
+        const account_number = getValues('account_number');
+        const nick_name = getValues('nick_name').length > 0 ? getValues('nick_name') : null;
+
+        axiosInstance.post(`/users/${userId}/recipients`, {account_number, nick_name})
+            .then((res) => {
+                const newContact = res.data.recipient;
+                handleConfirmModalCancel();
+                handleAddModalCancel();
+                newContact.bank_name = 'Solar Banking';
+                setContactList([...contactList, newContact]);
+            })
+            .catch((err) => {
+                handleConfirmModalCancel();
+                setAddFailed({
+                    isSuccess: false,
+                    message: err.response.data.message
+                });
+            });
+    }
 
     const handleEditModalOk = function() {
         setShowEditModal({
@@ -91,6 +171,11 @@ function Contacts() {
                 nick_name: e.target.value
             }
         });
+    }
+
+    const hidePhoneNumber = function(phone) {
+        if (phone)
+            return phone.substring(0, 3) + "#-###-#" + phone.substring(8);
     }
 
     useEffect(function() {
@@ -175,7 +260,20 @@ function Contacts() {
                             <tbody>
                             </tbody>
                         </table>
-                        <Modal title="Add Contact" centered open={isShowAddModal} onOk={handleAddModalOk} onCancel={handleAddModalCancel}>
+                        <Modal title="Add Contact"
+                               centered
+                               open={isShowAddModal}
+                               onOk={handleAddModalOk}
+                               onCancel={handleAddModalCancel}
+                               footer={[
+                                   <Button key="back" onClick={handleAddModalCancel}>
+                                       Cancel
+                                   </Button>,
+                                   <Button key="submit" type="primary" onClick={handleSubmit(handleGetContact)}>
+                                       Add
+                                   </Button>,
+                               ]}
+                        >
                             <ul className="nav nav-tabs border-tab" id="top-tab" role="tablist">
                                 <li className="nav-item">
                                     <a className="nav-link active" id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-controls="top-home" aria-selected="true">
@@ -190,17 +288,51 @@ function Contacts() {
                                 <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
                                     <div className="form-group d-flex align-items-center align-content-center">
                                         <i className="fa fa-address-card-o mr-3"></i>
-                                        <input className="form-control" placeholder="Enter account number" type="text" />
+                                        <input className="form-control" placeholder="Enter account number" type="text"
+                                               {...register("account_number", {
+                                                   required: true,
+                                               })}
+                                        />
                                     </div>
+                                    {errors?.account_number?.type === "required" &&
+                                        <p className="error-input"><i className="fa fa-warning mr-2"></i>Account number is required!</p>
+                                    }
                                     <div className="form-group d-flex align-items-center align-content-center">
                                         <i className="fa fa-user mr-3 user-icon"></i>
-                                        <input className="form-control" placeholder="Enter nick name" type="text" />
+                                        <input className="form-control" placeholder="Enter nick name" type="text"
+                                               {...register("nick_name")}
+                                        />
                                     </div>
+                                    {!addFailed.isSuccess &&
+                                        <ErrorMessage error={addFailed.message} resetState={changeAddFailedToDefault} />}
                                 </div>
                                 <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
                                     <p>Waiting... API</p>
                                 </div>
                             </div>
+                        </Modal>
+                        <Modal title="Confirm Contact"
+                               centered
+                               open={showConfirmModal.isShow}
+                               onOk={handleConfirmModalOk}
+                               onCancel={handleConfirmModalCancel}
+                               footer={[
+                                   <Button key="back" onClick={handleConfirmModalCancel}>
+                                       Cancel
+                                   </Button>,
+                                   <Button key="submit" type="primary" onClick={handleAddContact}>
+                                       Confirm
+                                   </Button>,
+                               ]}
+                        >
+                            <p className="modal-message">
+                                Is this the user you want to add?
+                                <ul>
+                                    <li><b>Account number: </b>{showConfirmModal?.userInfo?.account_number}</li>
+                                    <li><b>Owner name: </b>{showConfirmModal?.userInfo?.full_name}</li>
+                                    <li><b>Phone: </b>{hidePhoneNumber(showConfirmModal?.userInfo?.phone)}</li>
+                                </ul>
+                            </p>
                         </Modal>
                         <Modal title="Edit Contact"
                                centered
