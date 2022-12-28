@@ -79,7 +79,7 @@ function CardList() {
                                                 <div style={{bottom: "6%", right: "15%", position: "absolute", color: "#FFBA33"}}>
                                                     Balance: {formatMoney(userInfo.balance)} VND
                                                 </div>
-                                                <img className="img-fluid" style={{width: "437px", height: "310px", borderRadius: "15px",}} src="/src/assets/img/spend_account.png"/>
+                                                <img className="img-fluid" style={{maxWidth: "95%", maxHeight: "75%", borderRadius: "15px",}} src="/src/assets/img/spend_account.png"/>
                                             </div>
                                         </div>
                                         <div className="col-lg-5">
