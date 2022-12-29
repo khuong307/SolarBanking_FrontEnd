@@ -9,6 +9,9 @@ export default function ConfirmTransfer() {
     const userId = localStorage.getItem("solarBanking_userId")
 
     const infoTransaction = useSelector(state => state.transferReducer.infoTransaction)
+    const infoDesAccount = useSelector(state => state.transferReducer.infoDesAccount)
+    console.log(infoDesAccount)
+
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
@@ -16,8 +19,10 @@ export default function ConfirmTransfer() {
     const handleSubmit = (e) => {
         e.preventDefault()
         const sendTransaction = {...infoTransaction}
-        delete sendTransaction.full_name
-        delete sendTransaction.bank_code
+        delete sendTransaction?.full_name
+        delete sendTransaction?.bank_code
+        delete sendTransaction?.phone
+        delete sendTransaction?.email
         dispatch(confirmTransactionApi(userId,sendTransaction,navigate))
     }
 

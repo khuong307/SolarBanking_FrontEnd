@@ -6,14 +6,14 @@ import { useFormik } from 'formik'
 import { NumericFormat } from 'react-number-format';
 import { AutoComplete } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRecipientListApi, getUserBankAccountApi, getValidTransactionApi, searchReceiver } from '../../redux/reducer/transferReducer'
+import {  getRecipientListBySolarBankApi, getUserBankAccountApi, getValidTransactionApi, searchReceiverIntra } from '../../redux/reducer/transferReducer'
 
 export default function IntrabankTransfer() {
     const userId = localStorage.getItem("solarBanking_userId")
     const navigate = useNavigate()
 
     const src_account = useSelector(state => state.transferReducer.src_account)
-    const recipients = useSelector(state => state.transferReducer.recipients)
+    const recipientsSolarBank = useSelector(state => state.transferReducer.recipientsSolarBank)
 
     const dispatch = useDispatch()
 
@@ -48,7 +48,7 @@ export default function IntrabankTransfer() {
 
     useEffect(()=>{
         dispatch(getUserBankAccountApi(userId))
-        dispatch(getRecipientListApi(userId))
+        dispatch(getRecipientListBySolarBankApi(userId))
     },[])
 
 
@@ -69,14 +69,14 @@ export default function IntrabankTransfer() {
                     <div className='col-4'>
                         <div className="form-group">
                             <label style={{fontFamily:"Jost"}}>Bank</label>
-                            <input name='bank_code' disabled className='form-control' value="Solar Banking" />
+                            <input name='bank_code' disabled className='form-control' value="Solar Bank" />
                         </div>
                     </div>
                     <div className='col-4'>
                         <div className="form-group">
                             <label style={{fontFamily:"Jost"}}>Receiver Account Number (*):</label>
                             <AutoComplete
-                                options={recipients?.map((user) => {
+                                options={recipientsSolarBank?.map((user) => {
                                     return { label: user.account_number + " - " + user.nick_name, value: user.account_number }
                                 })}
                                 name="des_account_number"
@@ -86,7 +86,7 @@ export default function IntrabankTransfer() {
                                     formik.setFieldValue("des_account_number", value)
                                 }}
                                 onSearch={(text) => {
-                                    dispatch(searchReceiver(text))
+                                    dispatch(searchReceiverIntra(text))
                                 }}
                                 onChange={(data) => {
                                     formik.handleChange

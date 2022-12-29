@@ -4,11 +4,12 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup"
-import { getValidOtpApi } from '../../redux/reducer/transferReducer';
+import { getValidOtpApi, getValidOtpInterApi } from '../../redux/reducer/transferReducer';
 import axiosInstance from "../../../utils/axiosConfig.js";
 
 export default function OtpTransfer() {
     const transactionId = useSelector(state => state.transferReducer.transactionId)
+    const transactionType = useSelector(state => state.transferReducer.transactionType)
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
@@ -28,7 +29,12 @@ export default function OtpTransfer() {
         }),
         onSubmit: values => {
             const otpInfo = { ...values, created_at: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss") }
-            dispatch(getValidOtpApi(transactionId, otpInfo, navigate))
+            if(transactionType === 1){
+                dispatch(getValidOtpApi(transactionId, otpInfo, navigate))
+            }else{
+                dispatch(getValidOtpInterApi(transactionId, otpInfo, navigate))
+            }
+            
         }
     })
 

@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 
 export default function SuccessTransfer() {
     const infoTransaction = useSelector(state => state.transferReducer.infoTransaction)
+    const infoDesAccount = useSelector(state => state.transferReducer.infoDesAccount)
+    console.log(infoDesAccount)
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
