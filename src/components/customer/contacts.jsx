@@ -155,7 +155,17 @@ function Contacts() {
     const handleDeleteContact = function() {
         axiosInstance.delete(`/users/${userId}/recipients/${showDeleteModal.account_number}`)
             .then((res => {
-                setContactList(contactList.filter(contact => contact.account_number !== showDeleteModal.account_number));
+                const tmp = []
+                for (const c of contactList){
+                    if (c.account_number != showDeleteModal.account_number){
+                        tmp.push(c)
+                    }
+                }
+                setContactList(tmp)
+                if (tmp.length == 0){
+                    $("#table-contact-list").DataTable().rows().remove().draw(true);
+                }
+                // setContactList(contactList.filter(contact => contact.account_number !== showDeleteModal.account_number));
                 handleDeleteModalCancel();
             }))
             .catch((err) => {
@@ -200,17 +210,19 @@ function Contacts() {
             </div>
         `;
 
-        if (contactList.length !== 0) {
-            $("#table-contact-list").DataTable().rows().remove().draw();
-            contactList.forEach((contact, contactIdx) => {
-                const ans = [];
-                ans.push(contactIdx + 1);
-                ans.push(contact.account_number);
-                ans.push(contact.nick_name);
-                ans.push(contact.bank_name);
-                ans.push(buttonComponent);
-                $("#table-contact-list").DataTable().row.add(ans).draw(false);
-            });
+        if ( Array.isArray(contactList) == true) {
+            if (contactList.length > 0) {
+                $("#table-contact-list").DataTable().rows().remove().draw();
+                contactList.forEach((contact, contactIdx) => {
+                    const ans = [];
+                    ans.push(contactIdx + 1);
+                    ans.push(contact.nick_name);
+                    ans.push(contact.account_number);
+                    ans.push(contact.bank_name);
+                    ans.push(buttonComponent);
+                    $("#table-contact-list").DataTable().row.add(ans).draw(false);
+                });
+            }
         }
 
         const editBtnArr = document.getElementsByClassName('btn-edit');
@@ -252,8 +264,8 @@ function Contacts() {
                                     <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Account number</th>
                                         <th scope="col">Nick name</th>
+                                        <th scope="col">Account number</th>
                                         <th scope="col">Bank</th>
                                         <th scope="col"></th>
                                     </tr>
