@@ -47,10 +47,10 @@ function Notification() {
                         onClick={notification.is_seen === 0 ? (e) => handleUnseenClicked(notification.notification_id) : null}
                     >
                         <div className="media">
-                            <div className="media-body">
+                            <div className="media-body" style={{fontFamily: "Jost"}}>
                                 <h6 className="mt-0 notification-title">{notification.notification_title}</h6>
                                 <p className="mb-0" style={{fontFamily: "Jost"}}>{notification.notification_message}</p>
-                                <span><i className="icofont icofont-clock-time p-r-5"></i>{moment(notification.notification_created_at).format('YYYY-MM-DD HH:mm:ss')}</span>
+                                <span style={{fontFamily: "Jost"}}><i className="icofont icofont-clock-time p-r-5"></i>{moment(notification.notification_created_at).format('YYYY-MM-DD HH:mm:ss')}</span>
                             </div>
                         </div>
                     </li>

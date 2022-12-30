@@ -21,7 +21,6 @@ function DebtList(){
         axiosInstance.get(apiPath)
             .then((res) => {
                 if(res.data.isSuccess === true){
-
                     setDebtList(res.data.list_debt);
                 }
             })

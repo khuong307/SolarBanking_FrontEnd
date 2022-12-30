@@ -172,11 +172,13 @@
 }
 
 .unseen-notification-bg {
-    background-color: #d5dcde;
+    background-color: #FFB800;
+    transition: 0.7s;
+    color: white !important;
 }
 
 .unseen-notification-bg:hover {
-    background-color: #adb5b8;
+    background-color: #f2e0aa;
     cursor: pointer;
 }
 
