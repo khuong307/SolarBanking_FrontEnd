@@ -75,39 +75,44 @@ export default function OtpTransfer() {
     }, [seconds]);
 
     return (
-        <div className="page-body">
-            <div className="card">
-                <div className="card-header" >
-                    <h1 style={{ fontFamily: "Jost" }}>OTP Required</h1>
-                </div>
-                <div className="card-body">
-                    <h5 className="card-title" style={{ fontFamily: "Jost" }}>Kindly enter the OTP code which sent to your
-                        provided email.</h5>
-                    <form onSubmit={formik.handleSubmit}>
-                        <div className="form-group">
-                            <input type="text" name='otpCode' className="form-control" placeholder="OTP Code" onChange={formik.handleChange} />
-                            {formik.errors.otpCode ? <div className='text-danger'>{formik.errors.otpCode}</div> : null}
-                        </div>
-                        <div className="form-group">
-                            <div className="d-flex justify-content-between ml-4">
-                                {seconds > 0 || minutes > 0 ? (
-                                    <p className="time-remaining">
-                                        Time Remaining:
-                                        <span className="time-counter">
+        <div className="page-body mt-lg-5">
+            <div className="container-fluid mt-lg-5">
+                <div className="row mt-5">
+                    <div className="col-lg-12 mt-lg-5">
+                        <div className="card mt-lg-5">
+                            <div className="card-header" >
+                                <h5 style={{ fontFamily: "Jost" }}>OTP Required (*)</h5>
+                            </div>
+                            <div className="card-body">
+                                <h5 className="card-title" style={{ fontFamily: "Jost" }}>Kindly enter the OTP code which sent to your provided email.</h5>
+                                <form onSubmit={formik.handleSubmit}>
+                                    <div className="form-group">
+                                        <input type="text" name='otpCode' className="form-control" placeholder="OTP Code" onChange={formik.handleChange}  style={{fontFamily: "Jost"}}/>
+                                        {formik.errors.otpCode ? <div className='text-danger'>{formik.errors.otpCode}</div> : null}
+                                    </div>
+                                    <div className="form-group">
+                                        <div className="d-flex justify-content-between ml-4">
+                                            {seconds > 0 || minutes > 0 ? (
+                                                <p className="time-remaining">
+                                                    Time Remaining:
+                                                    <span className="time-counter">
                                             {minutes < 10 ? ` 0${minutes}` : minutes}:
-                                            {seconds < 10 ? `0${seconds}` : seconds}
+                                                        {seconds < 10 ? `0${seconds}` : seconds}
                                         </span>
-                                    </p>
-                                ) : (
-                                    <p className="time-remaining">Didn't receive code?</p>
-                                )}
-                                <div className="resend-otp-link-active mr-5">
-                                    <span onClick={resendOtpClickedHandler}>Resend OTP?</span>
-                                </div>
+                                                </p>
+                                            ) : (
+                                                <p className="time-remaining">Didn't receive code?</p>
+                                            )}
+                                            <div className="resend-otp-link-active mr-5">
+                                                <span onClick={resendOtpClickedHandler}>Resend OTP?</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" className="btn btnLogin d-flex justify-content-center align-content-center align-items-center" onClick={formik.handleSubmit} style={{fontFamily: "Jost"}}>CONFIRM <i className="fa fa-chevron-circle-right ml-2"></i></button>
+                                </form>
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-success" onClick={formik.handleSubmit}>Confirm</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
