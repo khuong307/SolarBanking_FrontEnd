@@ -20,6 +20,7 @@ import CardList from "./components/customer/cardList";
 import Transfer from "./components/customer/transfer.jsx";
 import Contacts from "./components/customer/contacts.jsx";
 import DebtList from "./components/customer/debtList.jsx";
+import FullNotificationList from "./components/customer/notification.jsx";
 
 //--------- UI layout -----------//
 import CustomerTemplate from "../template/customer_template";
@@ -84,7 +85,7 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                         <Route path="debtList" element={<DebtList />} />
                         <Route path="contacts" element={<Contacts />} />
                         <Route path="transaction" element={<HistoryTransaction />} />
-                       
+                        <Route path="notification" element={<FullNotificationList />} />
 
                     </Route>
                     {/*Employee Routes*/}

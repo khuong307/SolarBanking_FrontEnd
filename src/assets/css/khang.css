@@ -170,3 +170,21 @@
     font-family: "Jost";
     font-size: 15px;
 }
+
+.unseen-notification-bg {
+    background-color: #d5dcde;
+}
+
+.unseen-notification-bg:hover {
+    background-color: #adb5b8;
+    cursor: pointer;
+}
+
+.notification-title {
+    color: #1d508f !important;
+}
+
+.notification-wrapper {
+    overflow-y: scroll;
+    max-height: 400px;
+}
