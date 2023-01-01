@@ -238,3 +238,19 @@ export const getBankListExSLBApi = () => {
         }
     }
 }
+
+export const saveRecipientApi = (infoRecipient,navigate) => {
+    return async dispatch => {
+        try{
+            const result = await axiosInstance.post("/customers/save",infoRecipient)
+            console.log(result)
+            if(result.status === 200){
+                alert("Save successfully!")
+                navigate("/customer")
+            }
+        }catch(err){
+            console.log(err)
+            alert("This account can't be save. Something wrong")
+        }
+    }
+}
