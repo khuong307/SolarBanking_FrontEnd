@@ -82,8 +82,8 @@ function LoginForm(){
     }
 
     return (
-        <div>
-            <div className="row mt-2">
+        <div style={{backgroundImage: `url(/src/assets/img/background_login.png)`, backgroundSize: "cover"}}>
+            <div className="row">
                 <div className="col-lg-12 d-inline-flex justify-content-center">
                     <img className="rounded-circle img-fluid img-100" src="/src/assets/img/solar_logo.png"/>
                 </div>
@@ -96,17 +96,17 @@ function LoginForm(){
                     </p>
                 </div>
             </div>
-            <div className="login-page-title">
+            <div className="login-page-title" style={{color: "white"}}>
                 LOGIN
             </div>
             <div className="col-lg-12 d-flex justify-content-center container-fluid">
                 <div className="p-0 width-100">
                     <div className="auth-innerright">
                         <div className="authentication-box">
-                            <div className="mt-2 mb-2">
+                            <div className="mt-2" style={{marginBottom: "100px"}}>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mr-lg-5 form-group d-flex align-items-center align-content-center">
-                                        <i className="fa fa-user mr-2 user-icon"></i>
+                                        <i className="fa fa-user mr-2 user-icon" style={{color: "#FFB800"}}></i>
                                         <input className="form-control username-input" placeholder="Enter username" type="text"
                                                {...register("username", {
                                                    required: true,
@@ -117,7 +117,7 @@ function LoginForm(){
                                         <p className="error-input"><i className="fa fa-warning mr-2"></i>Username is required!</p>
                                     }
                                     <div className="mr-lg-5 form-group d-flex align-items-center align-content-center" style={{position: "relative"}}>
-                                        <i className="fa fa-lock mr-2 password-icon"></i>
+                                        <i className="fa fa-lock mr-2 password-icon" style={{color: "#FFB800"}} ></i>
                                         <input className="form-control password-input" placeholder="Enter password" type={passwordShown ? "text" : "password"}
                                                {...register("password", {
                                                    required: true,
@@ -136,12 +136,12 @@ function LoginForm(){
                                         <ErrorMessage error={loginFailed.message} resetState={changeLoginFailedToDefault} />}
                                     <div className="mr-lg-5 d-flex justify-content-between align-content-center align-items-center recaptcha-wrapper">
                                         <ReCAPTCHA className="recaptcha" sitekey={RECAPTCHA_SITE_KEY} onChange={captchaChanged} />
-                                        <Link to="/forgotPassword/email" className="forget_password_link">
+                                        <Link to="/forgotPassword/email" className="forget_password_link" style={{color: "#FFB800"}}>
                                             Forget password?
                                         </Link>
                                     </div>
                                     <div className="mr-lg-5 d-flex justify-content-between align-content-center align-items-center">
-                                        <button type="submit" disabled={!verified} className="btn btnLogin mt-3 login-btn">
+                                        <button type="submit" disabled={!verified} className="btn btnLogin2 mt-3 login-btn">
                                             LOGIN
                                         </button>
                                     </div>

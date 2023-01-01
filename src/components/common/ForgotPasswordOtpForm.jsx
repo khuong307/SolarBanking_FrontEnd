@@ -80,7 +80,7 @@ function ForgotPasswordOtpForm(){
     }, [seconds]);
 
     return (
-        <div>
+        <div style={{backgroundImage: `url(/src/assets/img/background_login.png)`, backgroundSize: "cover"}}>
             <div className="row mt-2">
                 <div className="col-lg-12 d-inline-flex justify-content-center">
                     <img className="rounded-circle img-fluid img-100" src="/src/assets/img/solar_logo.png"/>
@@ -94,15 +94,15 @@ function ForgotPasswordOtpForm(){
                     </p>
                 </div>
             </div>
-            <div className="login-page-title mb-4">
+            <div className="login-page-title mb-4" style={{color: "white"}}>
                 FORGOT PASSWORD
             </div>
             <div className="col-lg-12 d-flex justify-content-center container-fluid">
                 <div className="p-0 width-100">
                     <div className="auth-innerright">
                         <div className="authentication-box">
-                            <div className="mt-2 mb-2">
-                                <p className="forgot-password-label ml-4">Kindly enter the OTP code which sent to your provided email:</p>
+                            <div className="mt-2" style={{marginBottom: "100px"}}>
+                                <p className="forgot-password-label ml-4" style={{color: "white"}}>Kindly enter the OTP code which sent to your provided email:</p>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mr-lg-5 form-group d-flex align-items-center align-content-center">
                                         <input className="form-control otp-input ml-4" placeholder="Enter OTP code" type="text"
@@ -116,9 +116,9 @@ function ForgotPasswordOtpForm(){
                                     }
                                     <div className="d-flex justify-content-between ml-4">
                                         {seconds > 0 || minutes > 0 ? (
-                                            <p className="time-remaining">
+                                            <p className="time-remaining" style={{color: "white"}}>
                                                 Time Remaining:
-                                                <span className="time-counter">
+                                                <span className="time-counter" style={{color: "#FFB800"}}>
                                                     {minutes < 10 ? ` 0${minutes}` : minutes}:
                                                     {seconds < 10 ? `0${seconds}` : seconds}
                                                 </span>
@@ -139,7 +139,7 @@ function ForgotPasswordOtpForm(){
                                     {!invalidOtp.isSuccess &&
                                         <ErrorMessage error={invalidOtp.message} resetState={changeInvalidOtpToDefault} />}
                                     <div className="ml-1 mr-lg-5 mt-3 d-flex justify-content-between align-content-center align-items-center">
-                                        <button type="submit" className="btn btnLogin mt-3 verify-otp-btn">
+                                        <button type="submit" className="btn btnLogin2 mt-3 verify-otp-btn">
                                             Verify
                                             <i className="fa fa-arrow-right ml-2"></i>
                                         </button>

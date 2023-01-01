@@ -23127,6 +23127,18 @@ svg{
   color: white
 }
 
+
+.btnLogin2 {
+  background-color: #FFB800;
+  transition-duration: 0.8s;
+  color: white
+}
+
+.btnLogin2:hover {
+  background-color: #ffa929;
+  color: white
+}
+
 .activeTab {
   color: #FFB800!important;
 }

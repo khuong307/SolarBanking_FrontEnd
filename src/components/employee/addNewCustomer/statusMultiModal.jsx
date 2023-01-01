@@ -45,19 +45,19 @@ function StatusMultiModal(props){
                             <div className="text-center">
                                 STATUS PROCESS
                             </div>
-                            <ul className="nav nav-tabs border-tab nav-solar" id="top-tab" role="tablist" >
+                            <ul className="nav nav-pills nav-warning" id="top-tab" role="tablist" >
                                 <li className="nav-item">
-                                    <a className="nav-link active" data-toggle="tab" style={{fontSize: "14px", color: "rgb(0, 10, 97)"}}
+                                    <a className="nav-link active" data-toggle="tab" style={{fontSize: "14px"}}
                                        href="#top-success" role="tab" aria-controls="top-home" aria-selected="true">
                                         <i className="fa fa-check-circle-o"></i>Success</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" data-toggle="tab" style={{color:"#FFB800" ,fontSize: "14px"}}
+                                    <a className="nav-link" data-toggle="tab" style={{fontSize: "14px"}}
                                        href="#top-fail" role="tab" aria-controls="top-profile"
                                        aria-selected="false"><i className="fa fa-times-circle-o"></i>Invalid</a>
                                 </li>
                             </ul>
-                            <div className="tab-content">
+                            <div className="tab-content mt-3">
                                 <div className="tab-pane fade show active" id="top-success" role="tabpanel" aria-labelledby="top-home-tab">
                                     <div className="vertical-scroll scroll-demo" >
                                         {
