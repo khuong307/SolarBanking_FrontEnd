@@ -1,55 +1,136 @@
 import React,{useState,useEffect} from "react";
 import axiosInstance from '../../../utils/axiosConfig.js';
-import {useNavigate} from "react-router-dom";
+import {useNavigate,useParams} from "react-router-dom";
 import {formateDateTime, formatMoney} from "../../redux/helper_functions.jsx";
+import {Button, Modal} from "antd";
+import numeral from "numeral";
 
 function debtDetail(){
+    const {id} = useParams();
+    const userId = localStorage.solarBanking_userId;
     const navigate = useNavigate();
-    const [debtDetail,setDebtDetail] = useState(null);
+    const [invalidOtp, setInvalidOtp] = useState({
+        isSuccess: true,
+        message: ''
+    });
+    const [minutes, setMinutes] = useState(5);
+    const [seconds, setSeconds] = useState(0);
+    const [inputOtp,setInputOtp] = useState("");
+    const [isPaid,setIsPaid] = useState(false);
+    const [colorStatus,setColorStatus] = useState("");
+    const [debtDetail,setDebtDetail] = useState({});
+    const [confirmModal,setConfirmModal] = useState(false);
     const [paymentModal,setPaymentModal] = useState({
         isShow: false,
         debt_id:null
     });
-    let account_number = "";
-    let amount = "";
-    let status = "";
-    let date = "";
-    let message = "";
-    let message_cancel = "";
+    const handleChangeOtp = (e)=>{
+        e.preventDefault();
+        setInputOtp(e.target.value);
+    }
+    const handleCloseConfirmModal = ()=>{
+        setConfirmModal(false);
+    }
+    const handleOpenConfirmModal = ()=>{
+        setConfirmModal(true);
+    }
+    const handleSubmitConfirmModal = ()=>{
+        setConfirmModal(false);
+        setPaymentModal({
+            isShow: true,
+            debt_id: debtDetail.debt_id
+        });
+        // axiosInstance.post(`/debtList/sendOtp`,{
+        //     debt_id: id,
+        //     user_id: userId
+        // })
+        //     .then((res)=>{
+        //         if (res.data.isSuccess){
+        //             setMinutes(4);
+        //             setSeconds(59);
+        //             console.log(res.data.message);
+        //         }
+        //         else{
+        //             console.log(res.data.message);
+        //         }
+        //     })
+        //     .catch((err)=>{
+        //         console.log(err.message);
+        //     })
+    }
+    const handleVerifiedOtp = ()=>{
+        axiosInstance.post(`/debtList/internal/verified-payment`,{
+            debt_id: id,
+            otp: inputOtp
+        })
+            .then((res)=>{
+                if (res.data.isSuccess){
+
+                }
+                else{
+                    console.log(res.data.message);
+                }
+            })
+            .catch((err)=>{
+                console.log(err.message);
+            })
+    }
 
     const handleClosePaymentModal = ()=>{
         setPaymentModal({
             isShow: false,
             debt_id: null
-        })
-    }
-    const handleOpenPaymentModal = ()=>{
-        setPaymentModal({
-            isShow: true,
-            debt_id: debtDetail.debt_id
-        })
+        });
     }
     const handleCallBackPage = ()=>{
-        navigate("/debtList");
+        navigate("/customer/debtList");
     }
-
     useEffect(function (){
-        const debt_id = 0;
-        axiosInstance.get(`/debtList/${debt_id}`)
+        axiosInstance.get(`/debtList/${id}`)
             .then((res)=>{
                 if (res.data.isSuccess){
-                    account_number = res.data.objDebt.debt_account_number;
-                    amount = formatMoney(res.data.objDebt.debt_amount) + " VND";
-                    status = res.data.objDebt.debt_status;
-                    date = formateDateTime(res.data.objDebt.debt_created_at);
-                    message = res.data.objDebt.debt_message;
-                    message_cancel = res.data.objDebt.debt_cancel_message;
+                    console.log(res.data.objDebt);
+                    setDebtDetail({...res.data.objDebt});
+                    const txtStatus = res.data.objDebt.debt_status;
+                    console.log(txtStatus);
+                    if (txtStatus === "PAID"){
+                        setColorStatus("green");
+                        setIsPaid(true);
+                    }
+                    else if (txtStatus === "NOT PAID"){
+                        setColorStatus("red");
+                    }
+                    else{
+                        setColorStatus("black");
+                    }
                 }
             })
             .catch((err)=>{
-                console.log(err.message());
+                console.log(err.message);
             })
-    },null)
+    },[]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (seconds > 0) {
+                setSeconds(seconds - 1);
+            }
+
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    clearInterval(interval);
+                } else {
+                    setSeconds(59);
+                    setMinutes(minutes - 1);
+                }
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [seconds]);
+
     return(
         <div className="page-body">
             <div className="row">
@@ -59,35 +140,95 @@ function debtDetail(){
                     <div className="card-body">
                         <div className="row">
                             <div className="form-group col-md-12">
-                                <label className="col-form-label">Account Number</label>
-                                <p className="card-text">{account_number}</p>
+                                <label className="col-form-label">Account Number:</label>
+                                <p className="card-text">{debtDetail.debt_account_number}</p>
                             </div>
                             <div className="form-group col-md-12">
-                                <label className="col-form-label">Amount</label>
-                                <p className="card-text">{amount}</p>
+                                <label className="col-form-label">Amount:</label>
+                                <p className="card-text">{numeral(debtDetail.debt_amount).format('0,0') + " VNĐ"}</p>
                             </div>
                             <div className="form-group col-md-12">
-                                <label className="col-form-label">Status</label>
-                                <p className="card-text">{status}</p>
+                                <label className="col-form-label">Status:</label>
+                                <p className="card-text" style={{color: colorStatus,fontWeight:"bold"}}>{debtDetail.debt_status}</p>
                             </div>
                             <div className="form-group col-md-12">
-                                <label className="col-form-label">Date</label>
-                                <p className="card-text">{date}</p>
+                                <label className="col-form-label">Date:</label>
+                                <p className="card-text">{formateDateTime(debtDetail.debt_created_at)}</p>
                             </div>
                             <div className="form-group col-md-12">
-                                <label className="col-form-label">Message</label>
-                                <p className="card-text">{message}</p>
+                                <label className="col-form-label">Message:</label>
+                                <p className="card-text">{debtDetail.debt_message}</p>
                             </div>
                             <div className="form-group col-md-12">
-                                <label className="col-form-label">Cancel Message</label>
-                                <p className="card-text">{message_cancel}</p>
+                                <label className="col-form-label">Cancel Message:</label>
+                                <p className="card-text">{debtDetail.debt_cancel_message}</p>
+                            </div>
+                            <div className="form-group col-md-12">
+                                {!isPaid && <button className="btn btn-primary mr-2" onClick={handleOpenConfirmModal}>Payment</button>}
+                                <button className="btn btn-danger mr-2">Cancel Debt</button>
+                                <button className="btn btn-light" onClick={handleCallBackPage}>Back to list</button>
                             </div>
                         </div>
                     </div>
-                    <div className="card-footer">
-                        <button className="btn btn-primary" onClick={handleOpenPaymentModal}>Payment</button>
-                        <button className="btn btn-secondary" onClick={handleCallBackPage}>Cancel</button>
-                    </div>
+                    <Modal title="Verify OTP" style={{fontFamily: "Jost"}}
+                           centered
+                           open={paymentModal.isShow}
+                           onOk={handleClosePaymentModal}
+                           onCancel={handleClosePaymentModal}
+                           footer={[
+                               <Button key="back" onClick={handleClosePaymentModal} style={{fontFamily: "Jost"}}>
+                                   Cancel
+                               </Button>,
+                               <Button key="submit" onClick={handleVerifiedOtp} className="btnLogin" style={{fontFamily: "Jost"}} type="primary">
+                                   Verified
+                               </Button>,
+                           ]}
+                    >
+                        <div className="form-group d-flex flex-column">
+                            <p className="modal-message">OTP has been sent to your email</p>
+                            <input className="form-control" maxLength={6} type="text" onChange={handleChangeOtp}  style={{fontFamily: "Jost"}} placeholder="Enter OTP"/>
+                            <div className="d-flex justify-content-between mt-2">
+                                {seconds > 0 || minutes > 0 ? (
+                                    <p className="time-remaining">
+                                        Time Remaining:
+                                        <span className="time-counter">
+                                                    {minutes < 10 ? ` 0${minutes}` : minutes}:
+                                            {seconds < 10 ? `0${seconds}` : seconds}
+                                                </span>
+                                    </p>
+                                ) : (
+                                    <p className="time-remaining">Didn't receive code?</p>
+                                )}
+                                {seconds > 0 || minutes > 0 ? (
+                                    <div className="resend-otp-link-disabled">
+                                        <span>Resend OTP?</span>
+                                    </div>
+                                ) : (
+                                    <div className="resend-otp-link-active">
+                                        <span>Resend OTP?</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </Modal>
+                    <Modal title="Notification" style={{fontFamily: "Jost"}}
+                           centered
+                           open={confirmModal}
+                           onOk={handleCloseConfirmModal}
+                           onCancel={handleCloseConfirmModal}
+                           footer={[
+                               <Button key="back" onClick={handleCloseConfirmModal} style={{fontFamily: "Jost"}}>
+                                   Cancel
+                               </Button>,
+                               <Button key="submit" onClick={handleSubmitConfirmModal} className="btnLogin" style={{fontFamily: "Jost"}} type="primary">
+                                   Ok
+                               </Button>,
+                           ]}
+                    >
+                        <div className="form-group d-flex align-items-center align-content-center">
+                            <p className="modal-message">Do you want to pay off this debt?</p>
+                        </div>
+                    </Modal>
                 </div>
             </div>
         </div>

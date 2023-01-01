@@ -2,10 +2,16 @@ import React,{useState,useEffect} from 'react';
 import axiosInstance  from '../../utils/axiosConfig.js'
 import TableDebtListSelf from "./debt/table_debt_list_self.jsx";
 import TableDebtListOther from "./debt/table_debt_list_other.jsx";
+import {useNavigate} from "react-router-dom";
 
 function DebtList(){
+    const navigate = useNavigate();
     const [debtList,setDebtList] = useState([]);
     const [isSelf,setIsSelf] = useState(true);
+
+    const handleCreateNewDebt = ()=>{
+        navigate("create");
+    }
 
     useEffect(function (){
         const userId = localStorage.solarBanking_userId;
@@ -48,7 +54,7 @@ function DebtList(){
                         </div>
                         <div className="direction">
                             <div className="float-right mr-3 mb-3">
-                                <button className="btn btn-success">
+                                <button className="btn btn-success" onClick={handleCreateNewDebt}>
                                     <i className="fa fa-plus mr-2"></i>
                                     Create
                                 </button>

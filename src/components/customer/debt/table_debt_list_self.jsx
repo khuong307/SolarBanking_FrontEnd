@@ -1,9 +1,7 @@
 import React,{useState,useEffect} from "react";
 import numeral from "numeral";
 import {Helmet} from "react-helmet";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
+import { Modal, Button } from 'antd';
 import {formateDateTime, formatMoney} from "../../redux/helper_functions.jsx";
 import axiosInstance from "../../../utils/axiosConfig.js";
 
@@ -41,6 +39,7 @@ function TableDebtListSelf(props){
                 console.log(err);
             })
     }
+
     useEffect(function (){
         const buttonComponent = `
             <div class="d-flex">
@@ -94,29 +93,24 @@ function TableDebtListSelf(props){
                 <tbody>
                 </tbody>
             </table>
-            <Modal onHide={handleCloseDeleteModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Canceling Debt</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlTextarea1"
-                        >
-                            <Form.Label>Reason (*)</Form.Label>
-                            <Form.Control as="textarea" rows={3} onChange={handleOnChangeReason}/>
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseDeleteModal}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleSubmitDeleteModal}>
-                        Submit
-                    </Button>
-                </Modal.Footer>
+            <Modal title="Cancel Debt" style={{fontFamily: "Jost"}}
+                   centered
+                   open={showDeleteModal.isShow}
+                   onOk={handleCloseDeleteModal}
+                   onCancel={handleCloseDeleteModal}
+                   footer={[
+                       <Button key="back" onClick={handleCloseDeleteModal} style={{fontFamily: "Jost"}}>
+                           Cancel
+                       </Button>,
+                       <Button key="submit" className="btnLogin" style={{fontFamily: "Jost"}} type="primary" onClick={handleSubmitDeleteModal}>
+                           Submit
+                       </Button>,
+                   ]}
+            >
+                <div className="form-group d-flex align-items-center align-content-center">
+                    <i className="fa fa-user mr-3 user-icon"></i>
+                    <input onChange={handleOnChangeReason} className="form-control" value={reasonCancel} type="text"  style={{fontFamily: "Jost"}} />
+                </div>
             </Modal>
             <Helmet>
                 <script src="/src/assets/js/datatables/jquery.dataTables.min.js"></script>
