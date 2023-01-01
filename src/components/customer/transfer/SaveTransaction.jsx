@@ -34,23 +34,23 @@ export default function SaveTransaction() {
     return (
         <div className='page-body'>
             <div className="container-fluid mt-lg-5">
-                <div className="row mt-lg-5">
-                    <div className="col-lg-12 mt-lg-5">
+                <div className="row mt-lg-5 d-flex justify-content-center">
+                    <div className="col-lg-4 mt-lg-5">
                         <div className="card">
-                            <div className="card-body">
-                                <h4 className="card-title" style={{ fontFamily: "Jost", textAlign: "center" }}>Information Recipient</h4>
+                            <div className="card-body" style={{fontFamily: "Jost"}}>
+                                <h4 className="card-title" style={{ fontFamily: "Jost", textAlign: "center" }}>Save New Contact?</h4>
                                 <div className="col-lg-12 d-flex justify-content-center">
                                     <form onSubmit={formik.handleSubmit}>
                                         <div className="form-group">
-                                            <label>Account Number</label>
+                                            <label><i className="fa fa-credit-card mr-1"></i>Account Number:</label>
                                             <input type="text" name='account_number' readOnly className="form-control" value={formik.values.account_number || ""}/>
                                         </div>
                                         <div className="form-group">
-                                            <label>Nick Name</label>
+                                            <label><i className="fa fa-address-book-o mr-1"></i>Nick Name:</label>
                                             <input type="text" name='nick_name' className="form-control" value={formik.values.nick_name} onChange={formik.handleChange}/>
                                             {formik.errors.nick_name ? <div className='text-danger'>{formik.errors.nick_name}</div> : null}
                                         </div>
-                                        <button type="submit" className="btn btn-primary" onClick={formik.handleSubmit}>Save</button>
+                                        <button type="submit" className="btn btnLogin" onClick={formik.handleSubmit}>Save</button>
                                     </form>
                                 </div>
                             </div>
