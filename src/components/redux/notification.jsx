@@ -24,9 +24,16 @@ export const notificationSlice = createSlice({
                     return {...notification, is_seen: 1};
                 return notification;
             });
+        },
+
+        insertNotification: (state, action) => {
+            if (state.notificationList.length < 5)
+                state.notificationList = [action.payload, ...state.notificationList];
+            else
+                state.notificationList = [action.payload, ...state.notificationList.slice(0,4)];
         }
     }
 });
 
-export const { setUpNotification, updateIsSeen, updateAllIsSeen } = notificationSlice.actions;
+export const { setUpNotification, updateIsSeen, updateAllIsSeen, insertNotification } = notificationSlice.actions;
 export default notificationSlice.reducer;

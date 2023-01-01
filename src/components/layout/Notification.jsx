@@ -1,9 +1,12 @@
 import {useDispatch, useSelector} from "react-redux";
-import {setUpNotification, updateIsSeen} from "../redux/notification.jsx";
+import {setUpNotification, updateIsSeen, insertNotification} from "../redux/notification.jsx";
 import {useEffect} from "react";
 import axiosInstance from "../../utils/axiosConfig.js";
 import {Link} from "react-router-dom";
 import moment from "moment";
+import io from 'socket.io-client';
+
+const socket = io('localhost:3030');
 
 function Notification() {
     const dispatch = useDispatch();
@@ -17,6 +20,10 @@ function Notification() {
             .catch((err) => {
                 console.log(err);
             });
+
+        socket.on(`new-notification-${userId}`, (res) => {
+            dispatch(insertNotification(res));
+        });
     }, []);
 
     const handleUnseenClicked = function(notificationId) {
