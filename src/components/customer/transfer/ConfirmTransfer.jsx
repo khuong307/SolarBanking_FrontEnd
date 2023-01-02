@@ -4,13 +4,16 @@ import converter from "number-to-words"
 import { useDispatch, useSelector } from 'react-redux'
 import _ from 'lodash'
 import { confirmTransactionApi } from '../../redux/reducer/transferReducer'
+import { SOLAR_BANK } from '../../../utils/constants'
 
 export default function ConfirmTransfer() {
     const userId = localStorage.getItem("solarBanking_userId")
 
     const infoTransaction = useSelector(state => state.transferReducer.infoTransaction)
     const infoDesAccount = useSelector(state => state.transferReducer.infoDesAccount)
+    const banks = useSelector(state => state.transferReducer.banks)
     console.log(infoDesAccount)
+    let bank = banks.find(item => item.value === infoTransaction?.bank_code)
 
     const dispatch = useDispatch()
 
@@ -28,7 +31,6 @@ export default function ConfirmTransfer() {
 
     useEffect(() => {
         if (_.isEmpty(infoTransaction)) {
-            console.log("Hello")
             navigate("/",{replace:true})
         }
     }, [])
@@ -56,7 +58,7 @@ export default function ConfirmTransfer() {
                                     <div className='col-4'>
                                         <div className="form-group">
                                             <label style={{fontFamily:"Jost"}}>Bank</label>
-                                            <input readOnly type="text" className="form-control" value={infoTransaction?.bank_code} style={{fontFamily: "Jost"}} />
+                                            <input readOnly type="text" className="form-control" value={bank?.label === undefined ? SOLAR_BANK : bank?.label} style={{fontFamily: "Jost"}} />
                                         </div>
                                     </div>
                                     <div className='col-4'>
