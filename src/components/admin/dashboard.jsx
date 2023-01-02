@@ -4,7 +4,6 @@ import TableTransactionList from "./transactionList/table_transaction_list";
 import axiosInstance from "../../utils/axiosConfig.js";
 import "/src/assets/js/datatables/jquery.dataTables.min.js"
 import Form from 'react-bootstrap/Form';
-import 'react-datepicker/dist/react-datepicker.css'
 import { getBankListExSLBApi } from '../redux/reducer/transferReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { DatePicker, Select } from 'antd'
