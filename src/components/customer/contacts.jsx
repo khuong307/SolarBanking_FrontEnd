@@ -10,6 +10,7 @@ import '/src/assets/css/datatable-extension.css';
 import '/src/assets/css/data-table.css';
 
 function Contacts() {
+
     const userId = localStorage.solarBanking_userId;
     const {register, setValue, getValues,  handleSubmit, formState: { errors }} = useForm();
     const [connectedBank, setConnectedBank] = useState([]);
@@ -267,8 +268,15 @@ function Contacts() {
             });
     }, [contactList]);
 
+    function createTableIfEmpty(){
+        console.log(contactList)
+        if (contactList.length == 0){
+            $("#table-contact-list").DataTable();
+        }
+    }
+
     return (
-        <div className="page-body">
+        <div className="page-body" onLoad={createTableIfEmpty()}>
             <div className="row">
                 <div className="col-lg-12 mt-2" style={{fontFamily: "Jost"}}>
                     <h4>CONTACTS</h4>
