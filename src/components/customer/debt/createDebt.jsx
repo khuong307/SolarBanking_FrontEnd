@@ -8,12 +8,29 @@ function createDebt(){
     const navigate = useNavigate();
     const [accountNumber,setAccountNumber] = useState("");
     const [isShowModal,setIsShowModal] = useState(false);
+    const [recipientInfo,setRecipientInfo] = useState({});
     const { register, handleSubmit, formState: { errors }} = useForm();
     const userId = localStorage.solarBanking_userId;
     let isSuccess = false;
 
     const handleChangeAccount = (e) =>{
         setAccountNumber(e.target.value);
+        axiosInstance.post(apiPath,{
+            user_id: userId,
+            debt_account_number: data.account_number,
+            debt_amount: data.amount,
+            debt_message: data.message
+        }).then(function(res){
+            console.log(res);
+
+            if (res.data.isSuccess === true){
+                isSuccess = true;
+            }
+            setIsShowModal(true);
+        })
+            .catch((err)=>{
+                console.log(err.message())
+            })
     }
     const handleModalOk = ()=>{
         setIsShowModal(false);

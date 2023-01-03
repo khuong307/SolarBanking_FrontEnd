@@ -4,6 +4,7 @@ import {useNavigate,useParams} from "react-router-dom";
 import {formateDateTime, formatMoney} from "../../redux/helper_functions.jsx";
 import {Button, Modal} from "antd";
 import numeral from "numeral";
+import ErrorMessage from "../../common/ErrorMessage.jsx";
 
 function debtDetail(){
     const {id} = useParams();
@@ -34,45 +35,71 @@ function debtDetail(){
     const handleOpenConfirmModal = ()=>{
         setConfirmModal(true);
     }
+    const changeInvalidOtpToDefault = function() {
+        setInvalidOtp({
+            isSuccess: true,
+            message: ''
+        });
+    }
+    const resendOtpClickedHandler = function() {
+        axiosInstance.post('/debtList/re-sendOtp', { email })
+            .then((res) => {
+                setMinutes(4);
+                setSeconds(59);
+            })
+            .catch((err) => {
+                setInvalidOtp({
+                    isSuccess: false,
+                    message: err.response.data.message
+                });
+            });
+    }
     const handleSubmitConfirmModal = ()=>{
         setConfirmModal(false);
         setPaymentModal({
             isShow: true,
             debt_id: debtDetail.debt_id
         });
-        // axiosInstance.post(`/debtList/sendOtp`,{
-        //     debt_id: id,
-        //     user_id: userId
-        // })
-        //     .then((res)=>{
-        //         if (res.data.isSuccess){
-        //             setMinutes(4);
-        //             setSeconds(59);
-        //             console.log(res.data.message);
-        //         }
-        //         else{
-        //             console.log(res.data.message);
-        //         }
-        //     })
-        //     .catch((err)=>{
-        //         console.log(err.message);
-        //     })
-    }
-    const handleVerifiedOtp = ()=>{
-        axiosInstance.post(`/debtList/internal/verified-payment`,{
+        axiosInstance.post(`/debtList/sendOtp`,{
             debt_id: id,
-            otp: inputOtp
+            user_id: userId
         })
             .then((res)=>{
                 if (res.data.isSuccess){
-
+                    setMinutes(4);
+                    setSeconds(59);
+                    console.log(res.data.message);
                 }
                 else{
                     console.log(res.data.message);
                 }
             })
             .catch((err)=>{
-                console.log(err.message);
+                setInvalidOtp({
+                    isSuccess: false,
+                    message: err.response.data.message
+                });
+            })
+    }
+    const handleVerifiedOtp = ()=>{
+        axiosInstance.post(`/debtList/internal/verified-payment`,{
+            debt_id: id,
+            user_id : userId,
+            otp: inputOtp
+        })
+            .then((res)=>{
+                if (res.data.isSuccess){
+                    handleClosePaymentModal();
+                }
+                else{
+                    console.log(res.data.message);
+                }
+            })
+            .catch((err)=>{
+                setInvalidOtp({
+                    isSuccess: false,
+                    message: err.response.data.message
+                });
             })
     }
 
@@ -205,10 +232,12 @@ function debtDetail(){
                                     </div>
                                 ) : (
                                     <div className="resend-otp-link-active">
-                                        <span>Resend OTP?</span>
+                                        <span onClick={resendOtpClickedHandler}>Resend OTP?</span>
                                     </div>
                                 )}
                             </div>
+                            {!invalidOtp.isSuccess &&
+                                <ErrorMessage error={invalidOtp.message} resetState={changeInvalidOtpToDefault} />}
                         </div>
                     </Modal>
                     <Modal title="Notification" style={{fontFamily: "Jost"}}
