@@ -9,7 +9,7 @@ export default function SaveTransaction() {
     const userId = localStorage.getItem("solarBanking_userId")
     const infoTransaction = useSelector(state => state.transferReducer.infoTransaction)
     const infoDesAccount = useSelector(state => state.transferReducer.infoDesAccount)
-    
+
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
@@ -25,9 +25,9 @@ export default function SaveTransaction() {
                 .required("Required"),
         }),
         onSubmit: values => {
-            console.log("submit: ",values)
-            const infoRecipient = {...values,user_id:userId}
-            dispatch(saveRecipientApi(infoRecipient,navigate))
+            console.log("submit: ", values)
+            const infoRecipient = { ...values, user_id: userId }
+            dispatch(saveRecipientApi(infoRecipient, navigate))
         }
     })
 
@@ -37,20 +37,27 @@ export default function SaveTransaction() {
                 <div className="row mt-lg-5 d-flex justify-content-center">
                     <div className="col-lg-4 mt-lg-5">
                         <div className="card">
-                            <div className="card-body" style={{fontFamily: "Jost"}}>
+                            <div className="card-body" style={{ fontFamily: "Jost" }}>
                                 <h4 className="card-title" style={{ fontFamily: "Jost", textAlign: "center" }}>Save New Contact?</h4>
                                 <div className="col-lg-12 d-flex justify-content-center">
                                     <form onSubmit={formik.handleSubmit}>
                                         <div className="form-group">
                                             <label><i className="fa fa-credit-card mr-1"></i>Account Number:</label>
-                                            <input type="text" name='account_number' readOnly className="form-control" value={formik.values.account_number || ""}/>
+                                            <input type="text" name='account_number' readOnly className="form-control" value={formik.values.account_number || ""} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label><i className="fa fa-credit-card mr-1"></i>Bank Name:</label>
+                                            <input type="text" name='account_number' readOnly className="form-control" value={infoTransaction?.bank || ""} />
                                         </div>
                                         <div className="form-group">
                                             <label><i className="fa fa-address-book-o mr-1"></i>Nick Name:</label>
-                                            <input type="text" name='nick_name' className="form-control" value={formik.values.nick_name} onChange={formik.handleChange}/>
+                                            <input type="text" name='nick_name' className="form-control" value={formik.values.nick_name} onChange={formik.handleChange} />
                                             {formik.errors.nick_name ? <div className='text-danger'>{formik.errors.nick_name}</div> : null}
                                         </div>
-                                        <button type="submit" className="btn btnLogin" onClick={formik.handleSubmit}>Save</button>
+                                        <div className='form-group'>
+                                            <button type="submit" className="btn btnLogin mr-4" onClick={formik.handleSubmit}>Save</button>
+                                            <button className='btn btn-light' onClick={() => navigate("/customer")}>Cancel</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>

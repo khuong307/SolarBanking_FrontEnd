@@ -2,15 +2,18 @@ import React, {useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet';
 import {useForm} from 'react-hook-form';
 import axiosInstance from '../../utils/axiosConfig.js';
-import { Modal, Button } from 'antd';
+import {Modal, Button, Select} from 'antd';
 import ErrorMessage from '../common/ErrorMessage.jsx';
+import {SOLAR_BANK_CODE} from '../../utils/constants.js';
 import '/src/assets/css/datatables.css';
 import '/src/assets/css/datatable-extension.css';
 import '/src/assets/css/data-table.css';
 
 function Contacts() {
+
     const userId = localStorage.solarBanking_userId;
     const {register, setValue, getValues,  handleSubmit, formState: { errors }} = useForm();
+    const [connectedBank, setConnectedBank] = useState([]);
     const [contactList, setContactList] = useState([]);
     const [isShowAddModal, setIsShowAddModal] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState({
@@ -196,6 +199,26 @@ function Contacts() {
             .catch((err) => {
                 console.log(err);
             })
+
+        axiosInstance.get('/banks')
+            .then((res) => {
+                const bankList = res.data.bankList;
+                const result = [];
+
+                bankList.forEach(bank => {
+                    if (bank.bank_code !== SOLAR_BANK_CODE) {
+                        const temp = {};
+                        temp["value"] = bank.bank_code;
+                        temp["label"] = bank.bank_name;
+                        result.push(temp);
+                    }
+                });
+
+                setConnectedBank(result);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }, []);
 
     useEffect(function() {
@@ -210,7 +233,7 @@ function Contacts() {
             </div>
         `;
 
-        if ( Array.isArray(contactList) == true) {
+        if (Array.isArray(contactList)) {
             if (contactList.length > 0) {
                 $("#table-contact-list").DataTable().rows().remove().draw();
                 contactList.forEach((contact, contactIdx) => {
@@ -245,8 +268,15 @@ function Contacts() {
             });
     }, [contactList]);
 
+    function createTableIfEmpty(){
+        console.log(contactList)
+        if (contactList.length == 0){
+            $("#table-contact-list").DataTable();
+        }
+    }
+
     return (
-        <div className="page-body">
+        <div className="page-body" onLoad={createTableIfEmpty()}>
             <div className="row">
                 <div className="col-lg-12 mt-2" style={{fontFamily: "Jost"}}>
                     <h4>CONTACTS</h4>
@@ -291,11 +321,11 @@ function Contacts() {
                                 <ul className="nav nav-pills nav-warning" id="top-tab" role="tablist">
                                     <li className="nav-item">
                                         <a className="nav-link active" id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-controls="top-home" aria-selected="true">
-                                            <i className="icofont icofont-contact-add" />Internal contact</a>
+                                            <i className="icofont icofont-contact-add" />Intra-bank contact</a>
                                     </li>
                                     <li className="nav-item">
                                         <a className="nav-link" id="profile-top-tab" data-toggle="tab" href="#top-profile" role="tab" aria-controls="top-profile" aria-selected="false">
-                                            <i className="icofont icofont-contact-add" />External contact</a>
+                                            <i className="icofont icofont-contact-add" />Inter-bank contact</a>
                                     </li>
                                 </ul>
                                 <div className="tab-content mt-4" id="top-tabContent">
@@ -321,7 +351,32 @@ function Contacts() {
                                             <ErrorMessage error={addFailed.message} resetState={changeAddFailedToDefault} />}
                                     </div>
                                     <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
-                                        <p>Waiting... API</p>
+                                        <div className="form-group d-flex align-items-center align-content-center">
+                                            <i className="fa fa-university mr-3"></i>
+                                            <Select
+                                                showSearch
+                                                className="interbank-select"
+                                                placeholder="Select a bank"
+                                                options={connectedBank}
+                                            />
+                                        </div>
+                                        <div className="form-group d-flex align-items-center align-content-center">
+                                            <i className="fa fa-address-card-o mr-3"></i>
+                                            <input className="form-control" placeholder="Enter account number" type="text" style={{fontFamily: "Jost"}}
+                                                   {...register("interbank_account_number")}
+                                            />
+                                        </div>
+                                        {errors?.interbank_account_number?.type === "required" &&
+                                            <p className="error-input"><i className="fa fa-warning mr-2"></i>Account number is required!</p>
+                                        }
+                                        <div className="form-group d-flex align-items-center align-content-center">
+                                            <i className="fa fa-user mr-3 user-icon"></i>
+                                            <input className="form-control" placeholder="Enter nick name" type="text" style={{fontFamily: "Jost"}}
+                                                   {...register("interbank_nick_name")}
+                                            />
+                                        </div>
+                                        {!addFailed.isSuccess &&
+                                            <ErrorMessage error={addFailed.message} resetState={changeAddFailedToDefault} />}
                                     </div>
                                 </div>
                             </Modal>

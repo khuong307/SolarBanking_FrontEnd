@@ -190,3 +190,27 @@
     overflow-y: scroll;
     max-height: 400px;
 }
+
+.interbank-select {
+    width: 100%;
+}
+
+.ant-select-selector {
+    font-family: "Jost";
+    font-size: 15px;
+}
+
+.ant-select-item-option-content, .ant-select-selection-item{
+    font-family: "Jost";
+    font-size: 15px;
+
+}
+
+.ant-select-selection-search{
+    font-family: "Jost";
+    font-size: 15px;
+}
+.ant-select-selection-search-input{
+    font-family: "Jost";
+    font-size: 15px;
+}
