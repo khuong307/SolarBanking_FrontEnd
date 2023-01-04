@@ -6,24 +6,31 @@ import {Button, Modal} from "antd";
 
 function createDebt(){
     const navigate = useNavigate();
-    const [accountNumber,setAccountNumber] = useState("");
+    //const [accountNumber,setAccountNumber] = useState("");
     const [isShowModal,setIsShowModal] = useState(false);
     const [recipientInfo,setRecipientInfo] = useState({});
+    const [createSuccess,setCreateSuccess] = useState({
+        isSuccess: false,
+        message: ''
+    })
     const { register, handleSubmit, formState: { errors }} = useForm();
     const userId = localStorage.solarBanking_userId;
-    let isSuccess = false;
+
 
     const handleChangeAccount = (e) =>{
-        setAccountNumber(e.target.value);
+        const account_number = e.target.value;
+        console.log(e.target.value)
         axiosInstance.get('/banks/infoUser',{
-            account_number: accountNumber,
+            account_number: account_number,
         }).then(function(res){
+            console.log(res.data)
             if (res.data.isSuccess === true){
-                setRecipientInfo({...res.data.userInfo})
+                console.log(res.data.userInfo)
+                //setRecipientInfo({...res.data.userInfo})
             }
         })
         .catch((err)=>{
-            console.log(err.message())
+            console.log(err.message)
         })
     }
     const handleModalOk = ()=>{
@@ -33,37 +40,36 @@ function createDebt(){
         setIsShowModal(false);
     }
     const handleAcceptBtn = ()=>{
-        if (isSuccess){
-            navigate('/debtList');
+        if (createSuccess.isSuccess){
+            navigate('/customer/debtList');
         }
     }
     const onSubmit = function (data){
-        e.preventDefault();
         try {
             const apiPath = "/debtList";
+
             axiosInstance.post(apiPath,{
-                user_id: userId,
+                user_id: parseInt(userId),
                 debt_account_number: data.account_number,
-                debt_amount: data.amount,
+                debt_amount: parseInt(data.amount),
                 debt_message: data.message
             }).then(function(res){
                 console.log(res);
                 if (res.data.isSuccess === true){
-                    isSuccess = true;
+                    setCreateSuccess({
+                        isSuccess: true,
+                        message: res.data.message
+                    })
                     setIsShowModal(true);
                 }
             })
             .catch((err)=>{
-                console.log(err.message())
+                console.log(err.message)
             })
         }catch (err){
-            console.log(err.message())
+            console.log(err.message)
         }
     };
-    const handleBackToList = function(){
-        navigate('/debtList');
-    }
-
 
     return(
         <div className="page-body">
@@ -85,7 +91,7 @@ function createDebt(){
                     <div className="card-body">
                         <div className="row">
                             <form onSubmit={handleSubmit(onSubmit)} className="theme-form mega-form col-md-12">
-                                <div className="form-group col-md-12">
+                                <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Account Number <span className="required">(*)</span> </label>
                                     <input type="text" className="form-control" placeholder="Enter account number"
                                            {...register("account_number", {
@@ -99,15 +105,15 @@ function createDebt(){
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Full name</label>
-                                    <input type="text" value={recipientInfo.full_name} className="form-control" disabled={true} placeholder="Full name"/>
+                                    <input type="text" className="form-control" disabled placeholder="Full name"/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Email</label>
-                                    <input type="text" value={recipientInfo.email} className="form-control" disabled={true} placeholder="Email"/>
+                                    <input type="text" className="form-control" disabled placeholder="Email"/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Phone</label>
-                                    <input type="text" value={recipientInfo.phone} className="form-control" disabled={true} placeholder="Phone"/>
+                                    <input type="text" className="form-control" disabled placeholder="Phone"/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Amount <span className="required">(*)</span></label>
@@ -120,7 +126,7 @@ function createDebt(){
                                         <p className="error-input"><i className="fa fa-warning mr-2"></i>Amount is required!</p>
                                     }
                                 </div>
-                                <div className="form-group col-md-12">
+                                <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Message</label>
                                     <textarea rows={3} className="form-control" placeholder="Enter message"
 
@@ -130,7 +136,7 @@ function createDebt(){
                                     />
                                 </div>
                                 <div className="form-group col-md-12">
-                                    <button className="btn btn-primary" type="submit">Submit</button>
+                                    <button className="btn btn-info" type="submit">Submit</button>
                                 </div>
                             </form>
                         </div>

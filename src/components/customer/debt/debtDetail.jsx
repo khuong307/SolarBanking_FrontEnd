@@ -61,8 +61,8 @@ function debtDetail(){
             debt_id: debtDetail.debt_id
         });
         axiosInstance.post(`/debtList/sendOtp`,{
-            debt_id: id,
-            user_id: userId
+            debt_id: parseInt(id),
+            user_id: parseInt(userId)
         })
             .then((res)=>{
                 if (res.data.isSuccess){
@@ -83,8 +83,8 @@ function debtDetail(){
     }
     const handleVerifiedOtp = ()=>{
         axiosInstance.post(`/debtList/internal/verified-payment`,{
-            debt_id: id,
-            user_id : userId,
+            debt_id: parseInt(id),
+            user_id : parseInt(userId),
             otp: inputOtp
         })
             .then((res)=>{
@@ -191,7 +191,7 @@ function debtDetail(){
                                 <p className="card-text">{debtDetail.debt_cancel_message}</p>
                             </div>
                             <div className="form-group col-md-12">
-                                {!isPaid && <button className="btn btn-primary mr-2" onClick={handleOpenConfirmModal}>Payment</button>}
+                                {!isPaid && <button className="btn btn-success mr-2" onClick={handleOpenConfirmModal}>Payment</button>}
                                 <button className="btn btn-danger mr-2">Cancel Debt</button>
                                 <button className="btn btn-light" onClick={handleCallBackPage}>Back to list</button>
                             </div>
