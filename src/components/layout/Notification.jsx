@@ -6,13 +6,13 @@ import {Link} from "react-router-dom";
 import moment from "moment";
 import io from 'socket.io-client';
 
-const socket = io('localhost:3030');
+const socket = io('http://localhost:3030');
 
 function Notification() {
     const dispatch = useDispatch();
+    const userId = localStorage.solarBanking_userId;
 
     useEffect(function() {
-        const userId = localStorage.solarBanking_userId;
         axiosInstance.get(`/users/${userId}/notifications?limit=5`)
             .then((res) => {
                 dispatch(setUpNotification(res.data));
@@ -20,10 +20,14 @@ function Notification() {
             .catch((err) => {
                 console.log(err);
             });
+    }, []);
 
+    useEffect(function() {
         socket.on(`new-notification-${userId}`, (res) => {
             dispatch(insertNotification(res));
         });
+
+        return () => socket.off(`new-notification-${userId}`);
     }, []);
 
     const handleUnseenClicked = function(notificationId) {
