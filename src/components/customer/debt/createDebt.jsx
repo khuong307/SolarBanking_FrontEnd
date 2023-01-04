@@ -15,22 +15,16 @@ function createDebt(){
 
     const handleChangeAccount = (e) =>{
         setAccountNumber(e.target.value);
-        axiosInstance.post(apiPath,{
-            user_id: userId,
-            debt_account_number: data.account_number,
-            debt_amount: data.amount,
-            debt_message: data.message
+        axiosInstance.get('/banks/infoUser',{
+            account_number: accountNumber,
         }).then(function(res){
-            console.log(res);
-
             if (res.data.isSuccess === true){
-                isSuccess = true;
+                setRecipientInfo({...res.data.userInfo})
             }
-            setIsShowModal(true);
         })
-            .catch((err)=>{
-                console.log(err.message())
-            })
+        .catch((err)=>{
+            console.log(err.message())
+        })
     }
     const handleModalOk = ()=>{
         setIsShowModal(false);
@@ -54,11 +48,10 @@ function createDebt(){
                 debt_message: data.message
             }).then(function(res){
                 console.log(res);
-
                 if (res.data.isSuccess === true){
                     isSuccess = true;
+                    setIsShowModal(true);
                 }
-                setIsShowModal(true);
             })
             .catch((err)=>{
                 console.log(err.message())
@@ -106,15 +99,15 @@ function createDebt(){
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Full name</label>
-                                    <input type="text" className="form-control" disabled={true} placeholder="Full name"/>
+                                    <input type="text" value={recipientInfo.full_name} className="form-control" disabled={true} placeholder="Full name"/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Email</label>
-                                    <input type="text" className="form-control" disabled={true} placeholder="Email"/>
+                                    <input type="text" value={recipientInfo.email} className="form-control" disabled={true} placeholder="Email"/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Phone</label>
-                                    <input type="text" className="form-control" disabled={true} placeholder="Phone"/>
+                                    <input type="text" value={recipientInfo.phone} className="form-control" disabled={true} placeholder="Phone"/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Amount <span className="required">(*)</span></label>
