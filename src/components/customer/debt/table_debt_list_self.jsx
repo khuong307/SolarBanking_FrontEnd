@@ -2,6 +2,7 @@ import React,{useState,useEffect} from "react";
 import numeral from "numeral";
 import {Helmet} from "react-helmet";
 import { Modal, Button } from 'antd';
+import {useNavigate} from "react-router-dom";
 import {formateDateTime, formatMoney} from "../../redux/helper_functions.jsx";
 import axiosInstance from "../../../utils/axiosConfig.js";
 
@@ -11,6 +12,7 @@ import '/src/assets/css/data-table.css';
 
 function TableDebtListSelf(props){
     const isSelf = props.isSelf;
+    const navigate = useNavigate();
     const debtListSelf = props.debtListSelf;
     const userId = localStorage.solarBanking_userId;
     const [reasonCancel,setReasonCancel] = useState("");
@@ -75,6 +77,11 @@ function TableDebtListSelf(props){
                             debt_id: props.debtListSelf[i].debt_id
                         });
                     });
+                const detailBtnArr = document.getElementsByClassName('btn-edit');
+                for (let i = 0; i < detailBtnArr.length; i++)
+                    detailBtnArr[i].addEventListener('click', function(e) {
+                        navigate(`details/${props.debtListSelf[i].debt_id}`)
+                    });
             }
         }
     }
@@ -85,7 +92,7 @@ function TableDebtListSelf(props){
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Account Number</th>
+                    <th scope="col">Debt Account Number</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Create Date</th>
                     <th scope="col">Status</th>
@@ -109,9 +116,9 @@ function TableDebtListSelf(props){
                        </Button>,
                    ]}
             >
-                <div className="form-group d-flex align-items-center align-content-center">
-                    <i className="fa fa-user mr-3 user-icon"></i>
-                    <input onChange={handleOnChangeReason} className="form-control" value={reasonCancel} type="text"  style={{fontFamily: "Jost"}} />
+                <div className="form-group d-flex flex-column">
+                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Reason </label>
+                    <input onChange={handleOnChangeReason} placeholder="Enter reason" className="form-control" value={reasonCancel} type="text"  style={{fontFamily: "Jost"}} />
                 </div>
             </Modal>
             <Helmet>

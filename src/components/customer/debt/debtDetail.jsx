@@ -19,8 +19,10 @@ function debtDetail(){
     const [inputOtp,setInputOtp] = useState("");
     const [isPaid,setIsPaid] = useState(false);
     const [colorStatus,setColorStatus] = useState("");
+    const [statusPayment,setStatusPayment] = useState("");
     const [debtDetail,setDebtDetail] = useState({});
     const [confirmModal,setConfirmModal] = useState(false);
+    const [successModal,setSuccessModal] = useState(false);
     const [paymentModal,setPaymentModal] = useState({
         isShow: false,
         debt_id:null
@@ -31,6 +33,9 @@ function debtDetail(){
     }
     const handleCloseConfirmModal = ()=>{
         setConfirmModal(false);
+    }
+    const handleCloseSuccessModal = ()=>{
+        setSuccessModal(false);
     }
     const handleOpenConfirmModal = ()=>{
         setConfirmModal(true);
@@ -68,7 +73,6 @@ function debtDetail(){
                 if (res.data.isSuccess){
                     setMinutes(4);
                     setSeconds(59);
-                    console.log(res.data.message);
                 }
                 else{
                     console.log(res.data.message);
@@ -90,6 +94,10 @@ function debtDetail(){
             .then((res)=>{
                 if (res.data.isSuccess){
                     handleClosePaymentModal();
+                    setSuccessModal(true);
+                    setStatusPayment(res.data.status);
+                    setColorStatus("green");
+                    setIsPaid(true);
                 }
                 else{
                     console.log(res.data.message);
@@ -119,6 +127,7 @@ function debtDetail(){
                     console.log(res.data.objDebt);
                     setDebtDetail({...res.data.objDebt});
                     const txtStatus = res.data.objDebt.debt_status;
+                    setStatusPayment(res.data.objDebt.debt_status);
                     console.log(txtStatus);
                     if (txtStatus === "PAID"){
                         setColorStatus("green");
@@ -126,6 +135,7 @@ function debtDetail(){
                     }
                     else if (txtStatus === "NOT PAID"){
                         setColorStatus("red");
+                        setIsPaid(false);
                     }
                     else{
                         setColorStatus("black");
@@ -162,38 +172,47 @@ function debtDetail(){
         <div className="page-body">
             <div className="row">
                 <div className="col-lg-12 mt-2" style={{fontFamily: "Jost"}}>
-                    <h4>Debt Details</h4>
-                    <small style={{fontFamily: "Jost", fontSize: "15px", color: "gray"}}>Solar Banking Debt Detail</small>
+                    <div className="d-flex justify-content-between mt-2">
+                        <div className="title">
+                            <h4>Debt Details</h4>
+                            <small style={{fontFamily: "Jost", fontSize: "15px", color: "gray"}}>Solar Banking Debt Detail</small>
+                        </div>
+                        <div className="direction">
+                            <div className="float-right mr-3 mb-3">
+                                <button className="btn btn-light" onClick={handleCallBackPage}>Back to list</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="card-body">
                         <div className="row">
-                            <div className="form-group col-md-12">
-                                <label className="col-form-label">Account Number:</label>
-                                <p className="card-text">{debtDetail.debt_account_number}</p>
+                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
+                                <label className="col-form-label">Debt Account Number:</label>
+                                <p className="card-text ml-3 f-16">{debtDetail.debt_account_number}</p>
                             </div>
-                            <div className="form-group col-md-12">
+                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
                                 <label className="col-form-label">Amount:</label>
-                                <p className="card-text">{numeral(debtDetail.debt_amount).format('0,0') + " VNĐ"}</p>
+                                <p className="card-text ml-3 f-16">{numeral(debtDetail.debt_amount).format('0,0') + " VNĐ"}</p>
                             </div>
-                            <div className="form-group col-md-12">
+                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
                                 <label className="col-form-label">Status:</label>
-                                <p className="card-text" style={{color: colorStatus,fontWeight:"bold"}}>{debtDetail.debt_status}</p>
+                                <p className="card-text ml-3 f-16" style={{color: colorStatus,fontWeight:"bold"}}>{statusPayment}</p>
                             </div>
-                            <div className="form-group col-md-12">
+                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
                                 <label className="col-form-label">Date:</label>
-                                <p className="card-text">{formateDateTime(debtDetail.debt_created_at)}</p>
+                                <p className="card-text ml-3 f-16">{formateDateTime(debtDetail.debt_created_at)}</p>
                             </div>
-                            <div className="form-group col-md-12">
+                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
                                 <label className="col-form-label">Message:</label>
-                                <p className="card-text">{debtDetail.debt_message}</p>
+                                <p className="card-text ml-3 f-16">{debtDetail.debt_message}</p>
                             </div>
-                            <div className="form-group col-md-12">
+                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
                                 <label className="col-form-label">Cancel Message:</label>
-                                <p className="card-text">{debtDetail.debt_cancel_message}</p>
+                                <p className="card-text ml-3 f-16">{debtDetail.debt_cancel_message}</p>
                             </div>
                             <div className="form-group col-md-12">
                                 {!isPaid && <button className="btn btn-success mr-2" onClick={handleOpenConfirmModal}>Payment</button>}
-                                <button className="btn btn-danger mr-2">Cancel Debt</button>
-                                <button className="btn btn-light" onClick={handleCallBackPage}>Back to list</button>
+
                             </div>
                         </div>
                     </div>
@@ -256,6 +275,21 @@ function debtDetail(){
                     >
                         <div className="form-group d-flex align-items-center align-content-center">
                             <p className="modal-message">Do you want to pay off this debt?</p>
+                        </div>
+                    </Modal>
+                    <Modal title="Notification" style={{fontFamily: "Jost"}}
+                           centered
+                           open={successModal}
+                           onOk={handleCloseSuccessModal}
+                           onCancel={handleCloseSuccessModal}
+                           footer={[
+                               <Button key="submit" onClick={handleCloseSuccessModal} className="btnLogin" style={{fontFamily: "Jost"}} type="primary">
+                                   Ok
+                               </Button>,
+                           ]}
+                    >
+                        <div className="form-group d-flex align-items-center align-content-center">
+                            <p className="modal-message">Payment success!</p>
                         </div>
                     </Modal>
                 </div>
