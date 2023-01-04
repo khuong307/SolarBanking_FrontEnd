@@ -33,7 +33,7 @@ function DebtList(){
             .catch((err) => {
                 console.log(err);
             });
-    },[]);
+    },[isSelf]);
 
     const handleSelfMadeClicked = function (){
         setIsSelf(true);
@@ -74,10 +74,10 @@ function DebtList(){
                         </ul>
                         <div className="tab-content" id="top-tabContent">
                             <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
-                                <TableDebtListSelf debtListSelf={debtList}/>
+                                <TableDebtListSelf debtListSelf={debtList} isSelf={isSelf}/>
                             </div>
                             <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
-                                <TableDebtListOther debtListOther={debtList}/>
+                                <TableDebtListOther debtListOther={debtList} isSelf={isSelf}/>
                             </div>
                         </div>
 

@@ -10,6 +10,8 @@ import '/src/assets/css/datatable-extension.css';
 import '/src/assets/css/data-table.css';
 
 function TableDebtListSelf(props){
+    const isSelf = props.isSelf;
+    const debtListSelf = props.debtListSelf;
     const userId = localStorage.solarBanking_userId;
     const [reasonCancel,setReasonCancel] = useState("");
     const [showDeleteModal,setShowDeleteModal] = useState({
@@ -40,7 +42,7 @@ function TableDebtListSelf(props){
             })
     }
 
-    useEffect(function (){
+    if (isSelf) {
         const buttonComponent = `
             <div class="d-flex">
                 <button class="btn btn-info btn-edit">
@@ -51,45 +53,45 @@ function TableDebtListSelf(props){
                 </button>
             </div>
         `;
-        if (props.debtListSelf.length !== 0){
 
-            $("#paidDebtSelf").DataTable().rows().remove().draw();
-            for (const c of props.debtListSelf) {
-                const ans = [];
-                ans.push(c.debt_id)
-                ans.push(c.debt_account_number)
-                ans.push(formatMoney(c.debt_amount) + " VND")
-                ans.push(formateDateTime(c.debt_created_at))
-                ans.push(c.debt_status)
-                ans.push(buttonComponent)
-                $("#paidDebtSelf").DataTable().rows.add(ans).draw(false);
-            }
-            const deleteBtnArr = document.getElementsByClassName('btn-delete');
-            for (let i = 0; i < deleteBtnArr.length; i++)
-                deleteBtnArr[i].addEventListener('click', function(e) {
-                    setShowDeleteModal({
-                        isShow: true,
-                        debt_id: props.debtListSelf[i].debt_id
-                    });
+        if (Array.isArray(debtListSelf)) {
+            if (debtListSelf.length > 0) {
+                $("#paidDebtSelf").DataTable().rows().remove().draw();
+                debtListSelf.forEach((debt, debtIdx) => {
+                    const ans = [];
+                    ans.push(debtIdx + 1)
+                    ans.push(debt.debt_account_number)
+                    ans.push(formatMoney(debt.debt_amount) + " VND")
+                    ans.push(formateDateTime(debt.debt_created_at))
+                    ans.push(debt.debt_status)
+                    ans.push(buttonComponent)
+                    $("#paidDebtSelf").DataTable().row.add(ans).draw(false);
                 });
+                const deleteBtnArr = document.getElementsByClassName('btn-delete');
+                for (let i = 0; i < deleteBtnArr.length; i++)
+                    deleteBtnArr[i].addEventListener('click', function(e) {
+                        setShowDeleteModal({
+                            isShow: true,
+                            debt_id: props.debtListSelf[i].debt_id
+                        });
+                    });
+            }
         }
-    },[]);
+    }
 
     return (
-        typeof props.debtListSelf == "object" &&
         <div className="table-responsive">
             <table id="paidDebtSelf" className="display">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Account Number</th>
-                    <th>Amount</th>
-                    <th>Create Date</th>
-                    <th>Status</th>
-                    <th></th>
+                    <th scope="col">#</th>
+                    <th scope="col">Account Number</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Create Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
-
                 <tbody>
                 </tbody>
             </table>
