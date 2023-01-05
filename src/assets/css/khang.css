@@ -195,6 +195,10 @@
     width: 100%;
 }
 
+.seen-notification-bg:hover {
+    cursor: pointer;
+}
+
 .ant-select-selector {
     font-family: "Jost";
     font-size: 15px;

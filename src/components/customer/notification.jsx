@@ -3,8 +3,10 @@ import axiosInstance from "../../utils/axiosConfig.js";
 import moment from "moment/moment.js";
 import {useDispatch, useSelector} from "react-redux";
 import {updateIsSeen, updateAllIsSeen} from "../redux/notification.jsx";
+import {useNavigate} from "react-router-dom";
 
 function FullNotificationList() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [allNotifications, setAllNotifications] = useState([]);
     const {notificationList} = useSelector(state => state.notification);
@@ -20,19 +22,22 @@ function FullNotificationList() {
             });
     }, [notificationList]);
 
-    const handleUnseenClicked = function(notificationId) {
-        axiosInstance.put(`/users/notifications/${notificationId}`)
-            .then((res) => {
-                dispatch(updateIsSeen(notificationId));
-                setAllNotifications(allNotifications.map(notification => {
-                    if (notification.notification_id === notificationId)
-                        return {...notification, is_seen: 1};
-                    return notification;
-                }));
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const handleUnseenClicked = function(notification) {
+        if (notification.is_seen === 0) {
+            axiosInstance.put(`/users/notifications/${notification.notification_id}`)
+                .then((res) => {
+                    dispatch(updateIsSeen(notification.notification_id));
+                    setAllNotifications(allNotifications.map(notificationElement => {
+                        if (notificationElement.notification_id === notificationElement)
+                            return {...notificationElement, is_seen: 1};
+                        return notificationElement;
+                    }));
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+        navigate(`/customer/debtList/details/${notification.debt_id}`);
     }
 
     const handleMarkAllAsReadClicked = function() {
@@ -81,8 +86,8 @@ function FullNotificationList() {
                                 <ul className="notification-wrapper" style={{fontFamily: "Jost"}}>
                                     {allNotifications.map((notification, notificationIdx) => (
                                         <div key={notification.notification_id}
-                                             className={notification.is_seen === 0 ? "unseen-notification-bg" : ""}
-                                             onClick={notification.is_seen === 0 ? (e) => handleUnseenClicked(notification.notification_id) : null}
+                                             className={notification.is_seen === 0 ? "unseen-notification-bg" : "seen-notification-bg"}
+                                             onClick={(e) => handleUnseenClicked(notification)}
                                         >
                                             <li className="mt-1" style={{borderRadius: "10px"}}>
                                                 <div className="media">

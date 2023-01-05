@@ -2,13 +2,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {setUpNotification, updateIsSeen, insertNotification} from "../redux/notification.jsx";
 import {useEffect} from "react";
 import axiosInstance from "../../utils/axiosConfig.js";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import moment from "moment";
 import io from 'socket.io-client';
 
 const socket = io('http://localhost:3030');
 
 function Notification() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const userId = localStorage.solarBanking_userId;
 
@@ -30,14 +31,17 @@ function Notification() {
         return () => socket.off(`new-notification-${userId}`);
     }, []);
 
-    const handleUnseenClicked = function(notificationId) {
-        axiosInstance.put(`/users/notifications/${notificationId}`)
-            .then((res) => {
-                dispatch(updateIsSeen(notificationId));
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const handleUnseenClicked = function(notification) {
+        if (notification.is_seen === 0) {
+            axiosInstance.put(`/users/notifications/${notification.notification_id}`)
+                .then((res) => {
+                    dispatch(updateIsSeen(notification.notification_id));
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+        navigate(`/customer/debtList/details/${notification.debt_id}`);
     }
 
     const {notificationList} = useSelector(state => state.notification);
@@ -55,7 +59,7 @@ function Notification() {
                 {notificationList.map(notification => (
                     <li className={notification.is_seen === 0 ? "unseen-notification-bg" : ""}
                         key={notification.notification_id}
-                        onClick={notification.is_seen === 0 ? (e) => handleUnseenClicked(notification.notification_id) : null}
+                        onClick={(e) => handleUnseenClicked(notification)}
                     >
                         <div className="media">
                             <div className="media-body" style={{fontFamily: "Jost"}}>
