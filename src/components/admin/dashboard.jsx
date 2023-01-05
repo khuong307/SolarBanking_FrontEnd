@@ -19,17 +19,17 @@ function Dashboard(){
     const [transactionList, setTransactionList] = useState('')
     const [totalTransactionAmount, settotalTransactionAmount] = useState('')
     function setTypeOfTransaction (e) {
-        console.log(banks)
         if (e.target.id === "external-transaction-tab") {
             setIsExternal(true);
         } else {
             setIsExternal(false);
         }
     }
-    function getTransactionList (){
-        
-        axiosInstance.get(`/admin/transactions`, {
+    async function getTransactionList (){
+        await axiosInstance.get(`/admin/transactions`, {
             headers: {
+                access_token: localStorage.getItem("solarBanking_accessToken"),
+                refresh_token: localStorage.getItem("solarBanking_refreshToken"),
                 is_external: isExternal.toString(),
                 start_date: startDate,
                 end_date: endDate,

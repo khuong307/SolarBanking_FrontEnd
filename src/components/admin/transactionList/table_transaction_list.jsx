@@ -1,14 +1,12 @@
 import {Helmet} from "react-helmet";
 import React from "react";
-import {formateDateTime, formatMoney} from "../../redux/helper_functions.jsx";
-
 import '/src/assets/css/datatables.css'
 import '/src/assets/css/datatable-extension.css'
 import '/src/assets/css/data-table.css'
 function TableTransactionList(props){
     function loadData(){
         if (typeof props.transactionList == "object"){
-            $("#transactionList").DataTable().rows().remove().draw();
+            $("#transactionTable").DataTable().rows().remove().draw();
             for (const c of props.transactionList){
                 const ans = []
                 ans.push(c.transaction_id)
@@ -17,7 +15,9 @@ function TableTransactionList(props){
                 ans.push(c.des_account_number)
                 ans.push(c.des_bank_name)
                 ans.push(c.transaction_amount)
-                $("#transactionList").DataTable().row.add(ans).draw(false)
+                ans.push(new Date(c.transaction_created_at).toLocaleString())
+                ans.push(c.transaction_type_name[0].toUpperCase() + c.transaction_type_name.slice(1))
+                $("#transactionTable").DataTable().row.add(ans).draw(false)
             }
         }
     }
@@ -27,7 +27,7 @@ function TableTransactionList(props){
             {
                 typeof props.transactionList == "object" &&
                     <div className="dt-ext table-responsive card-body" style={{fontFamily: "Jost", fontSize: "13px"}}>
-                        <table id="transactionList" className="display">
+                        <table id="transactionTable" className="display">
                             <thead>
                             <tr>
                                 <th>Transaction ID</th>
@@ -36,6 +36,8 @@ function TableTransactionList(props){
                                 <th>Destination Account Number</th>
                                 <th>Destination Bank Name</th>
                                 <th>Amount</th>
+                                <th>Created Date</th>
+                                <th>Transaction Type</th>
                             </tr>
                             </thead>
                             <tbody>
