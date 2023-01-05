@@ -1,5 +1,6 @@
 import { useFormik } from 'formik'
-import React from 'react'
+import _ from 'lodash'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from "yup"
@@ -9,6 +10,10 @@ export default function SaveTransaction() {
     const userId = localStorage.getItem("solarBanking_userId")
     const infoTransaction = useSelector(state => state.transferReducer.infoTransaction)
     const infoDesAccount = useSelector(state => state.transferReducer.infoDesAccount)
+    const banks = useSelector(state => state.transferReducer.banks)
+    console.log(infoDesAccount)
+
+    const currentBank = banks.find(item => item.value === infoDesAccount.bank_code)
 
     const dispatch = useDispatch()
 
@@ -31,6 +36,12 @@ export default function SaveTransaction() {
         }
     })
 
+    useEffect(()=>{
+        if (_.isEmpty(infoTransaction)) {
+            navigate("/", { replace: true })
+        }
+    },[])
+
     return (
         <div className='page-body'>
             <div className="container-fluid mt-lg-5">
@@ -47,7 +58,7 @@ export default function SaveTransaction() {
                                         </div>
                                         <div className="form-group">
                                             <label><i className="fa fa-credit-card mr-1"></i>Bank Name:</label>
-                                            <input type="text" name='account_number' readOnly className="form-control" value={infoTransaction?.bank || ""} />
+                                            <input type="text" name='account_number' readOnly className="form-control" value={currentBank ? currentBank.label : "Solar Bank"} />
                                         </div>
                                         <div className="form-group">
                                             <label><i className="fa fa-address-book-o mr-1"></i>Nick Name:</label>

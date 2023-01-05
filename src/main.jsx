@@ -38,6 +38,7 @@ import SuccessTransfer from './components/customer/transfer/SuccessTransfer.jsx'
 import SaveTransaction from './components/customer/transfer/SaveTransaction.jsx';
 import CreateDebt from "./components/customer/debt/createDebt.jsx";
 import DebtDetail from "./components/customer/debt/debtDetail.jsx";
+import Loading from './components/layout/Loading/Loading.jsx';
 
 function NavigateFunctionComponent() {
     let navigate = useNavigate();
@@ -53,6 +54,7 @@ function NavigateFunctionComponent() {
 ReactDOM.createRoot(document.getElementById('solar-banking')).render(
         <Provider store={store}>
             <BrowserRouter history={history}>
+                <Loading/>
                 {<NavigateFunctionComponent />}
                 <Routes>
                     <Route path="/" element={<LoginForm />} />

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axiosInstance from "../../../utils/axiosConfig.js";
 import { SOLAR_BANK, SOLAR_BANK_CODE } from '../../../utils/constants.js';
+import { closeLoading, displayLoading } from './LoadingReducer.jsx';
 
 const initialState = {
     src_account: {},
@@ -69,7 +70,8 @@ const transferReducer = createSlice({
             const tempDesInfo = {
                 full_name: infoTransaction.full_name,
                 email:infoTransaction.email,
-                phone:infoTransaction.phone
+                phone:infoTransaction.phone,
+                bank_code:infoTransaction.bank_code
             }
             state.transactionType = infoTransaction.transaction_type
             state.infoDesAccount = tempDesInfo
@@ -96,12 +98,15 @@ export default transferReducer.reducer
 // ----------- THUNK ----------------------
 export const getUserBankAccountApi = (userId) => {
     return async dispatch => {
+        dispatch(displayLoading())
         try {
             const result = await axiosInstance.get(`/customers/${userId}/bankaccount`)
             if (result.status === 200) {
                 dispatch(getUserBankAccount(result.data.bankAccount))
             }
+            dispatch(closeLoading())
         } catch (err) {
+            dispatch(closeLoading())
             console.log(err)
             alert("Can not get account_number")
         }
@@ -110,10 +115,13 @@ export const getUserBankAccountApi = (userId) => {
 
 export const getRecipientListBySolarBankApi = (userId) => {
     return async dispatch => {
+        dispatch(displayLoading())
         try {
             const result = await axiosInstance.get(`/users/${userId}/recipients`)
             dispatch(getRecipientListBySolarBank(result.data))
+            dispatch(closeLoading())
         } catch (err) {
+            dispatch(closeLoading())
             console.log(err)
             alert("Can not get recipient list")
         }
@@ -122,10 +130,13 @@ export const getRecipientListBySolarBankApi = (userId) => {
 
 export const getRecipientListExSLBApi = (userId) => {
     return async dispatch => {
+        dispatch(displayLoading())
         try {
             const result = await axiosInstance.get(`/users/${userId}/recipients`)
             dispatch(getRecipientListExSLB(result.data))
+            dispatch(closeLoading())
         } catch (err) {
+            dispatch(closeLoading())
             console.log(err)
             alert("Can not get recipient list")
         }
@@ -135,6 +146,7 @@ export const getRecipientListExSLBApi = (userId) => {
 // INTRABANK VALIDATION
 export const getValidTransactionApi = (userId, infoTransaction, navigate) => {
     return async dispatch => {
+        dispatch(displayLoading())
         try {
             const result = await axiosInstance.post(`/customers/${userId}/intratransaction`, infoTransaction)
             if (result.status !== 200) {
@@ -143,7 +155,9 @@ export const getValidTransactionApi = (userId, infoTransaction, navigate) => {
                 dispatch(saveInfoTransactionAndDesAccount(result.data.infoTransaction))
                 navigate("/customer/transfer/confirm")
             }
+            dispatch(closeLoading())    
         } catch (err) {
+            dispatch(closeLoading())  
             console.log(err)
             alert("Invalid Transaction Info")
         }
@@ -153,8 +167,10 @@ export const getValidTransactionApi = (userId, infoTransaction, navigate) => {
 // INTERBANK VALIDATION
 export const getValidTransactionInterApi = (userId, infoTransaction, navigate) => {
     return async dispatch => {
+        dispatch(displayLoading())
         try {
             const result = await axiosInstance.post(`/customers/${userId}/intertransaction`, infoTransaction)
+            dispatch(closeLoading())
             if (result.status !== 200) {
                 alert("Invalid Transaction Info")
             } else {
@@ -162,6 +178,7 @@ export const getValidTransactionInterApi = (userId, infoTransaction, navigate) =
                 navigate("/customer/transfer/confirm")
             }
         } catch (err) {
+            dispatch(closeLoading())
             console.log(err)
             alert("Invalid Transaction Info")
         }
@@ -171,15 +188,18 @@ export const getValidTransactionInterApi = (userId, infoTransaction, navigate) =
 // USE FOR INTERBANK + INTRABANK
 export const confirmTransactionApi = (userId, infoTransaction, navigate) => {
     return async dispatch => {
+        dispatch(displayLoading())
         try {
             const result = await axiosInstance.post(`/customers/${userId}/transaction/confirm`, infoTransaction)
+            dispatch(closeLoading())
             if (result.status === 201) {
                 dispatch(confirmTransaction(result.data.transactionId))
-                navigate("/customer/transfer/otp")
+                navigate("/customer/transfer/otp",{replace:true})
             } else {
                 alert("Invalid Transaction Info")
             }
         } catch (err) {
+            dispatch(closeLoading())
             console.log(err)
             alert("Invalid Transaction Info")
         }
@@ -189,17 +209,19 @@ export const confirmTransactionApi = (userId, infoTransaction, navigate) => {
 // INTRABANK OTP
 export const getValidOtpApi = (transactionId, otpInfo, navigate) => {
     return async dispatch => {
+        dispatch(displayLoading())
         try {
             const result = await axiosInstance.post(`/customers/intratransaction/${transactionId}`, otpInfo)
             console.log(result)
+            dispatch(closeLoading())
             if (result.status === 200) {
-
                 dispatch(getInfoTransaction(result.data.infoTransaction))
-                navigate("/customer/transfer/success")
+                navigate("/customer/transfer/success",{replace:true})
             } else {
                 alert("Invalid OTP Code or OTP Code expired")
             }
         } catch (err) {
+            dispatch(closeLoading())
             console.log(err)
             alert("Invalid OTP Code or OTP Code expired")
         }
@@ -209,16 +231,19 @@ export const getValidOtpApi = (transactionId, otpInfo, navigate) => {
 // INTERBANK OTP
 export const getValidOtpInterApi = (transactionId, otpInfo, navigate) => {
     return async dispatch => {
+        dispatch(displayLoading())
         try {
             const result = await axiosInstance.post(`/customers/intertransaction/${transactionId}`, otpInfo)
             console.log(result)
+            dispatch(closeLoading())
             if (result.status === 200) {
                 dispatch(getInfoTransaction(result.data.infoTransaction))
-                navigate("/customer/transfer/success")
+                navigate("/customer/transfer/success",{replace:true})
             } else {
                 alert("Invalid OTP Code or OTP Code expired")
             }
         } catch (err) {
+            dispatch(closeLoading())
             console.log(err)
             alert("Invalid OTP Code or OTP Code expired")
         }
@@ -227,12 +252,15 @@ export const getValidOtpInterApi = (transactionId, otpInfo, navigate) => {
 
 export const getBankListExSLBApi = () => {
     return async dispatch => {
+        dispatch(displayLoading())
         try {
             const result = await axiosInstance.get("/banks")
+            dispatch(closeLoading())
             if (result.status === 200) {
                 dispatch(getBankListExSLB(result.data.bankList))
             }
         } catch (err) {
+            dispatch(closeLoading())
             console.log(err)
             alert("Can not get Bank List")
         }
@@ -241,14 +269,17 @@ export const getBankListExSLBApi = () => {
 
 export const saveRecipientApi = (infoRecipient,navigate) => {
     return async dispatch => {
+        dispatch(displayLoading())
         try{
             const result = await axiosInstance.post("/customers/save",infoRecipient)
             console.log(result)
+            dispatch(closeLoading())
             if(result.status === 200){
                 alert("Save successfully!")
-                navigate("/customer")
+                navigate("/customer",{replace:true})
             }
         }catch(err){
+            dispatch(closeLoading())
             console.log(err)
             alert("This account can't be save. Something wrong")
         }
