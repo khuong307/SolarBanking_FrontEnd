@@ -13,7 +13,6 @@ import '/src/assets/css/data-table.css'
 function TableDebtListOther(props){
     const navigate = useNavigate();
     const debtListOther = props.debtListOther;
-    const isSelf = props.isSelf;
     const userId = localStorage.solarBanking_userId;
     const [reasonCancel,setReasonCancel] = useState("");
     const [showDeleteModal,setShowDeleteModal] = useState({
@@ -42,8 +41,7 @@ function TableDebtListOther(props){
                 console.log(err);
             })
     }
-
-    if (!isSelf) {
+    function loadData(){
         const buttonComponent = `
             <div class="d-flex">
                 <button class="btn btn-info btn-edit">
@@ -60,7 +58,8 @@ function TableDebtListOther(props){
                 debtListOther.forEach((debt, debtIdx) => {
                     const ans = [];
                     ans.push(debtIdx + 1)
-                    ans.push(debt.debt_account_number)
+                    ans.push(debt.reminder_fullname)
+                    ans.push(debt.reminder_accountnumber)
                     ans.push(formatMoney(debt.debt_amount) + " VND")
                     ans.push(formateDateTime(debt.debt_created_at))
                     ans.push(debt.debt_status)
@@ -83,6 +82,7 @@ function TableDebtListOther(props){
             }
         }
     }
+    setTimeout(loadData, 500)
 
     return (
         <div className="table-responsive">
@@ -90,7 +90,8 @@ function TableDebtListOther(props){
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Debt Account Number</th>
+                    <th scope="col">Debt Reminder</th>
+                    <th scope="col">Debt Reminder Account</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Create Date</th>
                     <th scope="col">Status</th>

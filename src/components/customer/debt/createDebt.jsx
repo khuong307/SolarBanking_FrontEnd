@@ -19,19 +19,19 @@ function createDebt(){
 
     const handleChangeAccount = (e) =>{
         const account_number = e.target.value;
-        console.log(e.target.value)
-        axiosInstance.get('/banks/infoUser',{
-            account_number: account_number,
-        }).then(function(res){
-            console.log(res.data)
-            if (res.data.isSuccess === true){
-                console.log(res.data.userInfo)
-                //setRecipientInfo({...res.data.userInfo})
-            }
-        })
-        .catch((err)=>{
-            console.log(err.message)
-        })
+        // console.log(e.target.value)
+        // axiosInstance.get('/banks/infoUser',{
+        //     account_number: account_number,
+        // }).then(function(res){
+        //     console.log(res.data)
+        //     if (res.data.isSuccess === true){
+        //         console.log(res.data.userInfo)
+        //         //setRecipientInfo({...res.data.userInfo})
+        //     }
+        // })
+        // .catch((err)=>{
+        //     console.log(err.message)
+        // })
     }
     const handleModalOk = ()=>{
         setIsShowModal(false);
@@ -47,7 +47,6 @@ function createDebt(){
     const onSubmit = function (data){
         try {
             const apiPath = "/debtList";
-
             axiosInstance.post(apiPath,{
                 user_id: parseInt(userId),
                 debt_account_number: data.account_number,
@@ -61,6 +60,9 @@ function createDebt(){
                         message: res.data.message
                     })
                     setIsShowModal(true);
+                }
+                else{
+
                 }
             })
             .catch((err)=>{

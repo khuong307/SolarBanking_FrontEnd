@@ -6,42 +6,35 @@ import {useNavigate} from "react-router-dom";
 
 function DebtList(){
     const navigate = useNavigate();
-    const [debtList,setDebtList] = useState([]);
+    const [debtList,setDebtList] = useState('');
+    const [selfList,setSelfList] = useState('');
+    const [otherList,setOtherList] = useState('');
     const [isSelf,setIsSelf] = useState(true);
 
     const handleCreateNewDebt = ()=>{
         navigate("create");
     }
-
-    useEffect(function (){
-        const userId = localStorage.solarBanking_userId;
-        const SELF_MADE_DEBT_API_ENDPOINT = '/selfMade';
-        const OTHER_MADE_DEBT_API_ENDPOINT = '/otherMade';
-        let apiPath = `/debtList/${userId}`;
-
-        if (isSelf)
-            apiPath += SELF_MADE_DEBT_API_ENDPOINT;
-        else
-            apiPath += OTHER_MADE_DEBT_API_ENDPOINT;
-
-        axiosInstance.get(apiPath)
-            .then((res) => {
-                if(res.data.isSuccess === true){
-                    setDebtList(res.data.list_debt);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    },[isSelf]);
-
     const handleSelfMadeClicked = function (){
         setIsSelf(true);
     }
     const handleOtherMadeClicked = function (){
         setIsSelf(false);
     }
-
+    function  getDebtList (){
+        const userId = localStorage.solarBanking_userId;
+        let apiPath = `/debtList/${userId}/listDebt`;
+        axiosInstance.get(apiPath)
+            .then((res) => {
+                if(res.data.isSuccess === true){
+                    setSelfList(res.data.self_debt_list);
+                    setOtherList(res.data.other_debt_list);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+    useEffect(getDebtList,[]);
     return (
         <div className="page-body">
             <div className="row">
@@ -52,7 +45,7 @@ function DebtList(){
                             <small style={{fontFamily: "Jost", fontSize: "15px", color: "gray"}}>Solar Banking Debt List</small>
                         </div>
                         <div className="direction">
-                            <div className="float-right mr-3 mb-3">
+                            <div className="float-right mb-3">
                                 <button className="btn btn-success" onClick={handleCreateNewDebt}>
                                     <i className="fa fa-plus mr-2"></i>
                                     Create
@@ -60,28 +53,30 @@ function DebtList(){
                             </div>
                         </div>
                     </div>
+                    <div className="card height-equal mt-4" style={{fontFamily: "Jost"}}>
+                        <div className="card-body">
+                            <ul className="nav nav-pills nav-warning" id="top-tab" role="tablist">
+                                <li onClick={handleSelfMadeClicked} className="nav-item">
+                                    <a className="nav-link active" id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-controls="top-home" aria-selected="true">
+                                        <i className="icofont icofont-user-alt-7" />Self Made</a>
+                                </li>
+                                <li onClick={handleOtherMadeClicked} className="nav-item">
+                                    <a className="nav-link" id="profile-top-tab" data-toggle="tab" href="#top-profile" role="tab" aria-controls="top-profile" aria-selected="false">
+                                        <i className="icofont icofont-users" />Other Made</a>
+                                </li>
+                            </ul>
+                            <div className="tab-content mt-5" id="top-tabContent">
+                                <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
+                                    <TableDebtListSelf debtListSelf={selfList}/>
+                                </div>
+                                <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
+                                    <TableDebtListOther debtListOther={otherList}/>
+                                </div>
+                            </div>
 
-                    <div className="card-body">
-                        <ul className="nav nav-tabs border-tab" id="top-tab" role="tablist">
-                            <li onClick={handleSelfMadeClicked} className="nav-item">
-                                <a className="nav-link active" id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-controls="top-home" aria-selected="true">
-                                    <i className="icofont icofont-user-alt-7" />Self Made</a>
-                            </li>
-                            <li onClick={handleOtherMadeClicked} className="nav-item">
-                                <a className="nav-link" id="profile-top-tab" data-toggle="tab" href="#top-profile" role="tab" aria-controls="top-profile" aria-selected="false">
-                                    <i className="icofont icofont-users" />Other Made</a>
-                            </li>
-                        </ul>
-                        <div className="tab-content" id="top-tabContent">
-                            <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
-                                <TableDebtListSelf debtListSelf={debtList} isSelf={isSelf}/>
-                            </div>
-                            <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
-                                <TableDebtListOther debtListOther={debtList} isSelf={isSelf}/>
-                            </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
         </div>

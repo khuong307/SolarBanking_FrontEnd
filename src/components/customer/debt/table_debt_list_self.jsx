@@ -11,7 +11,6 @@ import '/src/assets/css/datatable-extension.css';
 import '/src/assets/css/data-table.css';
 
 function TableDebtListSelf(props){
-    const isSelf = props.isSelf;
     const navigate = useNavigate();
     const debtListSelf = props.debtListSelf;
     const userId = localStorage.solarBanking_userId;
@@ -43,8 +42,7 @@ function TableDebtListSelf(props){
                 console.log(err);
             })
     }
-
-    if (isSelf) {
+    function loadData(){
         const buttonComponent = `
             <div class="d-flex">
                 <button class="btn btn-info btn-edit">
@@ -62,6 +60,7 @@ function TableDebtListSelf(props){
                 debtListSelf.forEach((debt, debtIdx) => {
                     const ans = [];
                     ans.push(debtIdx + 1)
+                    ans.push(debt.debtor_fullname)
                     ans.push(debt.debt_account_number)
                     ans.push(formatMoney(debt.debt_amount) + " VND")
                     ans.push(formateDateTime(debt.debt_created_at))
@@ -85,6 +84,7 @@ function TableDebtListSelf(props){
             }
         }
     }
+    setTimeout(loadData, 500)
 
     return (
         <div className="table-responsive">
@@ -92,6 +92,7 @@ function TableDebtListSelf(props){
                 <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Debtor</th>
                     <th scope="col">Debt Account Number</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Create Date</th>

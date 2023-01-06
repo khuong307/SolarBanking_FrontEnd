@@ -124,21 +124,34 @@ function debtDetail(){
         axiosInstance.get(`/debtList/${id}`)
             .then((res)=>{
                 if (res.data.isSuccess){
-                    console.log(res.data.objDebt);
                     setDebtDetail({...res.data.objDebt});
                     const txtStatus = res.data.objDebt.debt_status;
                     setStatusPayment(res.data.objDebt.debt_status);
-                    console.log(txtStatus);
-                    if (txtStatus === "PAID"){
-                        setColorStatus("green");
+                    if (parseInt(userId) === parseInt(res.data.objDebt.user_id)){
                         setIsPaid(true);
-                    }
-                    else if (txtStatus === "NOT PAID"){
-                        setColorStatus("red");
-                        setIsPaid(false);
+                        if (txtStatus === "PAID"){
+                            setColorStatus("green");
+                        }
+                        else if (txtStatus === "NOT PAID"){
+                            setColorStatus("red");
+                        }
+                        else{
+                            setColorStatus("black");
+                        }
                     }
                     else{
-                        setColorStatus("black");
+                        if (txtStatus === "PAID"){
+                            setColorStatus("green");
+                            setIsPaid(true);
+                        }
+                        else if (txtStatus === "NOT PAID"){
+                            setColorStatus("red");
+                            setIsPaid(false);
+                        }
+                        else{
+                            setColorStatus("black");
+                            setIsPaid(true);
+                        }
                     }
                 }
             })
