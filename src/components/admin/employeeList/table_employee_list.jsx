@@ -4,48 +4,73 @@ import {useEffect, useState} from 'react'
 import axiosInstance from "../../../utils/axiosConfig.js";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import EditEmployeeModal from "./edit_employee_modal";
+
 import '/src/assets/css/datatables.css'
 import '/src/assets/css/datatable-extension.css'
 import '/src/assets/css/data-table.css'
+
 function TableEmployeeList(props){
-    const [modalShow, setModalShow] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
     const [currentUserId, setCurrentUserId] = useState("")
-    const handleClose = () => setModalShow(false);
+    const [currentUserInfo, setCurrentUserInfo] = useState("")
+    const closeDeleteModal = () => setDeleteModal(false);
+    const clodeEditModal = () => setEditModal(false);
     function loadData(){
         if (typeof props.employeeList == "object"){
             var i = 0;
+            $("#employeeTable").DataTable({
+                scrollX: true,
+                scrollCollapse: true,
+                scroller: true,
+                bDestroy: true
+            })
             $("#employeeTable").DataTable().rows().remove().draw();
             for (const c of props.employeeList){
                 const ans = []
-                var deleteButton = `<div data-id="${c.user_id}" class="deleteRow" style="background: #ff5370; color: white; height: 30px; width: 30px; border: 1px solid black; border-radius: 10%; display: flex; justify-content: center; align-items: center"><i style="font-size: 18px; line-height: 1" class="fa fa-trash" data-id="${c.user_id}"></i></div>`
+                var editButton = `<div data-id="${c.user_id}" class="editRow mx-1" style="background: #53ffc3; color: white; height: 30px; width: 30px; border: 1px solid black; border-radius: 10%; display: flex; justify-content: center; align-items: center"><i style="font-size: 18px; line-height: 1" class="fa fa-pencil" data-id="${c.user_id}"></i></div>`                
+                var deleteButton = `<div data-id="${c.user_id}" class="deleteRow mx-1" style="background: #ff5370; color: white; height: 30px; width: 30px; border: 1px solid black; border-radius: 10%; display: flex; justify-content: center; align-items: center"><i style="font-size: 18px; line-height: 1" class="fa fa-trash" data-id="${c.user_id}"></i></div>`                
                 ans.push(++i)
                 ans.push(c.username)
                 ans.push(c.full_name)
                 ans.push(c.email)
                 ans.push(c.phone)
-                ans.push(deleteButton)
+                ans.push(`<div class="buttonRow d-flex">` + editButton + deleteButton + `</div>`)
                 $("#employeeTable").DataTable().row.add(ans).draw(false)
             }
+            
         }
     }
-    function deleteUser(e) {
-        if (e.target.className == "deleteRow" || e.target.className == "fa fa-trash") {
+    function changeButton(e) {
+        if (e.target.className == "deleteRow mx-1" || e.target.className == "fa fa-trash") {
             event.target.dataset
             setCurrentUserId(event.target.getAttribute('data-id'))
-            setModalShow(true)
+            setDeleteModal(true)
         }
-            
+        if (e.target.className == "editRow mx-1" || e.target.className == "fa fa-pencil") {
+            event.target.dataset
+            var userId = event.target.getAttribute('data-id')
+            setCurrentUserId(userId)
+            axiosInstance.get(`/admin/employee/${userId}`).then((result)=>{
+                if (result.data.isSuccess == true){
+                    setCurrentUserInfo(result.data.user)
+                    setEditModal(true)
+                } else {
+                    alert(result.data.message)
+                }
+            })
+            .catch((err)=>{
+                alert(err)
+            })
+        }
     }
     async function confirmDeleteUser() {
-        setModalShow(false)
-        await axiosInstance.delete(`/admin/employee/${currentUserId}`, {
-            headers: {
-                access_token: localStorage.getItem("solarBanking_accessToken"),
-                refresh_token: localStorage.getItem("solarBanking_refreshToken"),
-            }
-        }).then((result)=> {
+        setDeleteModal(false)
+        await axiosInstance.delete(`/admin/employee/${currentUserId}`).then((result)=> {
             if (result.data.isSuccess == true){
                 loadData()
+                alert(result.data.message)
             }
             else{
                 alert(result.data.message)
@@ -55,7 +80,9 @@ function TableEmployeeList(props){
         })
         props.getEmployeeList()
     }
-    setTimeout(loadData, 500)
+
+    setTimeout(loadData, 200)
+    
     return(
         <div className="row">
             {
@@ -72,10 +99,10 @@ function TableEmployeeList(props){
                                 <th></th>
                             </tr>
                             </thead>
-                            <tbody onClick={deleteUser}>
+                            <tbody onClick={changeButton}>
                             </tbody>
                         </table>
-                        <Modal show={modalShow} onHide={handleClose} >
+                        <Modal show={deleteModal} onHide={closeDeleteModal} >
                             <Modal.Header closeButton>
                                 <Modal.Title >
                                     <p style={{ fontSize: "20px"}} className="modalTitle">Delete Employee</p>
@@ -87,11 +114,13 @@ function TableEmployeeList(props){
                             </Modal.Body>
 
                             <Modal.Footer>
-                                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                                <Button variant="secondary" onClick={closeDeleteModal}>Close</Button>
                                 <Button variant="primary"  onClick={confirmDeleteUser}>Save changes</Button>
                             </Modal.Footer>
                         </Modal>
-                        
+                        {editModal && <EditEmployeeModal 
+                            editModal={editModal} clodeEditModal={clodeEditModal} info={currentUserInfo}/>
+                        }
                         <Helmet>
                             <script src="/src/assets/js/datatables/jquery.dataTables.min.js"></script>
                             <script src="/src/assets/js/datatable-extension/dataTables.buttons.min.js"></script>

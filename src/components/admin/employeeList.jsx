@@ -1,6 +1,7 @@
 import React from 'react'
 import {useEffect, useState} from 'react'
 import TableEmployeeList from "./employeeList/table_employee_list";
+import AddEmployeeTab from "./employeeList/add_employee_tab";
 import axiosInstance from "../../utils/axiosConfig.js";
 
 function EmployeeList(){
@@ -11,6 +12,8 @@ function EmployeeList(){
             setCounterTab(1);
         } else if (e.target.id === "add-employee-tab"){
             setCounterTab(2);
+        } else {
+            setCounterTab(3);
         }
     }
     async function getEmployeeList (){
@@ -50,22 +53,25 @@ function EmployeeList(){
                         <li className="nav-item" onClick={setTab}>
                             <a className="nav-link active" id="employee-list-tab" data-toggle="tab" style={{fontSize: "15px"}}
                                 href="#employeeList" role="tab" aria-controls="employeeList" 
-                                aria-selected="true"><i className="fa fa-line-chart"></i>Employee List</a>
+                                aria-selected="true"><i className="icofont icofont-address-book"></i>Employee List</a>
                         </li>
                         <li className="nav-item" onClick={setTab}>
                             <a className="nav-link" id="add-employee-tab" data-toggle="tab" style={{fontSize: "15px"}}
                                 href="#addEmployee" role="tab" aria-controls="addEmployee" 
                                 aria-selected="false">
-                                <i className="icofont icofont-coins"></i>Add Employee</a>
+                                <i className="icofont icofont-contact-add"></i>Add Employee</a>
                         </li>
                     </ul>
                     <div className="tab-content" id="pills-icontabContent">
                         <div className="tab-pane fade show active" id="employeeList" role="tabpanel"
                                 aria-labelledby="employee-list-tab">
-                            <TableEmployeeList employeeList={employeeList} getEmployeeList={getEmployeeList}/>
+                            {counterTab == 1 && <TableEmployeeList 
+                                employeeList={employeeList} getEmployeeList={getEmployeeList} 
+                               />}
                         </div>
-                        <div className="tab-pane fade show active" id="addEmployee" role="tabpanel"
+                        <div className="tab-pane fade show" id="addEmployee" role="tabpanel"
                                 aria-labelledby="add-employee-tab">
+                            {counterTab == 2 && <AddEmployeeTab/>}
                         </div>
                     </div>
                 </div>
