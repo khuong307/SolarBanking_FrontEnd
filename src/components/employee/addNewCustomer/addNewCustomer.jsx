@@ -10,9 +10,13 @@ import StatusMultiModal from "./statusMultiModal.jsx";
 
 import "/src/assets/css/scrollable.css"
 import axiosInstance from "../../../utils/axiosConfig.js";
+import {useDispatch} from "react-redux";
+import {changeByID} from "../../redux/counter.jsx";
 
 
 function AddNewCustomer(){
+    const dispatch = useDispatch()
+    dispatch(changeByID(1))
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm()
     const [account_number, setAccount] = useState("")
 

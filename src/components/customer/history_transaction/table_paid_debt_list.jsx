@@ -18,7 +18,10 @@ function TablePaidDebtList(props){
                 ans.push(c.other_bank_name)
                 ans.push("- "+formatMoney(c.transaction_amount))
                 ans.push(c.transaction_message)
-                $("#paidDebt").DataTable().row.add(ans).draw(false)
+                const tmp = $("#paidDebt").DataTable().row.add(ans).draw(false).node()
+                if (c.other_bank_name == "Solar Bank"){
+                    $(tmp).attr('style', "color: black; background-color: #FFB800")
+                }
             }
         }
     }

@@ -83,11 +83,10 @@ function TableDebtListOther(props){
                 $("#paidDebtOther").DataTable().rows().remove().draw();
                 debtListOther.forEach((debt, debtIdx) => {
                     const ans = [];
-                    ans.push(debt.debt_id)
+                    ans.push(formateDateTime(debt.debt_created_at))
                     ans.push(debt.reminder_fullname)
                     ans.push(debt.reminder_accountnumber)
                     ans.push(formatMoney(debt.debt_amount) + " VND")
-                    ans.push(formateDateTime(debt.debt_created_at))
                     ans.push(debt.debt_status)
                     ans.push(checkIsPaidRemoveButton(debt.debt_status))
                     $("#paidDebtOther").DataTable().row.add(ans).draw(false);
@@ -116,11 +115,10 @@ function TableDebtListOther(props){
             <table id="paidDebtOther" className="display">
                 <thead>
                 <tr style={{textAlign: "center"}}>
-                    <th scope="col">#</th>
+                    <th scope="col">Create Date</th>
                     <th scope="col">Debt Reminder</th>
                     <th scope="col">Debt Reminder Account</th>
                     <th scope="col">Amount</th>
-                    <th scope="col">Create Date</th>
                     <th scope="col">Status</th>
                     <th scope="col">Features</th>
                 </tr>

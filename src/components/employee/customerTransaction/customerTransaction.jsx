@@ -10,8 +10,12 @@ import TablePaidDebtList from "./table_paid_debt_list";
 import TableReceiveDebtList from "./table_receive_debt_list.jsx";
 import NotFound from "../chargeMoney/not_found";
 import axiosInstance from "../../../utils/axiosConfig.js";
+import {useDispatch} from "react-redux";
+import {changeByID} from "../../redux/counter.jsx";
 
 function CustomerTransaction(){
+    const dispatch = useDispatch()
+    dispatch(changeByID(3))
     const { register, handleSubmit, formState: { errors }} = useForm()
     const [transferList, setTransferList] = useState('')
     const [click, setClick] = useState(false)
