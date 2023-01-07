@@ -5,7 +5,11 @@ import Axios from "axios";
 import NotFound from "./not_found.jsx";
 import CompleteTransferModal from "./completeTransferModal.jsx";
 import axiosInstance from "../../../utils/axiosConfig.js";
+import {useDispatch} from "react-redux";
+import {changeByID} from "../../redux/counter.jsx";
 function ChargeMoney(){
+    const dispatch = useDispatch()
+    dispatch(changeByID(2))
     const { register, handleSubmit, formState: { errors }} = useForm()
     const [customerData, setCustomerData] = useState('')
     const [transaction_info, setTransactionInfo] = useState('')

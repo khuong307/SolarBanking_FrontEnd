@@ -2,8 +2,13 @@ import React, {useEffect, useState} from 'react';
 import CardDetail from './card/CardDetail.jsx';
 import axiosInstance from '../../utils/axiosConfig.js';
 import {formatMoney} from "../redux/helper_functions";
+import {useDispatch} from "react-redux";
+import {changeByID} from "../redux/counter.jsx";
 
 function CardList() {
+    const dispatch = useDispatch()
+    dispatch(changeByID(1))
+
     const [isSpend, setIsSpending] = useState(true);
     const [cardList, setCardList] = useState([]);
 
@@ -91,7 +96,9 @@ function CardList() {
                                                 <p><i className="fa fa-phone mr-1"></i>: {userInfo.phone}</p>
                                                 <p><i className="fa fa-envelope mr-1"></i>: {userInfo.email}</p>
                                             </div>
-
+                                            <div className="col-lg-12 mt-4 d-flex justify-content-center" >
+                                                <button className="btn btnLogin2 d-flex justify-content-center align-content-center align-items-center" style={{fontFamily: "Jost"}}><i className="fa fa-lock mr-1"></i>Lock Account</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

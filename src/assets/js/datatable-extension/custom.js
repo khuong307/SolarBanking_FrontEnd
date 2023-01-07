@@ -1,5 +1,15 @@
 "use strict";
 $(document).ready(function(){
+    $("#paidDebtSelf").DataTable( {
+        rowReorder: true,
+        order: [[ 0, 'desc' ]],
+        searching: false,
+    } );
+    $("#paidDebtOther").DataTable( {
+        rowReorder: true,
+        order: [[ 0, 'desc' ]],
+        searching: false,
+    } );
     $("#accountList").DataTable( {
         rowReorder: true,
         order: [[ 0, 'desc' ]],

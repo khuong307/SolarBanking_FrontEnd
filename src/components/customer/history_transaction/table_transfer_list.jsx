@@ -10,23 +10,28 @@ function TableTransferList(props){
         if (typeof props.transferList == "object"){
             $("#transferByCustomer").DataTable().rows().remove().draw();
             for (const c of props.transferList){
+                console.log(c)
                 const ans = []
                 ans.push(formateDateTime(c.transaction_created_at).slice(0,10))
                 ans.push(formateDateTime(c.transaction_created_at).slice(10,19))
                 ans.push(c.des_account_number)
                 ans.push(c.other_fullname)
-                ans.push("- "+formatMoney(c.transaction_amount) + " VND")
+                ans.push(c.other_bank_name)
+                ans.push("- "+formatMoney(c.transaction_amount))
                 ans.push(c.transaction_message)
-                $("#transferByCustomer").DataTable().row.add(ans).draw(false)
+                const tmp = $("#transferByCustomer").DataTable().row.add(ans).draw(false).node()
+                if (c.other_bank_name == "Solar Bank"){
+                    $(tmp).attr('style', "color: black; background-color: #FFB800")
+                }
             }
         }
     }
     setTimeout(loadData, 500)
     return(
-        <div className="row">
+        <div>
             {
                 typeof props.transferList == "object" &&
-                    <div className="dt-ext table-responsive card-body" style={{fontFamily: "Jost", fontSize: "13px"}}>
+                    <div className="dt-ext table-responsive" style={{fontFamily: "Jost", fontSize: "13px"}}>
                         <table id="transferByCustomer" className="display">
                             <thead>
                             <tr>
@@ -34,7 +39,8 @@ function TableTransferList(props){
                                 <th>Time</th>
                                 <th>Receiver Account</th>
                                 <th>Receiver Fullname</th>
-                                <th>Amount</th>
+                                <th>Bank</th>
+                                <th>Amount (VND)</th>
                                 <th>Message</th>
                             </tr>
                             </thead>

@@ -9,8 +9,12 @@ import TabelReceiveOthersList from "./table_receivedOthers_list";
 import TablePaidDebtList from "./table_paid_debt_list";
 import TableReceiveDebtList from "./table_receive_debt_list.jsx";
 import axiosInstance from "../../../utils/axiosConfig.js";
+import {useDispatch} from "react-redux";
+import {changeByID} from "../../redux/counter.jsx";
 
 function HistoryTransaction(){
+    const dispatch = useDispatch()
+    dispatch(changeByID(5))
     const [transferList, setTransferList] = useState('')
     const [receiveOthersList, setReceiveOthersList] = useState('')
     const [chargeSLBList, setchargeSLBList] = useState('')
@@ -44,7 +48,7 @@ function HistoryTransaction(){
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-lg-12 mt-2" style={{fontFamily: "Jost"}}>
-                        <h4>HISTORY TRANSACTION</h4>
+                        <h4>HISTORY TRANSACTION (Last 30 Days)</h4>
                         <small style={{fontFamily: "Jost", fontSize: "15px", color: "gray"}}>Solar Banking Customer Panel</small>
                     </div>
                 </div>

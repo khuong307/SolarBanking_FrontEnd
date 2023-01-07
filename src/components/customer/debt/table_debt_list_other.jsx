@@ -13,13 +13,22 @@ import '/src/assets/css/data-table.css'
 function TableDebtListOther(props){
     const navigate = useNavigate();
     const debtListOther = props.debtListOther;
-    const isSelf = props.isSelf;
     const userId = localStorage.solarBanking_userId;
     const [reasonCancel,setReasonCancel] = useState("");
     const [showDeleteModal,setShowDeleteModal] = useState({
         isShow: false,
         debt_id: null
     });
+
+
+    function onLoadEmptyTable(){
+        if (debtListOther.length == 0){
+            $("#paidDebtOther").DataTable()
+        }
+    }
+    setTimeout(onLoadEmptyTable, 500)
+
+
     const handleOnChangeReason = (e)=>{
         setReasonCancel(e.target.value);
     }
@@ -43,31 +52,46 @@ function TableDebtListOther(props){
             })
     }
 
-    if (!isSelf) {
-        const buttonComponent = `
-            <div class="d-flex">
-                <button class="btn btn-info btn-edit">
-                    <i class="fa fa-pencil"></i>
-                </button>
-                <button class="btn btn-danger ml-2 btn-delete">
-                    <i class="fa fa-trash"></i>
+    function checkIsPaidRemoveButton(debt_status){
+        if (debt_status == "PAID"){
+            const buttonComponent = `
+            <div class="d-flex justify-content-center">
+                <button class="btn btnLogin btn-edit-other">
+                    <i class="fa fa-eye"></i>
                 </button>
             </div>
-        `;
+            `
+            return buttonComponent
+        }
+        else{
+            const buttonComponent = `
+                <div class="d-flex justify-content-center">
+                    <button class="btn btnLogin btn-edit-other">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="btn btnLogin2 ml-2 btn-delete-other">
+                        <i class="fa fa-times-circle-o"></i>
+                    </button>
+                </div>
+            `
+            return buttonComponent
+        }
+    }
+    function loadData(){
         if (Array.isArray(debtListOther)) {
             if (debtListOther.length > 0) {
                 $("#paidDebtOther").DataTable().rows().remove().draw();
                 debtListOther.forEach((debt, debtIdx) => {
                     const ans = [];
-                    ans.push(debtIdx + 1)
-                    ans.push(debt.debt_account_number)
-                    ans.push(formatMoney(debt.debt_amount) + " VND")
                     ans.push(formateDateTime(debt.debt_created_at))
+                    ans.push(debt.reminder_fullname)
+                    ans.push(debt.reminder_accountnumber)
+                    ans.push(formatMoney(debt.debt_amount) + " VND")
                     ans.push(debt.debt_status)
-                    ans.push(buttonComponent)
+                    ans.push(checkIsPaidRemoveButton(debt.debt_status))
                     $("#paidDebtOther").DataTable().row.add(ans).draw(false);
                 });
-                const deleteBtnArr = document.getElementsByClassName('btn-delete');
+                const deleteBtnArr = document.getElementsByClassName('btn-delete-other');
                 for (let i = 0; i < deleteBtnArr.length; i++)
                     deleteBtnArr[i].addEventListener('click', function(e) {
                         setShowDeleteModal({
@@ -75,26 +99,28 @@ function TableDebtListOther(props){
                             debt_id: debtListOther[i].debt_id
                         });
                     });
-                const detailBtnArr = document.getElementsByClassName('btn-edit');
+                const detailBtnArr = document.getElementsByClassName('btn-edit-other');
                 for (let i = 0; i < detailBtnArr.length; i++)
                     detailBtnArr[i].addEventListener('click', function(e) {
+                        console.log(debtListOther[i].debt_id)
                         navigate(`details/${debtListOther[i].debt_id}`)
                     });
             }
         }
     }
+    setTimeout(loadData, 500)
 
     return (
-        <div className="table-responsive">
+        <div className="dt-ext table-responsive">
             <table id="paidDebtOther" className="display">
                 <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Debt Account Number</th>
-                    <th scope="col">Amount</th>
+                <tr style={{textAlign: "center"}}>
                     <th scope="col">Create Date</th>
+                    <th scope="col">Debt Reminder</th>
+                    <th scope="col">Debt Reminder Account</th>
+                    <th scope="col">Amount</th>
                     <th scope="col">Status</th>
-                    <th scope="col"></th>
+                    <th scope="col">Features</th>
                 </tr>
                 </thead>
                 <tbody>

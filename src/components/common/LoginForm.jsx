@@ -44,16 +44,16 @@ function LoginForm(){
                 }
 
                 if (res.data.account.role === ROLE.CUSTOMER) {
-                    retUrl = location.state?.from?.pathname || '/customer';
-                    retUrl = retUrl.includes('/customer') ? retUrl : '/customer';
+                    retUrl = location.state?.from?.pathname || '/customer/cardList';
+                    retUrl = retUrl.includes('/customer') ? retUrl : '/customer/cardList';
                 }
                 else if (res.data.account.role === ROLE.EMPLOYEE) {
-                    retUrl = location.state?.from?.pathname || '/employee';
-                    retUrl = retUrl.includes('/employee') ? retUrl : '/employee';
+                    retUrl = location.state?.from?.pathname || '/employee/addNewCustomer';
+                    retUrl = retUrl.includes('/employee') ? retUrl : '/employee/addNewCustomer';
                 }
                 else {
-                    retUrl = location.state?.from?.pathname || '/admin';
-                    retUrl = retUrl.includes('/admin') ? retUrl : '/admin';
+                    retUrl = location.state?.from?.pathname || '/admin/employeeList';
+                    retUrl = retUrl.includes('/admin') ? retUrl : '/admin/employeeList';
                 }
 
                 navigate(retUrl);

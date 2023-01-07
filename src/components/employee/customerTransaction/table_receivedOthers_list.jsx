@@ -16,6 +16,7 @@ function TabelReceiveOthersList(props){
                 ans.push(c.des_account_number)
                 ans.push(c.other_fullname)
                 ans.push("+"+formatMoney(c.transaction_amount) + " VND")
+                ans.push(c.other_bank_name)
                 ans.push(c.transaction_message)
                 $("#receiveFromOthers").DataTable().row.add(ans).draw(false)
             }
@@ -29,12 +30,13 @@ function TabelReceiveOthersList(props){
                     <div className="dt-ext table-responsive card-body" style={{fontFamily: "Jost", fontSize: "13px"}}>
                         <table id="receiveFromOthers" className="display">
                             <thead>
-                            <tr>
+                            <tr style={{textAlign: "center"}}>
                                 <th>Date</th>
                                 <th>Time</th>
                                 <th>Sender Account</th>
                                 <th>Sender Fullname</th>
                                 <th>Amount</th>
+                                <th>Bank</th>
                                 <th>Message</th>
                             </tr>
                             </thead>

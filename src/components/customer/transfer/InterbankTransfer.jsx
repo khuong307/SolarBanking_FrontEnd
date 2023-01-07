@@ -132,8 +132,8 @@ export default function InternalTransfer() {
                     </div>
                     <div className='col-4'>
                         <div className="form-group">
-                            <label >Money in words</label>
-                            <textarea name="moneyWord" disabled className="form-control" rows={3}
+                            <label >Money in words:</label>
+                            <textarea name="moneyWord" disabled className="form-control" rows={1}
                                 value={
                                     formik.values.transaction_amount === "" ? "0 VND" :
                                         converter.toWords(Number(formik.values.transaction_amount.replace(/,/g, ""))).toUpperCase() + " VND"
@@ -153,7 +153,7 @@ export default function InternalTransfer() {
 
                 <div className='row'>
                     <div className='col-8'>
-                        <label style={{ fontFamily: "Jost" }}>Charge for remittance (-15.000):</label>
+                        <label style={{ fontFamily: "Jost" }}>Charge for remittance (-15,000 VND):</label>
                         <div className='form-group'>
                             <div className="form-check form-check-inline">
                                 <input className="form-check-input" type="radio" name="pay_transaction_fee" defaultChecked defaultValue="SRC" onChange={formik.handleChange} />
@@ -168,8 +168,8 @@ export default function InternalTransfer() {
                 </div>
 
                 <div className='row'>
-                    <div className='col-8'>
-                        <button type='submit' className="btn btn-danger pr-5 pl-5 pt-3 pb-3" onClick={formik.handleSubmit}>CONTINUE</button>
+                    <div className='col-lg-2'>
+                        <button type='submit' className="btn btnLogin d-flex justify-content-between align-content-center align-items-center" onClick={formik.handleSubmit}>CONTINUE<i className="fa fa-chevron-circle-right ml-2"></i></button>
                     </div>
                 </div>
             </form>
