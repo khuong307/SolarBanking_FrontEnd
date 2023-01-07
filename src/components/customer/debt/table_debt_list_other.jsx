@@ -51,17 +51,33 @@ function TableDebtListOther(props){
                 console.log(err);
             })
     }
-    function loadData(){
-        const buttonComponent = `
-            <div class="d-flex">
+
+    function checkIsPaidRemoveButton(debt_status){
+        if (debt_status == "PAID"){
+            const buttonComponent = `
+            <div class="d-flex justify-content-center">
                 <button class="btn btnLogin btn-edit-other">
                     <i class="fa fa-eye"></i>
                 </button>
-                <button class="btn btnLogin2 ml-2 btn-delete-other">
-                    <i class="fa fa-times-circle-o"></i>
-                </button>
             </div>
-        `;
+            `
+            return buttonComponent
+        }
+        else{
+            const buttonComponent = `
+                <div class="d-flex justify-content-center">
+                    <button class="btn btnLogin btn-edit-other">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="btn btnLogin2 ml-2 btn-delete-other">
+                        <i class="fa fa-times-circle-o"></i>
+                    </button>
+                </div>
+            `
+            return buttonComponent
+        }
+    }
+    function loadData(){
         if (Array.isArray(debtListOther)) {
             if (debtListOther.length > 0) {
                 $("#paidDebtOther").DataTable().rows().remove().draw();
@@ -73,7 +89,7 @@ function TableDebtListOther(props){
                     ans.push(formatMoney(debt.debt_amount) + " VND")
                     ans.push(formateDateTime(debt.debt_created_at))
                     ans.push(debt.debt_status)
-                    ans.push(buttonComponent)
+                    ans.push(checkIsPaidRemoveButton(debt.debt_status))
                     $("#paidDebtOther").DataTable().row.add(ans).draw(false);
                 });
                 const deleteBtnArr = document.getElementsByClassName('btn-delete-other');
@@ -99,14 +115,14 @@ function TableDebtListOther(props){
         <div className="dt-ext table-responsive">
             <table id="paidDebtOther" className="display">
                 <thead>
-                <tr>
+                <tr style={{textAlign: "center"}}>
                     <th scope="col">#</th>
                     <th scope="col">Debt Reminder</th>
                     <th scope="col">Debt Reminder Account</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Create Date</th>
                     <th scope="col">Status</th>
-                    <th scope="col"></th>
+                    <th scope="col">Features</th>
                 </tr>
                 </thead>
                 <tbody>

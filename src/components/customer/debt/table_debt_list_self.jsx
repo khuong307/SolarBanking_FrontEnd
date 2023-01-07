@@ -50,18 +50,34 @@ function TableDebtListSelf(props){
                 console.log(err);
             })
     }
-    function loadData(){
-        const buttonComponent = `
-            <div class="d-flex">
+
+    function checkIsPaidRemoveButton(debt_status){
+        if (debt_status == "PAID"){
+            const buttonComponent = `
+            <div class="d-flex justify-content-center">
                 <button class="btn btnLogin btn-edit-self">
                     <i class="fa fa-eye"></i>
                 </button>
-                <button class="btn btnLogin2 ml-2 btn-delete-self">
-                    <i class="fa fa-times-circle-o"></i>
-                </button>
             </div>
-        `;
+            `
+            return buttonComponent
+        }
+        else{
+            const buttonComponent = `
+                <div class="d-flex justify-content-center">
+                    <button class="btn btnLogin btn-edit-self">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="btn btnLogin2 ml-2 btn-delete-self">
+                        <i class="fa fa-times-circle-o"></i>
+                    </button>
+                </div>
+            `
+            return buttonComponent
+        }
+    }
 
+    function loadData(){
         if (Array.isArray(debtListSelf)) {
             if (debtListSelf.length > 0) {
                 $("#paidDebtSelf").DataTable().rows().remove().draw();
@@ -73,10 +89,11 @@ function TableDebtListSelf(props){
                     ans.push(formatMoney(debt.debt_amount) + " VND")
                     ans.push(formateDateTime(debt.debt_created_at))
                     ans.push(debt.debt_status)
-                    ans.push(buttonComponent)
+                    ans.push(checkIsPaidRemoveButton(debt.debt_status))
                     $("#paidDebtSelf").DataTable().row.add(ans).draw(false);
                 });
                 const deleteBtnArr = document.getElementsByClassName('btn-delete-self');
+                console.log(deleteBtnArr)
                 for (let i = 0; i < deleteBtnArr.length; i++)
                     deleteBtnArr[i].addEventListener('click', function(e) {
                         setShowDeleteModal({
@@ -99,14 +116,14 @@ function TableDebtListSelf(props){
         <div className="dt-ext table-responsive">
             <table id="paidDebtSelf" className="display">
                 <thead>
-                <tr>
+                <tr style={{textAlign: "center"}}>
                     <th scope="col">#</th>
                     <th scope="col">Debtor</th>
                     <th scope="col">Debt Account Number</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Create Date</th>
                     <th scope="col">Status</th>
-                    <th scope="col"></th>
+                    <th scope="col">Features</th>
                 </tr>
                 </thead>
                 <tbody>
