@@ -2,8 +2,12 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import IntrabankTransfer from './transfer/IntrabankTransfer'
 import InterbankTransfer from "./transfer/InterbankTransfer"
+import {useDispatch} from "react-redux";
+import {changeByID} from "../redux/counter.jsx";
 
 function Transfer() {
+    const dispatch = useDispatch()
+    dispatch(changeByID(2))
     const navigate = useNavigate()
     return (
         <div className="page-body">

@@ -3,8 +3,13 @@ import axiosInstance  from '../../utils/axiosConfig.js'
 import TableDebtListSelf from "./debt/table_debt_list_self.jsx";
 import TableDebtListOther from "./debt/table_debt_list_other.jsx";
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {changeByID} from "../redux/counter.jsx";
 
 function DebtList(){
+    const dispatch = useDispatch()
+    dispatch(changeByID(4))
+
     const navigate = useNavigate();
     const [debtList,setDebtList] = useState('');
     const [selfList,setSelfList] = useState('');

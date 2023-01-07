@@ -15,6 +15,7 @@ function TableReceiveDebtList(props){
                 ans.push(formateDateTime(c.transaction_created_at).slice(10,19))
                 ans.push(c.src_account_number)
                 ans.push(c.other_fullname)
+                ans.push(c.other_bank_name)
                 ans.push("+ "+formatMoney(c.transaction_amount))
                 ans.push(c.transaction_message)
                 $("#receiveDebt").DataTable().row.add(ans).draw(false)
@@ -33,7 +34,8 @@ function TableReceiveDebtList(props){
                                 <th>Date</th>
                                 <th>Time</th>
                                 <th>Debtor Account</th>
-                                <th>Debtor Fullname</th>
+                                <th>Debtor</th>
+                                <th>Debtor Bank</th>
                                 <th>Amount (VND)</th>
                                 <th>Message</th>
                             </tr>

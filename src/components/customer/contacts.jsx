@@ -8,8 +8,14 @@ import {SOLAR_BANK_CODE} from '../../utils/constants.js';
 import '/src/assets/css/datatables.css';
 import '/src/assets/css/datatable-extension.css';
 import '/src/assets/css/data-table.css';
+import {useDispatch} from "react-redux";
+import {changeByID} from "../redux/counter.jsx";
 
 function Contacts() {
+    const dispatch = useDispatch()
+    dispatch(changeByID(3))
+
+
     const userId = localStorage.solarBanking_userId;
     const {register, setValue, getValues, setError, handleSubmit, formState: { errors }} = useForm();
     const [isIntraBank, setIsIntraBank] = useState(true);
@@ -355,8 +361,10 @@ function Contacts() {
         }
     }
 
+    setTimeout(createTableIfEmpty, 200)
+
     return (
-        <div className="page-body" onLoad={createTableIfEmpty()}>
+        <div className="page-body">
             <div className="row">
                 <div className="col-lg-12 mt-2" style={{fontFamily: "Jost"}}>
                     <h4>CONTACTS</h4>

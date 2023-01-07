@@ -2,8 +2,13 @@ import React, {useEffect, useState} from 'react';
 import CardDetail from './card/CardDetail.jsx';
 import axiosInstance from '../../utils/axiosConfig.js';
 import {formatMoney} from "../redux/helper_functions";
+import {useDispatch} from "react-redux";
+import {changeByID} from "../redux/counter.jsx";
 
 function CardList() {
+    const dispatch = useDispatch()
+    dispatch(changeByID(1))
+
     const [isSpend, setIsSpending] = useState(true);
     const [cardList, setCardList] = useState([]);
 

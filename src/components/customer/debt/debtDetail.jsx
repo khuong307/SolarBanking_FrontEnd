@@ -223,40 +223,52 @@ function debtDetail(){
                             </div>
                         </div>
                     </div>
-
-                    <div className="card-body">
-                        <div className="row">
-                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
-                                <label className="col-form-label">Code:</label>
-                                <p className="card-text ml-3 f-16">{debtDetail.debt_id}</p>
+                    <div className="card">
+                        <div className="text-center mt-4">
+                            <h5><i className="fa fa-info-circle mr-1"></i>Debt Information</h5>
+                        </div>
+                        <div className="row card-body">
+                            <div className="col-lg-12 d-flex justify-content-center align-content-center align-items-center">
+                                <div className="col-lg-4">
+                                    <label className="col-form-label">Code:</label>
+                                    <input className="form-control" value={debtDetail.debt_id} readOnly="true" style={{width: "fit-content"}}/>
+                                </div>
+                                <div className="col-lg-4">
+                                    <label className="col-form-label">Debt Account Number:</label>
+                                    <input className="form-control" value={debtDetail.debt_account_number} readOnly="true" style={{width: "fit-content"}}/>
+                                </div>
                             </div>
-                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
-                                <label className="col-form-label">Debt Account Number:</label>
-                                <p className="card-text ml-3 f-16">{debtDetail.debt_account_number}</p>
+                            <div className="col-lg-12 d-flex justify-content-center align-content-center align-items-center">
+                                <div className="col-lg-4">
+                                    <label className="col-form-label">Amount:</label>
+                                    <input className="form-control" value={numeral(debtDetail.debt_amount).format('0,0') + " VND"} readOnly="true" style={{width: "fit-content"}}/>
+                                </div>
+                                <div className="col-lg-4">
+                                    <label className="col-form-label">Status:</label>
+                                    <input className="form-control" value={statusPayment} style={{width: "fit-content"}} readOnly="true"/>
+                                </div>
                             </div>
-                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
-                                <label className="col-form-label">Amount:</label>
-                                <p className="card-text ml-3 f-16">{numeral(debtDetail.debt_amount).format('0,0') + " VNĐ"}</p>
+                            <div className="col-lg-12 d-flex justify-content-center align-content-center align-items-center">
+                                <div className="col-lg-4">
+                                    <label className="col-form-label">Date & Time:</label>
+                                    <input className="form-control" value={formateDateTime(debtDetail.debt_created_at)} readOnly="true" style={{width: "fit-content"}}/>
+                                </div>
+                                <div className="col-lg-4">
+                                    <label className="col-form-label">Message:</label>
+                                    <input className="form-control" value={debtDetail.debt_message} style={{width: "fit-content"}} readOnly="true"/>
+                                </div>
                             </div>
-                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
-                                <label className="col-form-label">Status:</label>
-                                <p className="card-text ml-3 f-16" style={{color: colorStatus,fontWeight:"bold"}}>{statusPayment}</p>
-                            </div>
-                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
-                                <label className="col-form-label">Date:</label>
-                                <p className="card-text ml-3 f-16">{formateDateTime(debtDetail.debt_created_at)}</p>
-                            </div>
-                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
-                                <label className="col-form-label">Message:</label>
-                                <p className="card-text ml-3 f-16">{debtDetail.debt_message}</p>
-                            </div>
-                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
-                                <label className="col-form-label">Cancel Message:</label>
-                                <p className="card-text ml-3 f-16">{debtDetail.debt_cancel_message}</p>
-                            </div>
-                            <div className="form-group col-md-12">
-                                {!isPaid && <button className="btn btn-success mr-2" onClick={handleOpenConfirmModal}>Payment</button>}
-
+                            {
+                                debtDetail.debt_cancel_message != "" &&
+                                <div className="col-lg-12 d-flex justify-content-center align-content-center align-items-center">
+                                    <div className="col-lg-12">
+                                        <label className="col-form-label">Reason To Cancel:</label>
+                                        <input className="form-control" value={debtDetail.debt_cancel_message} readOnly="true" style={{width: "fit-content"}}/>
+                                    </div>
+                                </div>
+                            }
+                            <div className="col-lg-12 d-flex justify-content-center mt-4">
+                                {!isPaid && <button className="btn mr-2 btnLogin" onClick={handleOpenConfirmModal}><i className="fa fa-check-circle-o mr-1"></i>Pay Debt</button>}
                             </div>
                         </div>
                     </div>

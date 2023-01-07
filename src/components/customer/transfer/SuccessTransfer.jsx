@@ -42,9 +42,9 @@ export default function SuccessTransfer() {
                                         <p className="card-text" style={{ fontFamily: "Jost", fontSize: 15 }}><i className="fa fa-money mr-2"></i>Total: {formatMoney(infoTransaction.total)} VND</p>
                                         <div className='form-group' style={{ fontFamily: "Jost" }}>
                                             {infoTransaction?.isSavedRecipientTable ? "" :
-                                                <button className='btn btnLogin mr-4' onClick={() => navigate("/customer/transfer/save")}><i className="fa fa-bookmark mr-2"></i>Save Transaction</button>
+                                                <button className='btn btnLogin mr-4' onClick={() => navigate("/customer/transfer/save")}><i className="fa fa-bookmark mr-2"></i>Save Recipient</button>
                                             }
-                                            <button className='btn btn-light' onClick={() => navigate("/customer")}>Cancel</button>
+                                            <button className='btn btn-light' onClick={() => navigate("/customer/transfer")}>Go Back</button>
                                         </div>
                                     </div>
                                 </div>

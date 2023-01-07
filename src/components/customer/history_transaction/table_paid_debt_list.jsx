@@ -15,7 +15,8 @@ function TablePaidDebtList(props){
                 ans.push(formateDateTime(c.transaction_created_at).slice(10,19))
                 ans.push(c.des_account_number)
                 ans.push(c.other_fullname)
-                ans.push("- "+formatMoney(c.transaction_amount) + " VND")
+                ans.push(c.other_bank_name)
+                ans.push("- "+formatMoney(c.transaction_amount))
                 ans.push(c.transaction_message)
                 $("#paidDebt").DataTable().row.add(ans).draw(false)
             }
@@ -34,7 +35,8 @@ function TablePaidDebtList(props){
                                 <th>Time</th>
                                 <th>Receiver Account</th>
                                 <th>Receiver Fullname</th>
-                                <th>Amount</th>
+                                <th>Receiver Bank</th>
+                                <th>Amount (VND)</th>
                                 <th>Message</th>
                             </tr>
                             </thead>

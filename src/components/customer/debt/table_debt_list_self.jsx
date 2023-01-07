@@ -21,10 +21,12 @@ function TableDebtListSelf(props){
     });
 
     function onLoadEmptyTable(){
-        if (debtListSelf.length == 0){
+        if (props.debtListSelf.length == 0){
             $("#paidDebtSelf").DataTable()
         }
     }
+    setTimeout(onLoadEmptyTable, 500)
+
 
     const handleOnChangeReason = (e)=>{
         setReasonCancel(e.target.value);
@@ -51,11 +53,11 @@ function TableDebtListSelf(props){
     function loadData(){
         const buttonComponent = `
             <div class="d-flex">
-                <button class="btn btn-info btn-edit-self">
-                    <i class="fa fa-pencil"></i>
+                <button class="btn btnLogin btn-edit-self">
+                    <i class="fa fa-eye"></i>
                 </button>
-                <button class="btn btn-danger ml-2 btn-delete-self">
-                    <i class="fa fa-trash"></i>
+                <button class="btn btnLogin2 ml-2 btn-delete-self">
+                    <i class="fa fa-times-circle-o"></i>
                 </button>
             </div>
         `;
@@ -94,7 +96,7 @@ function TableDebtListSelf(props){
     setTimeout(loadData, 500)
 
     return (
-        <div className="dt-ext table-responsive" onLoad={onLoadEmptyTable()}>
+        <div className="dt-ext table-responsive">
             <table id="paidDebtSelf" className="display">
                 <thead>
                 <tr>

@@ -14,7 +14,7 @@ function TableChargeSLBList(props){
                 ans.push(formateDateTime(c.transaction_created_at).slice(0,10))
                 ans.push(formateDateTime(c.transaction_created_at).slice(10,19))
                 ans.push(c.other_fullname)
-                ans.push(formatMoney(c.transaction_amount) + " VND")
+                ans.push(formatMoney(c.transaction_amount))
                 ans.push(c.transaction_message)
                 $("#chargeSLBList").DataTable().row.add(ans).draw(false)
             }
@@ -32,7 +32,7 @@ function TableChargeSLBList(props){
                             <th>Date</th>
                             <th>Time</th>
                             <th>Customer</th>
-                            <th>Amount</th>
+                            <th>Amount (VND)</th>
                             <th>Message</th>
                         </tr>
                         </thead>
