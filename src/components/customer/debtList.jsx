@@ -9,20 +9,13 @@ function DebtList(){
     const [debtList,setDebtList] = useState('');
     const [selfList,setSelfList] = useState('');
     const [otherList,setOtherList] = useState('');
-    const [isSelf,setIsSelf] = useState(true);
 
     const handleCreateNewDebt = ()=>{
         navigate("create");
     }
-    const handleSelfMadeClicked = function (){
-        setIsSelf(true);
-    }
-    const handleOtherMadeClicked = function (){
-        setIsSelf(false);
-    }
     function  getDebtList (){
         const userId = localStorage.solarBanking_userId;
-        let apiPath = `/debtList/${userId}/listDebt`;
+        let apiPath = `/debtList/${userId}/list`;
         axiosInstance.get(apiPath)
             .then((res) => {
                 if(res.data.isSuccess === true){
@@ -56,11 +49,11 @@ function DebtList(){
                     <div className="card height-equal mt-4" style={{fontFamily: "Jost"}}>
                         <div className="card-body">
                             <ul className="nav nav-pills nav-warning" id="top-tab" role="tablist">
-                                <li onClick={handleSelfMadeClicked} className="nav-item">
+                                <li className="nav-item">
                                     <a className="nav-link active" id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-controls="top-home" aria-selected="true">
                                         <i className="icofont icofont-user-alt-7" />Self Made</a>
                                 </li>
-                                <li onClick={handleOtherMadeClicked} className="nav-item">
+                                <li className="nav-item">
                                     <a className="nav-link" id="profile-top-tab" data-toggle="tab" href="#top-profile" role="tab" aria-controls="top-profile" aria-selected="false">
                                         <i className="icofont icofont-users" />Other Made</a>
                                 </li>

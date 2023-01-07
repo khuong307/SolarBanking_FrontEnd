@@ -45,10 +45,10 @@ function TableDebtListSelf(props){
     function loadData(){
         const buttonComponent = `
             <div class="d-flex">
-                <button class="btn btn-info btn-edit">
+                <button class="btn btn-info btn-edit-self">
                     <i class="fa fa-pencil"></i>
                 </button>
-                <button class="btn btn-danger ml-2 btn-delete">
+                <button class="btn btn-danger ml-2 btn-delete-self">
                     <i class="fa fa-trash"></i>
                 </button>
             </div>
@@ -59,7 +59,7 @@ function TableDebtListSelf(props){
                 $("#paidDebtSelf").DataTable().rows().remove().draw();
                 debtListSelf.forEach((debt, debtIdx) => {
                     const ans = [];
-                    ans.push(debtIdx + 1)
+                    ans.push(debt.debt_id)
                     ans.push(debt.debtor_fullname)
                     ans.push(debt.debt_account_number)
                     ans.push(formatMoney(debt.debt_amount) + " VND")
@@ -68,7 +68,7 @@ function TableDebtListSelf(props){
                     ans.push(buttonComponent)
                     $("#paidDebtSelf").DataTable().row.add(ans).draw(false);
                 });
-                const deleteBtnArr = document.getElementsByClassName('btn-delete');
+                const deleteBtnArr = document.getElementsByClassName('btn-delete-self');
                 for (let i = 0; i < deleteBtnArr.length; i++)
                     deleteBtnArr[i].addEventListener('click', function(e) {
                         setShowDeleteModal({
@@ -76,9 +76,10 @@ function TableDebtListSelf(props){
                             debt_id: props.debtListSelf[i].debt_id
                         });
                     });
-                const detailBtnArr = document.getElementsByClassName('btn-edit');
+                const detailBtnArr = document.getElementsByClassName('btn-edit-self');
                 for (let i = 0; i < detailBtnArr.length; i++)
                     detailBtnArr[i].addEventListener('click', function(e) {
+                        console.log(props.debtListSelf[i].debt_id)
                         navigate(`details/${props.debtListSelf[i].debt_id}`)
                     });
             }

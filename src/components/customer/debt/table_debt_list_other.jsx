@@ -44,10 +44,10 @@ function TableDebtListOther(props){
     function loadData(){
         const buttonComponent = `
             <div class="d-flex">
-                <button class="btn btn-info btn-edit">
+                <button class="btn btn-info btn-edit-other">
                     <i class="fa fa-pencil"></i>
                 </button>
-                <button class="btn btn-danger ml-2 btn-delete">
+                <button class="btn btn-danger ml-2 btn-delete-other">
                     <i class="fa fa-trash"></i>
                 </button>
             </div>
@@ -57,7 +57,7 @@ function TableDebtListOther(props){
                 $("#paidDebtOther").DataTable().rows().remove().draw();
                 debtListOther.forEach((debt, debtIdx) => {
                     const ans = [];
-                    ans.push(debtIdx + 1)
+                    ans.push(debt.debt_id)
                     ans.push(debt.reminder_fullname)
                     ans.push(debt.reminder_accountnumber)
                     ans.push(formatMoney(debt.debt_amount) + " VND")
@@ -66,7 +66,7 @@ function TableDebtListOther(props){
                     ans.push(buttonComponent)
                     $("#paidDebtOther").DataTable().row.add(ans).draw(false);
                 });
-                const deleteBtnArr = document.getElementsByClassName('btn-delete');
+                const deleteBtnArr = document.getElementsByClassName('btn-delete-other');
                 for (let i = 0; i < deleteBtnArr.length; i++)
                     deleteBtnArr[i].addEventListener('click', function(e) {
                         setShowDeleteModal({
@@ -74,9 +74,10 @@ function TableDebtListOther(props){
                             debt_id: debtListOther[i].debt_id
                         });
                     });
-                const detailBtnArr = document.getElementsByClassName('btn-edit');
+                const detailBtnArr = document.getElementsByClassName('btn-edit-other');
                 for (let i = 0; i < detailBtnArr.length; i++)
                     detailBtnArr[i].addEventListener('click', function(e) {
+                        console.log(debtListOther[i].debt_id)
                         navigate(`details/${debtListOther[i].debt_id}`)
                     });
             }

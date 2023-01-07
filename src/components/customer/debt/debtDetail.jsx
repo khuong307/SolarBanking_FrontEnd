@@ -27,6 +27,8 @@ function debtDetail(){
         isShow: false,
         debt_id:null
     });
+    const [payMessage,setPayMessage] = useState('');
+    const [reqPayment,setReqPayment] = useState('Do you want to pay off this debt?');
     const handleChangeOtp = (e)=>{
         e.preventDefault();
         setInputOtp(e.target.value);
@@ -59,30 +61,50 @@ function debtDetail(){
                 });
             });
     }
+    //send otp and check balance
     const handleSubmitConfirmModal = ()=>{
-        setConfirmModal(false);
-        setPaymentModal({
-            isShow: true,
-            debt_id: debtDetail.debt_id
-        });
-        axiosInstance.post(`/debtList/sendOtp`,{
-            debt_id: parseInt(id),
-            user_id: parseInt(userId)
+        //check balance
+        console.log(debtDetail.debt_amount)
+        axiosInstance.get(`/debtList/${userId}/checkBalance`,{
+            amount: parseInt(debtDetail.debt_amount)
         })
             .then((res)=>{
-                if (res.data.isSuccess){
-                    setMinutes(4);
-                    setSeconds(59);
+
+                if (res.data.isEnough === true){
+                    setConfirmModal(false);
+                    setPaymentModal({
+                        isShow: true,
+                        debt_id: debtDetail.debt_id
+                    });
+                    axiosInstance.post(`/debtList/sendOtp`,{
+                        debt_id: parseInt(id),
+                        user_id: parseInt(userId)
+                    })
+                        .then((res)=>{
+                            if (res.data.isSuccess){
+                                setMinutes(4);
+                                setSeconds(59);
+                            }
+                            else{
+                                setInvalidOtp({
+                                    isSuccess: false,
+                                    message: res.data.message
+                                });
+                            }
+                        })
+                        .catch((err)=>{
+                            setInvalidOtp({
+                                isSuccess: false,
+                                message: err.response.data.message
+                            });
+                        })
                 }
                 else{
-                    console.log(res.data.message);
+                    setReqPayment(res.data.message);
                 }
             })
             .catch((err)=>{
-                setInvalidOtp({
-                    isSuccess: false,
-                    message: err.response.data.message
-                });
+                setReqPayment(err.message);
             })
     }
     const handleVerifiedOtp = ()=>{
@@ -98,9 +120,14 @@ function debtDetail(){
                     setStatusPayment(res.data.status);
                     setColorStatus("green");
                     setIsPaid(true);
+                    setPayMessage("Payment Successful!");
                 }
                 else{
-                    console.log(res.data.message);
+                    setInvalidOtp({
+                        isSuccess: false,
+                        message: res.data.message
+                    });
+                    setPayMessage(res.data.message);
                 }
             })
             .catch((err)=>{
@@ -200,6 +227,10 @@ function debtDetail(){
                     <div className="card-body">
                         <div className="row">
                             <div className="form-group col-md-12 d-flex flex-row align-items-center">
+                                <label className="col-form-label">Code:</label>
+                                <p className="card-text ml-3 f-16">{debtDetail.debt_id}</p>
+                            </div>
+                            <div className="form-group col-md-12 d-flex flex-row align-items-center">
                                 <label className="col-form-label">Debt Account Number:</label>
                                 <p className="card-text ml-3 f-16">{debtDetail.debt_account_number}</p>
                             </div>
@@ -287,7 +318,7 @@ function debtDetail(){
                            ]}
                     >
                         <div className="form-group d-flex align-items-center align-content-center">
-                            <p className="modal-message">Do you want to pay off this debt?</p>
+                            <p className="modal-message">{reqPayment}</p>
                         </div>
                     </Modal>
                     <Modal title="Notification" style={{fontFamily: "Jost"}}
@@ -302,7 +333,7 @@ function debtDetail(){
                            ]}
                     >
                         <div className="form-group d-flex align-items-center align-content-center">
-                            <p className="modal-message">Payment success!</p>
+                            <p className="modal-message">{payMessage}</p>
                         </div>
                     </Modal>
                 </div>
