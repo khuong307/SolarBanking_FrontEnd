@@ -350,7 +350,6 @@ function Contacts() {
     }, [contactList]);
 
     function createTableIfEmpty(){
-        console.log(contactList)
         if (contactList.length === 0){
             $("#table-contact-list").DataTable();
         }

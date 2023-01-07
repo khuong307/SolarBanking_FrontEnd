@@ -20,6 +20,12 @@ function TableDebtListSelf(props){
         debt_id: null
     });
 
+    function onLoadEmptyTable(){
+        if (debtListSelf.length == 0){
+            $("#paidDebtSelf").DataTable()
+        }
+    }
+
     const handleOnChangeReason = (e)=>{
         setReasonCancel(e.target.value);
     }
@@ -88,7 +94,7 @@ function TableDebtListSelf(props){
     setTimeout(loadData, 500)
 
     return (
-        <div className="table-responsive">
+        <div className="dt-ext table-responsive" onLoad={onLoadEmptyTable()}>
             <table id="paidDebtSelf" className="display">
                 <thead>
                 <tr>

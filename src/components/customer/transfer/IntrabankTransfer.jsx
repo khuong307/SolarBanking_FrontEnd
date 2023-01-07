@@ -109,7 +109,7 @@ export default function IntrabankTransfer() {
                     </div>
                     <div className='col-4'>
                         <div className="form-group">
-                            <label style={{fontFamily:"Jost"}}>Money in words</label>
+                            <label style={{fontFamily:"Jost"}}>Money in words:</label>
                             <textarea name="moneyWord" disabled className="form-control" rows={1}
                                 value={
                                     formik.values.transaction_amount === "" ? "0 VND" :
