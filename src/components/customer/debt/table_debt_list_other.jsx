@@ -19,6 +19,15 @@ function TableDebtListOther(props){
         isShow: false,
         debt_id: null
     });
+
+
+    function onLoadEmptyTable(){
+        if (debtListOther.length == 0){
+            $("#paidDebtOther").DataTable()
+        }
+    }
+
+
     const handleOnChangeReason = (e)=>{
         setReasonCancel(e.target.value);
     }
@@ -45,10 +54,10 @@ function TableDebtListOther(props){
         const buttonComponent = `
             <div class="d-flex">
                 <button class="btn btn-info btn-edit">
-                    <i class="fa fa-pencil"></i>
+                    <i class="fa fa-eye"></i>
                 </button>
                 <button class="btn btn-danger ml-2 btn-delete">
-                    <i class="fa fa-trash"></i>
+                    <i class="fa fa-times-circle-o"></i>
                 </button>
             </div>
         `;
@@ -85,7 +94,7 @@ function TableDebtListOther(props){
     setTimeout(loadData, 500)
 
     return (
-        <div className="table-responsive">
+        <div className="dt-ext table-responsive" onLoad={onLoadEmptyTable()}>
             <table id="paidDebtOther" className="display">
                 <thead>
                 <tr>

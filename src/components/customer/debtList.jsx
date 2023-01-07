@@ -46,7 +46,7 @@ function DebtList(){
                         </div>
                         <div className="direction">
                             <div className="float-right mb-3">
-                                <button className="btn btn-success" onClick={handleCreateNewDebt}>
+                                <button className="btn btnLogin d-flex align-items-center align-content-center justify-content-center" onClick={handleCreateNewDebt} >
                                     <i className="fa fa-plus mr-2"></i>
                                     Create
                                 </button>
@@ -66,10 +66,10 @@ function DebtList(){
                                 </li>
                             </ul>
                             <div className="tab-content mt-5" id="top-tabContent">
-                                <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
+                                <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab" style={{fontSize: "12px"}}>
                                     <TableDebtListSelf debtListSelf={selfList}/>
                                 </div>
-                                <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
+                                <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab" style={{fontSize: "12px"}}>
                                     <TableDebtListOther debtListOther={otherList}/>
                                 </div>
                             </div>
