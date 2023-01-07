@@ -170,7 +170,6 @@ function Contacts() {
     const handleAddInterBankContact = function() {
         const account_number = getValues('interbank_account_number');
         const nick_name = getValues('interbank_nick_name').length > 0 ? getValues('interbank_nick_name') : showConfirmModal.userInfo.username;
-        console.log(showConfirmModal);
         const bank_code = "TXB";
 
         axiosInstance.post(`/users/${userId}/recipients`, {account_number, nick_name, bank_code})
@@ -355,13 +354,6 @@ function Contacts() {
             });
     }, [contactList]);
 
-    function createTableIfEmpty(){
-        if (contactList.length === 0){
-            $("#table-contact-list").DataTable();
-        }
-    }
-
-    setTimeout(createTableIfEmpty, 200)
 
     return (
         <div className="page-body">
