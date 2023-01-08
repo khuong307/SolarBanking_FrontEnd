@@ -2,11 +2,9 @@
 $(document).ready(function(){
     $("#paidDebtSelf").DataTable( {
         rowReorder: true,
-        order: [[ 0, 'desc' ]],
     } );
     $("#paidDebtOther").DataTable( {
         rowReorder: true,
-        order: [[ 0, 'desc' ]],
     } );
     $("#accountList").DataTable( {
         rowReorder: true,

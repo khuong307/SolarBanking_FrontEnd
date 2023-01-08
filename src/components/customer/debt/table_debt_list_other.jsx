@@ -52,11 +52,11 @@ function TableDebtListOther(props){
             })
     }
 
-    function checkIsPaidRemoveButton(debt_status){
+    function checkIsPaidRemoveButton(debt_status, debt_id){
         if (debt_status == "PAID"){
             const buttonComponent = `
             <div class="d-flex justify-content-center">
-                <button class="btn btnLogin btn-edit-other">
+                <button class="btn btnLogin" id="edit-${debt_id}">
                     <i class="fa fa-eye"></i>
                 </button>
             </div>
@@ -66,10 +66,10 @@ function TableDebtListOther(props){
         else{
             const buttonComponent = `
                 <div class="d-flex justify-content-center">
-                    <button class="btn btnLogin btn-edit-other">
+                    <button class="btn btnLogin" id="edit-${debt_id}">
                         <i class="fa fa-eye"></i>
                     </button>
-                    <button class="btn btnLogin2 ml-2 btn-delete-other">
+                    <button class="btn btnLogin2 ml-2" id="cancel-${debt_id}">
                         <i class="fa fa-times-circle-o"></i>
                     </button>
                 </div>
@@ -88,23 +88,26 @@ function TableDebtListOther(props){
                     ans.push(debt.reminder_accountnumber)
                     ans.push(formatMoney(debt.debt_amount) + " VND")
                     ans.push(debt.debt_status)
-                    ans.push(checkIsPaidRemoveButton(debt.debt_status))
+                    ans.push(checkIsPaidRemoveButton(debt.debt_status, debt.debt_id))
                     $("#paidDebtOther").DataTable().row.add(ans).draw(false);
                 });
-                const deleteBtnArr = document.getElementsByClassName('btn-delete-other');
-                for (let i = 0; i < deleteBtnArr.length; i++)
-                    deleteBtnArr[i].addEventListener('click', function(e) {
-                        setShowDeleteModal({
-                            isShow: true,
-                            debt_id: debtListOther[i].debt_id
-                        });
-                    });
-                const detailBtnArr = document.getElementsByClassName('btn-edit-other');
-                for (let i = 0; i < detailBtnArr.length; i++)
-                    detailBtnArr[i].addEventListener('click', function(e) {
-                        console.log(debtListOther[i].debt_id)
-                        navigate(`details/${debtListOther[i].debt_id}`)
-                    });
+                for (const c of props.debtListOther){
+                    $("#edit-"+c.debt_id).click(
+                        ()=>{
+                            navigate(`details/${c.debt_id}`)
+                        }
+                    )
+                    if (c.debt_status != "PAID"){
+                        $("#cancel-"+c.debt_id).click(
+                            ()=>{
+                                setShowDeleteModal({
+                                    isShow: true,
+                                    debt_id: c.debt_id
+                                });
+                            }
+                        )
+                    }
+                }
             }
         }
     }
