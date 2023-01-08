@@ -61,7 +61,7 @@ function TableDebtListOther(props){
             })
     }
     function checkIsPaidRemoveButton(debt_status, debt_id){
-        if (debt_status == "PAID"){
+        if (debt_status == "PAID" || debt_status == "CANCEL"){
             const buttonComponent = `
             <div class="d-flex justify-content-center">
                 <button class="btn btnLogin" id="edit-${debt_id}">
