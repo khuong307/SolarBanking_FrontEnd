@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import axiosInstance from "../../../utils/axiosConfig.js";
 import { SOLAR_BANK, SOLAR_BANK_CODE } from '../../../utils/constants.js';
 import { closeLoading, displayLoading } from './LoadingReducer.jsx';
+import Swal from 'sweetalert2'
 
 const initialState = {
     src_account: {},
@@ -108,7 +109,12 @@ export const getUserBankAccountApi = (userId) => {
         } catch (err) {
             dispatch(closeLoading())
             console.log(err)
-            alert("Can not get account_number")
+            Swal.fire({
+                title: 'ERROR !',
+                html:`<h3 class="text-danger">Can Not Get Account Number</h3>`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         }
     }
 }
@@ -123,7 +129,12 @@ export const getRecipientListBySolarBankApi = (userId) => {
         } catch (err) {
             dispatch(closeLoading())
             console.log(err)
-            alert("Can not get recipient list")
+            Swal.fire({
+                title: 'ERROR !',
+                html:`<h3 class="text-danger">Can Not Get Recipient List</h3>`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         }
     }
 }
@@ -138,7 +149,12 @@ export const getRecipientListExSLBApi = (userId) => {
         } catch (err) {
             dispatch(closeLoading())
             console.log(err)
-            alert("Can not get recipient list")
+            Swal.fire({
+                title: 'ERROR !',
+                html:`<h3 class="text-danger">Can Not Get Recipient List</h3>`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         }
     }
 }
@@ -150,7 +166,12 @@ export const getValidTransactionApi = (userId, infoTransaction, navigate) => {
         try {
             const result = await axiosInstance.post(`/customers/${userId}/intratransaction`, infoTransaction)
             if (result.status !== 200) {
-                alert("Invalid Transaction Info")
+                Swal.fire({
+                    title: 'ERROR !',
+                    html:`<h3 class="text-danger">Invalid Transaction Information</h3>`,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
             } else {
                 dispatch(saveInfoTransactionAndDesAccount(result.data.infoTransaction))
                 navigate("/customer/transfer/confirm")
@@ -159,7 +180,12 @@ export const getValidTransactionApi = (userId, infoTransaction, navigate) => {
         } catch (err) {
             dispatch(closeLoading())  
             console.log(err)
-            alert("Invalid Transaction Info")
+            Swal.fire({
+                title: 'ERROR !',
+                html:`<h3 class="text-danger">Invalid Transaction Information</h3>`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         }
     }
 }
@@ -172,7 +198,12 @@ export const getValidTransactionInterApi = (userId, infoTransaction, navigate) =
             const result = await axiosInstance.post(`/customers/${userId}/intertransaction`, infoTransaction)
             dispatch(closeLoading())
             if (result.status !== 200) {
-                alert("Invalid Transaction Info")
+                Swal.fire({
+                    title: 'ERROR !',
+                    html:`<h3 class="text-danger">Invalid Transaction Information</h3>`,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
             } else {
                 dispatch(saveInfoTransactionAndDesAccount(result.data.infoTransaction))
                 navigate("/customer/transfer/confirm")
@@ -180,7 +211,12 @@ export const getValidTransactionInterApi = (userId, infoTransaction, navigate) =
         } catch (err) {
             dispatch(closeLoading())
             console.log(err)
-            alert("Invalid Transaction Info")
+            Swal.fire({
+                title: 'ERROR !',
+                html:`<h3 class="text-danger">Invalid Transaction Information</h3>`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         }
     }
 }
@@ -196,12 +232,22 @@ export const confirmTransactionApi = (userId, infoTransaction, navigate) => {
                 dispatch(confirmTransaction(result.data.transactionId))
                 navigate("/customer/transfer/otp",{replace:true})
             } else {
-                alert("Invalid Transaction Info")
+                Swal.fire({
+                    title: 'ERROR !',
+                    html:`<h3 class="text-danger">Invalid Transaction Information</h3>`,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
             }
         } catch (err) {
             dispatch(closeLoading())
             console.log(err)
-            alert("Invalid Transaction Info")
+            Swal.fire({
+                title: 'ERROR !',
+                html:`<h3 class="text-danger">Invalid Transaction Information</h3>`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         }
     }
 }
@@ -218,12 +264,22 @@ export const getValidOtpApi = (transactionId, otpInfo, navigate) => {
                 dispatch(getInfoTransaction(result.data.infoTransaction))
                 navigate("/customer/transfer/success",{replace:true})
             } else {
-                alert("Invalid OTP Code or OTP Code expired")
+                Swal.fire({
+                    title: 'ERROR !',
+                    html:`<h3 class="text-danger">Invalid OTP Code or OTP Code expired</h3>`,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
             }
         } catch (err) {
             dispatch(closeLoading())
             console.log(err)
-            alert("Invalid OTP Code or OTP Code expired")
+            Swal.fire({
+                title: 'ERROR !',
+                html:`<h3 class="text-danger">Invalid OTP Code or OTP Code expired</h3>`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         }
     }
 }
@@ -240,12 +296,22 @@ export const getValidOtpInterApi = (transactionId, otpInfo, navigate) => {
                 dispatch(getInfoTransaction(result.data.infoTransaction))
                 navigate("/customer/transfer/success",{replace:true})
             } else {
-                alert("Invalid OTP Code or OTP Code expired")
+                Swal.fire({
+                    title: 'ERROR !',
+                    html:`<h3 class="text-danger">Invalid OTP Code or OTP Code expired</h3>`,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
             }
         } catch (err) {
             dispatch(closeLoading())
             console.log(err)
-            alert("Invalid OTP Code or OTP Code expired")
+            Swal.fire({
+                title: 'ERROR !',
+                html:`<h3 class="text-danger">Invalid OTP Code or OTP Code expired</h3>`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         }
     }
 }
@@ -262,7 +328,12 @@ export const getBankListExSLBApi = () => {
         } catch (err) {
             dispatch(closeLoading())
             console.log(err)
-            alert("Can not get Bank List")
+            Swal.fire({
+                title: 'ERROR !',
+                html:`<h3 class="text-danger">Can't Not Get Bank List</h3>`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         }
     }
 }
@@ -275,13 +346,23 @@ export const saveRecipientApi = (infoRecipient,navigate) => {
             console.log(result)
             dispatch(closeLoading())
             if(result.status === 200){
-                alert("Save successfully!")
-                navigate("/customer",{replace:true})
+                Swal.fire({
+                    title: 'SUCCESS',
+                    html:`<h3 class="text-success">Save Successfully !</h3>`,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                })
+                navigate("/customer/transfer",{replace:true})
             }
         }catch(err){
             dispatch(closeLoading())
             console.log(err)
-            alert("This account can't be save. Something wrong")
+            Swal.fire({
+                title: 'ERROR !',
+                html:`<h3 class="text-danger">This account can't be saved. Something Wrong</h3>`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         }
     }
 }

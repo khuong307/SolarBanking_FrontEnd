@@ -63,8 +63,8 @@ function TableDebtListSelf(props){
         if (debt_status == "PAID" || debt_status == "CANCEL"){
             const buttonComponent = `
             <div class="d-flex justify-content-center">
-                <button class="btn btnLogin" id="edit-${debt_id}">
-                    <i class="fa fa-eye"></i>
+                <button class="btn btnLogin" id="edit-${debt_id}" style="font-size: 12px">
+                    <i class="fa fa-eye"></i> Detail
                 </button>
             </div>
             `
@@ -73,11 +73,11 @@ function TableDebtListSelf(props){
         else{
             const buttonComponent = `
                 <div class="d-flex justify-content-center">
-                    <button class="btn btnLogin" id="edit-${debt_id}">
-                        <i class="fa fa-eye"></i>
+                    <button class="btn btnLogin" id="edit-${debt_id}" style="font-size: 12px">
+                        <i class="fa fa-eye"></i> Detail
                     </button>
-                    <button class="btn btnLogin2 ml-2" id="cancel-${debt_id}">
-                        <i class="fa fa-times-circle-o"></i>
+                    <button class="btn btnLogin2 ml-2" id="cancel-${debt_id}" style="font-size: 12px">
+                        <i class="fa fa-times-circle-o"></i> Cancel
                     </button>
                 </div>
             `
