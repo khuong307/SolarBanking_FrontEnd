@@ -132,6 +132,7 @@ function Contacts() {
             message: ''
         });
     }
+
     const handleConfirmModalOk = function() {
         setShowConfirmModal({
             isShow: false,

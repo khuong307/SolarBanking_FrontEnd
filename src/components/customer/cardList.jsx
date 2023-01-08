@@ -4,15 +4,16 @@ import axiosInstance from '../../utils/axiosConfig.js';
 import {formatMoney} from "../redux/helper_functions";
 import {useDispatch} from "react-redux";
 import {changeByID} from "../redux/counter.jsx";
+import {Button, Modal} from "antd";
 
 function CardList() {
-    const dispatch = useDispatch()
-    dispatch(changeByID(1))
+    const dispatch = useDispatch();
+    dispatch(changeByID(1));
 
     const [isSpend, setIsSpending] = useState(true);
     const [cardList, setCardList] = useState([]);
-
-    const [userInfo, setUserInfo]= useState('')
+    const [isShowModal, setIsShowModal] = useState(false);
+    const [userInfo, setUserInfo]= useState('');
 
     useEffect(function() {
         const userId = localStorage.solarBanking_userId;
@@ -53,6 +54,39 @@ function CardList() {
 
     const handleSavingAccountClicked = function() {
         setIsSpending(false);
+    }
+
+    const handleModalOpen = function() {
+        setIsShowModal(true);
+    }
+
+    const handleModalCancel = function() {
+        setIsShowModal(false);
+    }
+
+    const handleModalOk = function() {
+        const userId = localStorage.solarBanking_userId;
+
+        if (userInfo.isLock) {
+            axiosInstance.post(`/users/${userId}/spendingAccounts/unlock`)
+                .then((res) => {
+                    setIsShowModal(false);
+                    setUserInfo({...userInfo, isLock: false});
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+        else {
+            axiosInstance.post(`/users/${userId}/spendingAccounts/lock`)
+                .then((res) => {
+                    setIsShowModal(false);
+                    setUserInfo({...userInfo, isLock: true});
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
     }
 
     return (
@@ -97,7 +131,10 @@ function CardList() {
                                                 <p><i className="fa fa-envelope mr-1"></i>: {userInfo.email}</p>
                                             </div>
                                             <div className="col-lg-12 mt-4 d-flex justify-content-center" >
-                                                <button className="btn btnLogin2 d-flex justify-content-center align-content-center align-items-center" style={{fontFamily: "Jost"}}><i className="fa fa-lock mr-1"></i>Lock Account</button>
+                                                <button onClick={handleModalOpen} className="btn btnLogin2 d-flex justify-content-center align-content-center align-items-center" style={{fontFamily: "Jost"}}>
+                                                    <i className={userInfo.isLock ? "fa fa-unlock mr-1" : "fa fa-lock mr-1"}></i>
+                                                    {userInfo.isLock ? "Unlock Account" : "Lock Account"}
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -105,6 +142,27 @@ function CardList() {
                                 <div className="tab-pane fade mt-5" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab" style={{fontFamily: "Jost", fontSize: "13px"}}>
                                     <CardDetail cardList={cardList} isSpend={isSpend} />
                                 </div>
+                                <Modal title={userInfo.isLock ? "Unlock Account" : "Lock Account"} style={{fontFamily: "Jost"}}
+                                       centered
+                                       open={isShowModal}
+                                       onOk={handleModalOk}
+                                       onCancel={handleModalCancel}
+                                       footer={[
+                                           <Button key="back" onClick={handleModalCancel} style={{fontFamily: "Jost"}}>
+                                               Cancel
+                                           </Button>,
+                                           <Button key="submit" className="btnLogin" type="primary" onClick={handleModalOk} style={{fontFamily: "Jost"}}>
+                                               {userInfo.isLock ? "Unlock" : "Lock"}
+                                           </Button>,
+                                       ]}
+                                >
+                                    <p className="modal-message">
+                                        {userInfo.isLock ?
+                                            "If you unlock this account, you can receive or send money. Do you want to unlock?" :
+                                            "If you lock this account, you can not receive or send money. Do you want to lock?"
+                                        }
+                                    </p>
+                                </Modal>
                             </div>
                         </div>
                     </div>
