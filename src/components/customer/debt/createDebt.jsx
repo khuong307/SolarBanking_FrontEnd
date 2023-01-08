@@ -2,11 +2,14 @@ import React,{useState,useEffect} from "react";
 import axiosInstance from '../../../utils/axiosConfig.js';
 import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
-import {Button, Modal} from "antd";
+import {AutoComplete, Button, Modal} from "antd";
+import {useDispatch, useSelector} from "react-redux";
+import {searchReceiverInter, searchReceiverIntra} from "../../redux/reducer/transferReducer.jsx";
 
 function createDebt(){
     const navigate = useNavigate();
-    //const [accountNumber,setAccountNumber] = useState("");
+    //const dispatch = useDispatch();
+    const recipientsSolarBank = useSelector(state => state.transferReducer.recipientsSolarBank)
     const [isShowModal,setIsShowModal] = useState(false);
     const [recipientInfo,setRecipientInfo] = useState({});
     const [createSuccess,setCreateSuccess] = useState({
@@ -16,22 +19,21 @@ function createDebt(){
     const { register, handleSubmit, formState: { errors }} = useForm();
     const userId = localStorage.solarBanking_userId;
 
-
-    const handleChangeAccount = (e) =>{
-        const account_number = e.target.value;
-        // console.log(e.target.value)
-        // axiosInstance.get('/banks/infoUser',{
-        //     account_number: account_number,
-        // }).then(function(res){
-        //     console.log(res.data)
-        //     if (res.data.isSuccess === true){
-        //         console.log(res.data.userInfo)
-        //         //setRecipientInfo({...res.data.userInfo})
-        //     }
-        // })
-        // .catch((err)=>{
-        //     console.log(err.message)
-        // })
+    function handleGetInfoUser(value){
+        const apiPath = "/banks/infoUser";
+        const account_number = value;
+        console.log(account_number)
+        axiosInstance.get(apiPath,{
+            account_number: account_number
+        }).then(function(res){
+            if (res.data.isSuccess){
+                console.log(res.data.userInfo)
+                setRecipientInfo(res.data.userInfo);
+            }
+        })
+            .catch((err)=>{
+                console.log(err.message)
+            })
     }
     const handleModalOk = ()=>{
         setIsShowModal(false);
@@ -99,11 +101,23 @@ function createDebt(){
                             <form onSubmit={handleSubmit(onSubmit)} className="theme-form mega-form col-md-12">
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Account Number <span className="required">(*)</span> </label>
-                                    <input type="text" className="form-control" placeholder="Enter account number"
-                                           {...register("account_number", {
-                                               required: true,
-                                           })}
-                                        onChange={handleChangeAccount}
+                                    {/*<input type="text" className="form-control" placeholder="Enter account number"*/}
+                                    {/*       {...register("account_number", {*/}
+                                    {/*           required: true,*/}
+                                    {/*       })}*/}
+                                    {/*    onChange={handleChangeAccount}*/}
+                                    {/*/>*/}
+
+                                    <AutoComplete
+                                        options={recipientsSolarBank?.map((user) => {
+                                            return { label: user.account_number + " - " + user.nick_name, value: user.account_number }
+                                        })}
+                                        name="des_account_number"
+                                        style={{ width: "100%", height: "100%", fontFamily: "Jost" }}
+                                        onSelect={(value, option) => {
+                                            handleGetInfoUser(value)
+                                        }}
+                                        placeholder="Account number"
                                     />
                                     {errors?.account_number?.type === "required" &&
                                         <p className="error-input"><i className="fa fa-warning mr-2"></i>Account Number is required!</p>
@@ -111,15 +125,15 @@ function createDebt(){
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Full name</label>
-                                    <input className="form-control" readOnly="true"/>
+                                    <input className="form-control" readOnly={true} value={recipientInfo.full_name}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Email</label>
-                                    <input className="form-control" readOnly="true"/>
+                                    <input className="form-control" readOnly={true} value={recipientInfo.email}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Phone</label>
-                                    <input className="form-control" readOnly="true"/>
+                                    <input className="form-control" readOnly={true} value={recipientInfo.phone}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Amount <span className="required">(*)</span></label>
@@ -142,7 +156,7 @@ function createDebt(){
                                     />
                                 </div>
                                 <div className="form-group col-md-12">
-                                    <button className="btn btn-info" type="submit">Submit</button>
+                                    <button className="btn btnLogin" type="submit">Submit</button>
                                 </div>
                             </form>
                         </div>
