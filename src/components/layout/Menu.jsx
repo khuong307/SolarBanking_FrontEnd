@@ -9,7 +9,7 @@ function Menu(props) {
   return (
     <li>
       <Link to={props.menu.path} className={props.menu.id == props.tab? active: non_active} onClick = {() => dispatch(changeByID(props.menu.id)) }>
-        <i id={props.menu.id} className={props.menu.icon} style={{fontSize: "30px"}}></i><span style={{fontSize: "13px"}}>{props.menu.title}</span>
+        <span style={{fontSize: "18px"}}><i id={props.menu.id} className={props.menu.icon} style={{fontSize: "18px"}}></i> {props.menu.title}</span>
       </Link>
     </li>
   );

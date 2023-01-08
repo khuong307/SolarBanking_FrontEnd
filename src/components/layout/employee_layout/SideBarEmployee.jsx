@@ -1,10 +1,10 @@
 import SidebarMenuEmployee from "./SidebarMenuEmployee.jsx";
 function SideBarEmployee(props){
-    const username = "Nguyen Vu Duy Khuong"
     const menuList=[
         { id: 1, title: 'New Customer', icon: 'fa fa-plus-circle', path: '/employee/addNewCustomer'},
         { id: 2, title: 'Charge Money', icon: 'icofont icofont-money-bag', path: '/employee/chargeMoney'},
-        { id: 3, title: 'Customer Transaction', icon: 'icofont icofont-book-mark', path: '/employee/customerTransaction'}
+        { id: 3, title: 'Customer Transaction', icon: 'icofont icofont-book-mark', path: '/employee/customerTransaction'},
+        { id: 4, title: 'Lock Account', icon: 'icofont icofont-lock', path: '/employee/lockAccount'}
     ]
     return (
         <div className="page-sidebar" style={{backgroundColor: "#000A61", color: "white"}}>

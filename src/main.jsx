@@ -14,6 +14,7 @@ import ChangePassword from "./components/common/ChangePassword.jsx";
 import AddNewCustomer from "./components/employee/addNewCustomer/addNewCustomer.jsx";
 import ChargeMoney from "./components/employee/chargeMoney/chargeMoney.jsx";
 import CustomerTransaction from "./components/employee/customerTransaction/customerTransaction.jsx";
+import LockAccount from "./components/employee/lockAccount/lockAccount.jsx";
 
 //--------- Customer Features -----------//
 import CardList from "./components/customer/cardList";
@@ -103,6 +104,7 @@ ReactDOM.createRoot(document.getElementById('solar-banking')).render(
                         <Route path="addNewCustomer" element={<AddNewCustomer />} />
                         <Route path="chargeMoney" element={<ChargeMoney />} />
                         <Route path="customerTransaction" element={<CustomerTransaction />} />
+                        <Route path="lockAccount" element={<LockAccount />} />
                     </Route>
                     {/*Admin Routes*/}
                     <Route path="admin" element={
