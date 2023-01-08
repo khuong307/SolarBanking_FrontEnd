@@ -13,7 +13,7 @@ export default function Loading() {
                     height: "100%", backgroundColor: "rgba(0,0,0,.5)", display: "flex",
                     justifyContent: "center", alignItems: "center", zIndex: 99
                 }}>
-                    <div class={stylesLoading.loader}></div>
+                    <div className={stylesLoading.loader}></div>
                 </div>
                 : ""
             }
