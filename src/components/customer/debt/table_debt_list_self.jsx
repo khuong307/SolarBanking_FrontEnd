@@ -59,12 +59,11 @@ function TableDebtListSelf(props){
                 console.log(err);
             })
     }
-
-    function checkIsPaidRemoveButton(debt_status){
-        if (debt_status == "PAID" || debt_status == "CANCEL"){
+    function checkIsPaidRemoveButton(debt_status, debt_id){
+        if (debt_status == "PAID"){
             const buttonComponent = `
             <div class="d-flex justify-content-center">
-                <button class="btn btnLogin btn-edit-self">
+                <button class="btn btnLogin" id="edit-${debt_id}">
                     <i class="fa fa-eye"></i>
                 </button>
             </div>
@@ -74,10 +73,10 @@ function TableDebtListSelf(props){
         else{
             const buttonComponent = `
                 <div class="d-flex justify-content-center">
-                    <button class="btn btnLogin btn-edit-self">
+                    <button class="btn btnLogin" id="edit-${debt_id}">
                         <i class="fa fa-eye"></i>
                     </button>
-                    <button class="btn btnLogin2 ml-2 btn-delete-self">
+                    <button class="btn btnLogin2 ml-2" id="cancel-${debt_id}">
                         <i class="fa fa-times-circle-o"></i>
                     </button>
                 </div>
@@ -97,23 +96,26 @@ function TableDebtListSelf(props){
                     ans.push(debt.debt_account_number)
                     ans.push(formatMoney(debt.debt_amount) + " VND")
                     ans.push(debt.debt_status)
-                    ans.push(checkIsPaidRemoveButton(debt.debt_status))
+                    ans.push(checkIsPaidRemoveButton(debt.debt_status, debt.debt_id))
                     $("#paidDebtSelf").DataTable().row.add(ans).draw(false);
                 });
-                const deleteBtnArr = document.getElementsByClassName('btn-delete-self');
-                for (let i = 0; i < deleteBtnArr.length; i++)
-                    deleteBtnArr[i].addEventListener('click', function(e) {
-                        setShowDeleteModal({
-                            isShow: true,
-                            debt_id: props.debtListSelf[i].debt_id
-                        });
-                    });
-                const detailBtnArr = document.getElementsByClassName('btn-edit-self');
-                for (let i = 0; i < detailBtnArr.length; i++)
-                    detailBtnArr[i].addEventListener('click', function(e) {
-                        console.log(debtListSelf[i].debt_id)
-                        navigate(`details/${debtListSelf[i].debt_id}`)
-                    });
+                for (const c of props.debtListSelf){
+                    $("#edit-"+c.debt_id).click(
+                        ()=>{
+                            navigate(`details/${c.debt_id}`)
+                        }
+                    )
+                    if (c.debt_status != "PAID"){
+                        $("#cancel-"+c.debt_id).click(
+                            ()=>{
+                                setShowDeleteModal({
+                                    isShow: true,
+                                    debt_id: c.debt_id
+                                });
+                            }
+                        )
+                    }
+                }
             }
         }
     }

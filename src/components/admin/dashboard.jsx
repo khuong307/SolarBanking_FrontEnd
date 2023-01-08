@@ -49,9 +49,10 @@ function Dashboard(){
     }
     useEffect(() => {
         getTransactionList()
-        dispatch(getBankListExSLBApi())
         },[isExternal, startDate, endDate, selectedBank])
-
+    useEffect(() => {
+        dispatch(getBankListExSLBApi())
+        },[])
     return (
         <div className="page-body">
             <div className="container-fluid">
@@ -77,8 +78,8 @@ function Dashboard(){
                                 <i className="icofont icofont-coins"></i> Internal Transactions</a>
                         </li>
                     </ul>
-                    <div className="list-choice-form d-flex pt-2">
-                        <div className='start-date-form pl-4'>
+                    <div className="row list-choice-form d-flex pt-2 pl-2">
+                        <div className='col-6 col-md-3 start-date-form pt-2'>
                             <Form.Label> Start Date </Form.Label>
                             <div>
                                 <DatePicker
@@ -88,7 +89,7 @@ function Dashboard(){
                                 />
                             </div>
                         </div>
-                        <div className='end-date-form pl-5'>
+                        <div className='col-6 col-md-3 end-date-form pt-2'>
                             <Form.Label>End Date</Form.Label>
                             <div>
                                 <DatePicker
@@ -98,21 +99,25 @@ function Dashboard(){
                                 />
                             </div>
                         </div>
-                        <div className='selected-bank-form pl-5'>
+                        <div className='col-6 col-md-3 selected-bank-form pt-2'>
                             <Form.Label>Select Bank</Form.Label>
                             <div>
                                 <Select
+                                    defaultValue=""
                                     placeholder="Select a bank"
                                     style={{ width:150, height: "100" }}
                                     value={selectedBank}
                                     onChange={(value, option) => {
                                         setSelectedBank(value)
                                     }}
-                                    options={banks}
+                                    options={[{
+                                        value: '',
+                                        label: 'All',
+                                      },...banks]}
                                 />
                             </div>
                         </div>
-                        <div className='total-transaction-amount-field pl-5'>
+                        <div className='col-6 col-md-3 total-transaction-amount-field pt-2'>
                             <Form.Label>Total Transaction Amount:</Form.Label>
                             <div>{totalTransactionAmount}</div>
                         </div>

@@ -4,8 +4,15 @@ import '/src/assets/css/datatables.css'
 import '/src/assets/css/datatable-extension.css'
 import '/src/assets/css/data-table.css'
 function TableTransactionList(props){
+
     function loadData(){
         if (typeof props.transactionList == "object"){
+            $("#transactionTable").DataTable({
+                scrollX: true,
+                scrollCollapse: true,
+                scroller: true,
+                bDestroy: true
+            })
             $("#transactionTable").DataTable().rows().remove().draw();
             for (const c of props.transactionList){
                 const ans = []
@@ -21,13 +28,15 @@ function TableTransactionList(props){
             }
         }
     }
+
     setTimeout(loadData, 200)
+
     return(
         <div className="row">
             {
                 typeof props.transactionList == "object" &&
                     <div className="dt-ext table-responsive card-body" style={{fontFamily: "Jost", fontSize: "13px"}}>
-                        <table id="transactionTable" className="display">
+                        <table id="transactionTable" style={{width: "100%"}} className="display">
                             <thead>
                             <tr>
                                 <th>Transaction ID</th>
