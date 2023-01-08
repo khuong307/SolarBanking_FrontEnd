@@ -11,7 +11,6 @@ function DebtList(){
     dispatch(changeByID(4))
 
     const navigate = useNavigate();
-    const [debtList,setDebtList] = useState('');
     const [selfList,setSelfList] = useState('');
     const [otherList,setOtherList] = useState('');
 

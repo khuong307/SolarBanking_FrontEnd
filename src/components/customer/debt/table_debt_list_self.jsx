@@ -19,6 +19,12 @@ function TableDebtListSelf(props){
         isShow: false,
         debt_id: null
     });
+    const [notifyMessage,setNotifyMessage] = useState('');
+    const [openNotifyModal,setOpenNotifyModal] = useState(false);
+
+    const handleCloseNotifyModal = ()=>{
+        setOpenNotifyModal(false);
+    }
 
     function onLoadEmptyTable(){
         if (props.debtListSelf.length == 0){
@@ -38,13 +44,16 @@ function TableDebtListSelf(props){
         })
     }
     const handleSubmitDeleteModal = ()=>{
+        console.log(reasonCancel)
         axiosInstance.delete(`/debtList/cancelDebt/${showDeleteModal.debt_id}`,{
-            user_id: userId,
+            user_id: parseInt(userId),
             debt_cancel_message: reasonCancel,
         })
             .then((res)=>{
-                //setDebtListSelf(debtListSelf.filter(debt => debt.debt_id !== showDeleteModal.debt_id))
                 handleCloseDeleteModal();
+                setNotifyMessage('Cancel Successful!');
+                setOpenNotifyModal(true);
+
             })
             .catch((err)=>{
                 console.log(err);
@@ -52,7 +61,7 @@ function TableDebtListSelf(props){
     }
 
     function checkIsPaidRemoveButton(debt_status){
-        if (debt_status == "PAID"){
+        if (debt_status == "PAID" || debt_status == "CANCEL"){
             const buttonComponent = `
             <div class="d-flex justify-content-center">
                 <button class="btn btnLogin btn-edit-self">
@@ -92,7 +101,6 @@ function TableDebtListSelf(props){
                     $("#paidDebtSelf").DataTable().row.add(ans).draw(false);
                 });
                 const deleteBtnArr = document.getElementsByClassName('btn-delete-self');
-                console.log(deleteBtnArr)
                 for (let i = 0; i < deleteBtnArr.length; i++)
                     deleteBtnArr[i].addEventListener('click', function(e) {
                         setShowDeleteModal({
@@ -103,8 +111,8 @@ function TableDebtListSelf(props){
                 const detailBtnArr = document.getElementsByClassName('btn-edit-self');
                 for (let i = 0; i < detailBtnArr.length; i++)
                     detailBtnArr[i].addEventListener('click', function(e) {
-                        console.log(props.debtListSelf[i].debt_id)
-                        navigate(`details/${props.debtListSelf[i].debt_id}`)
+                        console.log(debtListSelf[i].debt_id)
+                        navigate(`details/${debtListSelf[i].debt_id}`)
                     });
             }
         }
@@ -143,7 +151,22 @@ function TableDebtListSelf(props){
             >
                 <div className="form-group d-flex flex-column">
                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Reason </label>
-                    <input onChange={handleOnChangeReason} placeholder="Enter reason" className="form-control" value={reasonCancel} type="text"  style={{fontFamily: "Jost"}} />
+                    <input onChange={handleOnChangeReason} placeholder="Enter reason" className="form-control" type="text"  style={{fontFamily: "Jost"}} />
+                </div>
+            </Modal>
+            <Modal title="Notification" style={{fontFamily: "Jost"}}
+                   centered
+                   open={openNotifyModal}
+                   onOk={handleCloseNotifyModal}
+                   onCancel={handleCloseNotifyModal}
+                   footer={[
+                       <Button key="submit" onClick={handleCloseNotifyModal} className="btnLogin" style={{fontFamily: "Jost"}} type="primary">
+                           Ok
+                       </Button>,
+                   ]}
+            >
+                <div className="form-group d-flex align-items-center align-content-center">
+                    <p className="modal-message">{notifyMessage}</p>
                 </div>
             </Modal>
             <Helmet>

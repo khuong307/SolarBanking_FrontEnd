@@ -19,6 +19,12 @@ function TableDebtListOther(props){
         isShow: false,
         debt_id: null
     });
+    const [notifyMessage,setNotifyMessage] = useState('');
+    const [openNotifyModal,setOpenNotifyModal] = useState(false);
+
+    const handleCloseNotifyModal = ()=>{
+        setOpenNotifyModal(false);
+    }
 
 
     function onLoadEmptyTable(){
@@ -39,13 +45,16 @@ function TableDebtListOther(props){
         })
     }
     const handleSubmitDeleteModal = ()=> {
-        axiosInstance.delete(`/debtList/cancelDebt/${showDeleteModal.debt_id}`, {
-            user_id: userId,
+        console.log(reasonCancel)
+        console.log(showDeleteModal.debt_id)
+        axiosInstance.put(`/debtList/cancelDebt/${showDeleteModal.debt_id}`, {
+            user_id: parseInt(userId),
             debt_cancel_message: reasonCancel,
         })
             .then((res) => {
-                //setDebtListOther(debtListOther.filter(debt => debt.debt_id !== showDeleteModal.debt_id))
                 handleCloseDeleteModal();
+                setNotifyMessage('Cancel Successful!');
+                setOpenNotifyModal(true);
             })
             .catch((err) => {
                 console.log(err);
@@ -53,7 +62,7 @@ function TableDebtListOther(props){
     }
 
     function checkIsPaidRemoveButton(debt_status){
-        if (debt_status == "PAID"){
+        if (debt_status == "PAID" || debt_status == "CANCEL"){
             const buttonComponent = `
             <div class="d-flex justify-content-center">
                 <button class="btn btnLogin btn-edit-other">
@@ -143,6 +152,21 @@ function TableDebtListOther(props){
                 <div className="form-group d-flex flex-column">
                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Reason </label>
                     <input onChange={handleOnChangeReason} placeholder="Enter reason" className="form-control" value={reasonCancel} type="text"  style={{fontFamily: "Jost"}} />
+                </div>
+            </Modal>
+            <Modal title="Notification" style={{fontFamily: "Jost"}}
+                   centered
+                   open={openNotifyModal}
+                   onOk={handleCloseNotifyModal}
+                   onCancel={handleCloseNotifyModal}
+                   footer={[
+                       <Button key="submit" onClick={handleCloseNotifyModal} className="btnLogin" style={{fontFamily: "Jost"}} type="primary">
+                           Ok
+                       </Button>,
+                   ]}
+            >
+                <div className="form-group d-flex align-items-center align-content-center">
+                    <p className="modal-message">{notifyMessage}</p>
                 </div>
             </Modal>
             <Helmet>

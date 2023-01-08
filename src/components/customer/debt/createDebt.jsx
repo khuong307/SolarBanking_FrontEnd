@@ -62,7 +62,11 @@ function createDebt(){
                     setIsShowModal(true);
                 }
                 else{
-
+                    setCreateSuccess({
+                        isSuccess: false,
+                        message: res.data.message
+                    })
+                    setIsShowModal(true);
                 }
             })
             .catch((err)=>{
@@ -107,15 +111,15 @@ function createDebt(){
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Full name</label>
-                                    <input type="text" className="form-control" disabled placeholder="Full name"/>
+                                    <input className="form-control" readOnly="true"/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Email</label>
-                                    <input type="text" className="form-control" disabled placeholder="Email"/>
+                                    <input className="form-control" readOnly="true"/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Phone</label>
-                                    <input type="text" className="form-control" disabled placeholder="Phone"/>
+                                    <input className="form-control" readOnly="true"/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Amount <span className="required">(*)</span></label>
@@ -154,7 +158,7 @@ function createDebt(){
                                </Button>,
                            ]}
                     >
-                        <p className="modal-message">Create debt reminder successfully</p>
+                        <p className="modal-message">{createSuccess.message}</p>
                     </Modal>
                 </div>
             </div>
