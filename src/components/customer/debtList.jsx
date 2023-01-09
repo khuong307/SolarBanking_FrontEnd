@@ -64,10 +64,10 @@ function DebtList(){
                             </ul>
                             <div className="tab-content mt-5" id="top-tabContent">
                                 <div className="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab" style={{fontSize: "12px"}}>
-                                    <TableDebtListSelf debtListSelf={selfList}/>
+                                    <TableDebtListSelf debtListSelf={selfList} setDebtListSelf={setSelfList}/>
                                 </div>
                                 <div className="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab" style={{fontSize: "12px"}}>
-                                    <TableDebtListOther debtListOther={otherList}/>
+                                    <TableDebtListOther debtListOther={otherList} setDebtListOther={setOtherList}/>
                                 </div>
                             </div>
 

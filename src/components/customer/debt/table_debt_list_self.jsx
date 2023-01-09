@@ -45,15 +45,19 @@ function TableDebtListSelf(props){
     }
     const handleSubmitDeleteModal = ()=>{
         console.log(reasonCancel)
-        axiosInstance.delete(`/debtList/cancelDebt/${showDeleteModal.debt_id}`,{
+        axiosInstance.put(`/debtList/cancelDebt/${showDeleteModal.debt_id}`,{
             user_id: parseInt(userId),
             debt_cancel_message: reasonCancel,
         })
             .then((res)=>{
+                props.setDebtListSelf(debtListSelf.map(debt => {
+                    if (debt.debt_id === showDeleteModal.debt_id)
+                        return {...debt, debt_status: "CANCEL"};
+                    return debt;
+                }));
                 handleCloseDeleteModal();
                 setNotifyMessage('Cancel Successful!');
                 setOpenNotifyModal(true);
-
             })
             .catch((err)=>{
                 console.log(err);

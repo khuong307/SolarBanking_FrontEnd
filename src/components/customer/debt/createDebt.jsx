@@ -18,6 +18,7 @@ function createDebt(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const recipientsSolarBank = useSelector(state => state.transferReducer.recipientsSolarBank)
+    const [accountNumber, setAccountNumber] = useState('');
     const [isShowModal,setIsShowModal] = useState(false);
     const [recipientInfo,setRecipientInfo] = useState({});
     const [createSuccess,setCreateSuccess] = useState({
@@ -38,6 +39,11 @@ function createDebt(){
             })
             .catch((err)=>{
                 console.log(err.message);
+                setRecipientInfo({
+                    full_name: '',
+                    email: '',
+                    phone: ''
+                });
                 setIsShowModal(true);
                 setCreateSuccess({
                     isSuccess: false,
@@ -51,6 +57,29 @@ function createDebt(){
     const handleModalCancel = ()=>{
         setIsShowModal(false);
     }
+    const handleAutoGetData = () => {
+        const apiPath = `/banks/infoUser?account_number=${accountNumber}`;
+        axiosInstance.get(apiPath)
+            .then(function(res){
+                if (res.data.isSuccess){
+                    console.log(res.data.userInfo)
+                    setRecipientInfo(res.data.userInfo);
+                }
+            })
+            .catch((err)=>{
+                console.log(err.message);
+                setRecipientInfo({
+                    full_name: '',
+                    email: '',
+                    phone: ''
+                });
+                setIsShowModal(true);
+                setCreateSuccess({
+                    isSuccess: false,
+                    message: 'Can not find user info'
+                });
+            })
+    }
     const handleAcceptBtn = ()=>{
         if (createSuccess.isSuccess){
             navigate('/customer/debtList');
@@ -59,39 +88,6 @@ function createDebt(){
             setIsShowModal(false);
         }
     }
-    // const onSubmit = function (data){
-    //     console.log(data);
-    //     try {
-    //         const apiPath = "/debtList";
-    //         axiosInstance.post(apiPath,{
-    //             user_id: parseInt(userId),
-    //             debt_account_number: data.account_number,
-    //             debt_amount: parseInt(data.amount),
-    //             debt_message: data.message
-    //         }).then(function(res){
-    //             console.log(res);
-    //             if (res.data.isSuccess === true){
-    //                 setCreateSuccess({
-    //                     isSuccess: true,
-    //                     message: res.data.message
-    //                 })
-    //                 setIsShowModal(true);
-    //             }
-    //             else{
-    //                 setCreateSuccess({
-    //                     isSuccess: false,
-    //                     message: res.data.message
-    //                 })
-    //                 setIsShowModal(true);
-    //             }
-    //         })
-    //         .catch((err)=>{
-    //             console.log(err.message)
-    //         })
-    //     }catch (err){
-    //         console.log(err.message)
-    //     }
-    // };
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -139,13 +135,13 @@ function createDebt(){
                         setIsShowModal(true);
                     }
                 })
-                .catch((err)=>{
-                    setCreateSuccess({
-                        isSuccess: false,
-                        message: err.message
+                    .catch((err)=>{
+                        setCreateSuccess({
+                            isSuccess: false,
+                            message: 'Can not create debt!'
+                        })
+                        setIsShowModal(true);
                     })
-                    setIsShowModal(true);
-                })
             }
         }
     })
@@ -190,7 +186,9 @@ function createDebt(){
                                         onChange={(data) => {
                                             formik.handleChange
                                             formik.setFieldValue("debt_account_number", data)
+                                            setAccountNumber(data)
                                         }}
+                                        onBlur={handleAutoGetData}
                                         placeholder="Account number"
                                     />
                                     {formik.errors.debt_account_number ? <div className='text-danger' style={{fontFamily: "Jost"}}>{formik.errors.des_account_number}</div> : null}

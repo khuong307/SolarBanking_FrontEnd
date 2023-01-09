@@ -52,6 +52,11 @@ function TableDebtListOther(props){
             debt_cancel_message: reasonCancel,
         })
             .then((res) => {
+                props.setDebtListOther(debtListOther.map(debt => {
+                    if (debt.debt_id === showDeleteModal.debt_id)
+                        return {...debt, debt_status: "CANCEL"};
+                    return debt;
+                }));
                 handleCloseDeleteModal();
                 setNotifyMessage('Cancel Successful!');
                 setOpenNotifyModal(true);
@@ -61,7 +66,7 @@ function TableDebtListOther(props){
             })
     }
     function checkIsPaidRemoveButton(debt_status, debt_id){
-        if (debt_status == "PAID" || debt_status == "CANCEL"){
+        if (debt_status === "PAID" || debt_status === "CANCEL"){
             const buttonComponent = `
             <div class="d-flex justify-content-center">
                 <button class="btn btnLogin" id="edit-${debt_id}" style="font-size: 12px">

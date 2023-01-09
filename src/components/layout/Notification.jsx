@@ -52,7 +52,7 @@ function Notification() {
             <Link className="txt-dark">
                 <i className="fa fa-bell-o"></i>{unseenNotification !== 0 && <span className="badge badge-pill badge-primary notification">{unseenNotification}</span>}
             </Link>
-            <ul className="notification-dropdown onhover-show-div" style={{fontFamily: "Jost"}}>
+            <ul className="notification-dropdown onhover-show-div notification-header-wrapper" style={{fontFamily: "Jost"}}>
                 <li>5 Latest Notification <span
                     className="badge badge-pill badge-danger text-white text-uppercase pull-right" style={{fontFamily: "Jost"}}>{unseenNotification} New</span>
                 </li>

@@ -191,6 +191,11 @@
     max-height: 400px;
 }
 
+.notification-header-wrapper {
+    overflow-y: scroll;
+    max-height: 600px;
+}
+
 .interbank-select {
     width: 100%;
 }
