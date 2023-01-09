@@ -170,7 +170,7 @@ function Contacts() {
 
     const handleAddInterBankContact = function() {
         const account_number = getValues('interbank_account_number');
-        const nick_name = getValues('interbank_nick_name').length > 0 ? getValues('interbank_nick_name') : showConfirmModal.userInfo.username;
+        const nick_name = getValues('interbank_nick_name').length > 0 ? getValues('interbank_nick_name') : showConfirmModal.userInfo.full_name;
         const bank_code = "TXB";
 
         axiosInstance.post(`/users/${userId}/recipients`, {account_number, nick_name, bank_code})
