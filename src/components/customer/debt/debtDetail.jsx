@@ -64,12 +64,9 @@ function debtDetail(){
     //send otp and check balance
     const handleSubmitConfirmModal = ()=>{
         //check balance
-        console.log(debtDetail.debt_amount)
-        axiosInstance.get(`/debtList/${userId}/checkBalance`,{
-            amount: parseInt(debtDetail.debt_amount)
-        })
+        const debt_amount = parseInt(debtDetail.debt_amount);
+        axiosInstance.get(`/debtList/${userId}/checkBalance?amount=${debt_amount}`)
             .then((res)=>{
-
                 if (res.data.isEnough === true){
                     setConfirmModal(false);
                     setPaymentModal({
