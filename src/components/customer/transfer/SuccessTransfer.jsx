@@ -9,8 +9,6 @@ export default function SuccessTransfer() {
     const infoTransaction = useSelector(state => state.transferReducer.infoTransaction)
     const infoDesAccount = useSelector(state => state.transferReducer.infoDesAccount)
     const banks = useSelector(state => state.transferReducer.banks)
-    console.log(banks)
-    console.log(infoDesAccount)
     const dispatch = useDispatch()
 
     const currentBank = banks.find(item => item.value === infoDesAccount.bank_code)

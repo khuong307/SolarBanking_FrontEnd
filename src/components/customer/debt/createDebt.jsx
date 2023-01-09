@@ -167,59 +167,74 @@ function createDebt(){
                             </div>
                         </div>
                     </div>
-                    <div className="card-body">
-                        <div className="row">
-                            <form onSubmit={formik.handleSubmit} className="theme-form mega-form col-md-12">
-                                <div className="form-group col-md-6">
-                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Account Number <span style={{color:"red"}} className="required">(*)</span> </label>
-
-                                    <AutoComplete
-                                        options={recipientsSolarBank?.map((user) => {
-                                            return { label: user.account_number + " - " + user.nick_name, value: user.account_number }
-                                        })}
-                                        name="debt_account_number"
-                                        style={{ width: "100%", height: "100%", fontFamily: "Jost" }}
-                                        onSelect={(value, option) => {
-                                            handleGetInfoUser(value)
-                                            formik.setFieldValue("debt_account_number",value)
-                                        }}
-                                        onChange={(data) => {
-                                            formik.handleChange
-                                            formik.setFieldValue("debt_account_number", data)
-                                            setAccountNumber(data)
-                                        }}
-                                        onBlur={handleAutoGetData}
-                                        placeholder="Account number"
-                                    />
-                                    {formik.errors.debt_account_number ? <div className='text-danger' style={{fontFamily: "Jost"}}>{formik.errors.des_account_number}</div> : null}
+                    <div className="col-lg-12 d-flex justify-content-center">
+                        <div className="col-lg-8">
+                            <div className="card">
+                                <div className="card-body">
+                                    <div className="row">
+                                        <form onSubmit={formik.handleSubmit} className="theme-form mega-form col-md-12">
+                                            <div className="col-lg-12 d-flex justify-content-center align-content-center align-items-center">
+                                                <div className="col-md-6">
+                                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Account Number: <span style={{color:"red"}} className="required">(*)</span> </label>
+                                                    <AutoComplete
+                                                        options={recipientsSolarBank?.map((user) => {
+                                                            return { label: user.account_number + " - " + user.nick_name, value: user.account_number }
+                                                        })}
+                                                        name="debt_account_number"
+                                                        style={{ width: "100%", height: "100%", fontFamily: "Jost" }}
+                                                        onSelect={(value, option) => {
+                                                            handleGetInfoUser(value)
+                                                            formik.setFieldValue("debt_account_number",value)
+                                                        }}
+                                                        onChange={(data) => {
+                                                            formik.handleChange
+                                                            formik.setFieldValue("debt_account_number", data)
+                                                            setAccountNumber(data)
+                                                        }}
+                                                        onBlur={handleAutoGetData}
+                                                        placeholder="Account number"
+                                                    />
+                                                    {formik.errors.debt_account_number ? <div className='text-danger' style={{fontFamily: "Jost"}}>{formik.errors.des_account_number}</div> : null}
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-12 d-flex justify-content-center align-content-center align-items-center">
+                                                <div className="col-md-6">
+                                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Full name:</label>
+                                                    <input className="form-control" readOnly={true} value={recipientInfo.full_name}/>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Email:</label>
+                                                    <input className="form-control" readOnly={true} value={recipientInfo.email}/>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-12 d-flex justify-content-center align-content-center align-items-center">
+                                                <div className="col-md-6">
+                                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Phone</label>
+                                                    <input className="form-control" readOnly={true} value={recipientInfo.phone}/>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Amount <span style={{color:"red"}} className="required">(*)</span></label>
+                                                    <NumericFormat name='debt_amount' className='form-control' thousandSeparator="," onChange={formik.handleChange} />
+                                                    {formik.errors.debt_amount ? <div className='text-danger'>{formik.errors.debt_amount}</div> : null}
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-12 d-flex justify-content-center align-content-center align-items-center">
+                                                <div className="col-md-12">
+                                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Message:</label>
+                                                    <textarea style={{width: "100%"}} name='debt_message' rows={3} className="form-control" placeholder="Enter message"
+                                                              onChange={formik.handleChange}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-12 mt-4">
+                                                <div className="col-md-12">
+                                                    <button className="btn btnLogin" type="submit" onClick={formik.handleSubmit}>Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div className="form-group col-md-6">
-                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Full name</label>
-                                    <input className="form-control" readOnly={true} value={recipientInfo.full_name}/>
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Email</label>
-                                    <input className="form-control" readOnly={true} value={recipientInfo.email}/>
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Phone</label>
-                                    <input className="form-control" readOnly={true} value={recipientInfo.phone}/>
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Amount <span style={{color:"red"}} className="required">(*)</span></label>
-                                    <NumericFormat name='debt_amount' className='form-control' thousandSeparator="," onChange={formik.handleChange} />
-                                    {formik.errors.debt_amount ? <div className='text-danger'>{formik.errors.debt_amount}</div> : null}
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Message</label>
-                                    <textarea name='debt_message' rows={3} className="form-control" placeholder="Enter message"
-                                              onChange={formik.handleChange}
-                                    />
-                                </div>
-                                <div className="form-group col-md-12">
-                                    <button className="btn btnLogin" type="submit" onClick={formik.handleSubmit}>Submit</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                     <Modal title="Notification"
