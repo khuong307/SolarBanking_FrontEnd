@@ -6,10 +6,13 @@ import {AutoComplete, Button, Modal} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {
     getRecipientListBySolarBankApi,
-    getUserBankAccountApi,
+    getUserBankAccountApi, getValidTransactionApi,
     searchReceiverInter,
     searchReceiverIntra
 } from "../../redux/reducer/transferReducer.jsx";
+import {useFormik} from "formik";
+import * as Yup from "yup";
+import {NumericFormat} from "react-number-format";
 
 function createDebt(){
     const navigate = useNavigate();
@@ -52,43 +55,102 @@ function createDebt(){
         if (createSuccess.isSuccess){
             navigate('/customer/debtList');
         }
+        else{
+            setIsShowModal(false);
+        }
     }
-    const onSubmit = function (data){
-        console.log(data);
-        try {
-            const apiPath = "/debtList";
-            axiosInstance.post(apiPath,{
-                user_id: parseInt(userId),
-                debt_account_number: data.account_number,
-                debt_amount: parseInt(data.amount),
-                debt_message: data.message
-            }).then(function(res){
-                console.log(res);
-                if (res.data.isSuccess === true){
-                    setCreateSuccess({
-                        isSuccess: true,
-                        message: res.data.message
-                    })
-                    setIsShowModal(true);
+    // const onSubmit = function (data){
+    //     console.log(data);
+    //     try {
+    //         const apiPath = "/debtList";
+    //         axiosInstance.post(apiPath,{
+    //             user_id: parseInt(userId),
+    //             debt_account_number: data.account_number,
+    //             debt_amount: parseInt(data.amount),
+    //             debt_message: data.message
+    //         }).then(function(res){
+    //             console.log(res);
+    //             if (res.data.isSuccess === true){
+    //                 setCreateSuccess({
+    //                     isSuccess: true,
+    //                     message: res.data.message
+    //                 })
+    //                 setIsShowModal(true);
+    //             }
+    //             else{
+    //                 setCreateSuccess({
+    //                     isSuccess: false,
+    //                     message: res.data.message
+    //                 })
+    //                 setIsShowModal(true);
+    //             }
+    //         })
+    //         .catch((err)=>{
+    //             console.log(err.message)
+    //         })
+    //     }catch (err){
+    //         console.log(err.message)
+    //     }
+    // };
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            user_id: userId,
+            debt_account_number: "",
+            debt_amount: 0,
+            debt_message: "",
+        },
+        validationSchema: Yup.object().shape({
+            debt_amount: Yup.string().min(5, "Must be lowest 10000")
+                .required("Required"),
+
+            debt_account_number: Yup.string().max(15, "Maximum 15 digits")
+                .required("Required").matches(/^[0-9]+$/, "Must be only digits"),
+        }),
+        onSubmit: values => {
+            let debt_amount = values.debt_amount
+            debt_amount = Number(debt_amount.replaceAll(",",""))
+            if(debt_amount < 10000 || isNaN(debt_amount) || debt_amount > 30000000){
+                alert("Amount of Money must be lowest 10.000 and maximum 30.000.000")
+            }else{
+                const data = {
+                    user_id: parseInt(userId),
+                    debt_account_number: values.debt_account_number,
+                    debt_amount: debt_amount,
+                    debt_message: values.debt_message,
                 }
-                else{
+                console.log(data);
+                const apiPath = "/debtList";
+                axiosInstance.post(apiPath,data).then(function(res){
+                    console.log(res);
+                    if (res.data.isSuccess === true){
+                        setCreateSuccess({
+                            isSuccess: true,
+                            message: res.data.message
+                        })
+                        setIsShowModal(true);
+                    }
+                    else{
+                        setCreateSuccess({
+                            isSuccess: false,
+                            message: res.data.message
+                        })
+                        setIsShowModal(true);
+                    }
+                })
+                .catch((err)=>{
                     setCreateSuccess({
                         isSuccess: false,
-                        message: res.data.message
+                        message: err.message
                     })
                     setIsShowModal(true);
-                }
-            })
-            .catch((err)=>{
-                console.log(err.message)
-            })
-        }catch (err){
-            console.log(err.message)
+                })
+            }
         }
-    };
+    })
 
     useEffect(()=>{
-        dispatch(getUserBankAccountApi(userId))
         dispatch(getRecipientListBySolarBankApi(userId))
     },[])
 
@@ -111,30 +173,27 @@ function createDebt(){
                     </div>
                     <div className="card-body">
                         <div className="row">
-                            <form onSubmit={handleSubmit(onSubmit)} className="theme-form mega-form col-md-12">
+                            <form onSubmit={formik.handleSubmit} className="theme-form mega-form col-md-12">
                                 <div className="form-group col-md-6">
-                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Account Number <span className="required">(*)</span> </label>
-                                    {/*<input type="text" className="form-control" placeholder="Enter account number"*/}
-                                    {/*       {...register("account_number", {*/}
-                                    {/*           required: true,*/}
-                                    {/*       })}*/}
-                                    {/*    onChange={handleChangeAccount}*/}
-                                    {/*/>*/}
+                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Account Number <span style={{color:"red"}} className="required">(*)</span> </label>
 
                                     <AutoComplete
                                         options={recipientsSolarBank?.map((user) => {
                                             return { label: user.account_number + " - " + user.nick_name, value: user.account_number }
                                         })}
-                                        name="des_account_number"
+                                        name="debt_account_number"
                                         style={{ width: "100%", height: "100%", fontFamily: "Jost" }}
                                         onSelect={(value, option) => {
                                             handleGetInfoUser(value)
+                                            formik.setFieldValue("debt_account_number",value)
+                                        }}
+                                        onChange={(data) => {
+                                            formik.handleChange
+                                            formik.setFieldValue("debt_account_number", data)
                                         }}
                                         placeholder="Account number"
                                     />
-                                    {errors?.account_number?.type === "required" &&
-                                        <p className="error-input"><i className="fa fa-warning mr-2"></i>Account Number is required!</p>
-                                    }
+                                    {formik.errors.debt_account_number ? <div className='text-danger' style={{fontFamily: "Jost"}}>{formik.errors.des_account_number}</div> : null}
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Full name</label>
@@ -149,27 +208,18 @@ function createDebt(){
                                     <input className="form-control" readOnly={true} value={recipientInfo.phone}/>
                                 </div>
                                 <div className="form-group col-md-6">
-                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Amount <span className="required">(*)</span></label>
-                                    <input type="text" className="form-control" placeholder="Enter amount"
-                                           {...register("amount", {
-                                               required: true,
-                                           })}
-                                    />
-                                    {errors?.amount?.type === "required" &&
-                                        <p className="error-input"><i className="fa fa-warning mr-2"></i>Amount is required!</p>
-                                    }
+                                    <label className="col-form-label" style={{fontFamily: "Jost"}}>Amount <span style={{color:"red"}} className="required">(*)</span></label>
+                                    <NumericFormat name='debt_amount' className='form-control' thousandSeparator="," onChange={formik.handleChange} />
+                                    {formik.errors.debt_amount ? <div className='text-danger'>{formik.errors.debt_amount}</div> : null}
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="col-form-label" style={{fontFamily: "Jost"}}>Message</label>
-                                    <textarea rows={3} className="form-control" placeholder="Enter message"
-
-                                              {...register("message", {
-                                                  required: false,
-                                              })}
+                                    <textarea name='debt_message' rows={3} className="form-control" placeholder="Enter message"
+                                              onChange={formik.handleChange}
                                     />
                                 </div>
                                 <div className="form-group col-md-12">
-                                    <button className="btn btnLogin" type="submit">Submit</button>
+                                    <button className="btn btnLogin" type="submit" onClick={formik.handleSubmit}>Submit</button>
                                 </div>
                             </form>
                         </div>
