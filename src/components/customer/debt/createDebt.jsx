@@ -4,11 +4,16 @@ import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {AutoComplete, Button, Modal} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {searchReceiverInter, searchReceiverIntra} from "../../redux/reducer/transferReducer.jsx";
+import {
+    getRecipientListBySolarBankApi,
+    getUserBankAccountApi,
+    searchReceiverInter,
+    searchReceiverIntra
+} from "../../redux/reducer/transferReducer.jsx";
 
 function createDebt(){
     const navigate = useNavigate();
-    //const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const recipientsSolarBank = useSelector(state => state.transferReducer.recipientsSolarBank)
     const [isShowModal,setIsShowModal] = useState(false);
     const [recipientInfo,setRecipientInfo] = useState({});
@@ -30,9 +35,21 @@ function createDebt(){
                 console.log(res.data.userInfo)
                 setRecipientInfo(res.data.userInfo);
             }
+            else{
+                setIsShowModal(true);
+                setCreateSuccess({
+                    isSuccess: false,
+                    message: res.data.message
+                });
+            }
         })
             .catch((err)=>{
-                console.log(err.message)
+                console.log(err.message);
+                setIsShowModal(true);
+                setCreateSuccess({
+                    isSuccess: false,
+                    message: 'Can not find user info'
+                });
             })
     }
     const handleModalOk = ()=>{
@@ -78,6 +95,11 @@ function createDebt(){
             console.log(err.message)
         }
     };
+
+    useEffect(()=>{
+        dispatch(getUserBankAccountApi(userId))
+        dispatch(getRecipientListBySolarBankApi(userId))
+    },[])
 
     return(
         <div className="page-body">
