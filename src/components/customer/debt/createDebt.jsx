@@ -20,17 +20,14 @@ function createDebt(){
     const userId = localStorage.solarBanking_userId;
 
     function handleGetInfoUser(value){
-        const apiPath = "/banks/infoUser";
-        const account_number = value;
-        console.log(account_number)
-        axiosInstance.get(apiPath,{
-            account_number: account_number
-        }).then(function(res){
-            if (res.data.isSuccess){
-                console.log(res.data.userInfo)
-                setRecipientInfo(res.data.userInfo);
-            }
-        })
+        const apiPath = `/banks/infoUser?account_number=${value}`;
+        axiosInstance.get(apiPath)
+            .then(function(res){
+                if (res.data.isSuccess){
+                    console.log(res.data.userInfo)
+                    setRecipientInfo(res.data.userInfo);
+                }
+            })
             .catch((err)=>{
                 console.log(err.message)
             })
@@ -47,6 +44,7 @@ function createDebt(){
         }
     }
     const onSubmit = function (data){
+        console.log(data);
         try {
             const apiPath = "/debtList";
             axiosInstance.post(apiPath,{
