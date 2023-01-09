@@ -29,7 +29,7 @@ function TableDebtListOther(props){
 
     function onLoadEmptyTable(){
         if (debtListOther.length == 0){
-            $("#paidDebtOther").DataTable()
+            $("#paidDebtOther").DataTable().order( [ 0, 'desc' ] )
         }
     }
     setTimeout(onLoadEmptyTable, 500)
@@ -102,7 +102,7 @@ function TableDebtListOther(props){
                     ans.push(formatMoney(debt.debt_amount) + " VND")
                     ans.push(debt.debt_status)
                     ans.push(checkIsPaidRemoveButton(debt.debt_status, debt.debt_id))
-                    $("#paidDebtOther").DataTable().row.add(ans).draw(false);
+                    $("#paidDebtOther").DataTable().order( [ 0, 'desc' ] ).row.add(ans).draw(false);
                 });
                 for (const c of props.debtListOther){
                     $("#edit-"+c.debt_id).click(
