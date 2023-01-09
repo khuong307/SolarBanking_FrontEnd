@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup"
 import { getValidOtpApi, getValidOtpInterApi } from '../../redux/reducer/transferReducer';
 import axiosInstance from "../../../utils/axiosConfig.js";
+import Swal from 'sweetalert2'
 
 export default function OtpTransfer() {
     const transactionId = useSelector(state => state.transferReducer.transactionId)
@@ -43,9 +44,22 @@ export default function OtpTransfer() {
             .then((res) => {
                 setMinutes(4);
                 setSeconds(59);
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your OTP has been resent',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
             })
             .catch((err) => {
                 console.log(err)
+                Swal.fire({
+                    title: 'ERROR !',
+                    html:`<h3 class="text-danger">OTP can't be resent</h3>`,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
             });
     }
 
