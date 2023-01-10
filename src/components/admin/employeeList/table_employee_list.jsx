@@ -98,9 +98,9 @@ function TableEmployeeList(props){
                             </tbody>
                         </table>
                         <Modal show={deleteModal} onHide={closeDeleteModal} >
-                            <Modal.Header closeButton>
+                            <Modal.Header>
                                 <Modal.Title >
-                                    <p style={{ fontSize: "20px"}} className="modalTitle">Delete Employee</p>
+                                    <div style={{ fontSize: "20px"}} className="modalTitle">Delete Employee</div>
                                 </Modal.Title>
                             </Modal.Header>
 

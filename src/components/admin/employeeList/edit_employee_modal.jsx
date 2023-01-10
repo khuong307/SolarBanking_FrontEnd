@@ -36,9 +36,9 @@ function EditEmployeeTab(props){
     return (
         <Modal show={props.editModal} onHide={props.clodeEditModal} >
             <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
-                <Modal.Header closeButton>
+                <Modal.Header>
                     <Modal.Title >
-                        <p style={{ fontSize: "20px"}} className="modalTitle">Edit Employee</p>
+                        <div style={{ fontSize: "20px"}} className="modalTitle">Edit Employee</div>
                     </Modal.Title>
                 </Modal.Header>
                 
