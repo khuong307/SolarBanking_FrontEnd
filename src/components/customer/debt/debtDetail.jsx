@@ -257,8 +257,8 @@ function debtDetail(){
                             </div>
                             {
                                 debtDetail.debt_cancel_message != "" &&
-                                <div className="col-lg-12 d-flex justify-content-center align-content-center align-items-center">
-                                    <div className="col-lg-12">
+                                <div className="col-lg-12 mt-2 d-flex justify-content-center align-content-center align-items-center">
+                                    <div className="col-lg-4">
                                         <label className="col-form-label">Reason To Cancel:</label>
                                         <input className="form-control" value={debtDetail.debt_cancel_message} readOnly="true" style={{width: "fit-content"}}/>
                                     </div>
