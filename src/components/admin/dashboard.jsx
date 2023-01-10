@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import { getBankListExSLBApi } from '../redux/reducer/transferReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { DatePicker, Select } from 'antd'
+import {formatMoney} from "../redux/helper_functions";
 
 function Dashboard(){
     const banks = useSelector(state => state.transferReducer.banks)
@@ -69,18 +70,18 @@ function Dashboard(){
                         <li className="nav-item"  onClick={setTypeOfTransaction}>
                             <a className="nav-link active" id="external-transaction-tab" data-toggle="tab" style={{fontSize: "15px"}}
                                 href="#externalTransaction" role="tab" aria-controls="externalTransaction" 
-                                aria-selected="true"><i className="fa fa-line-chart"></i>External Transactions</a>
+                                aria-selected="true"><i className="fa fa-line-chart"></i>Inter-Bank Transactions</a>
                         </li>
                         <li className="nav-item" onClick={setTypeOfTransaction}>
                             <a className="nav-link" id="internal-transaction-tab" data-toggle="tab" style={{fontSize: "15px"}}
                                 href="#internalTransaction" role="tab" aria-controls="internalTransaction" 
                                 aria-selected="false">
-                                <i className="icofont icofont-coins"></i> Internal Transactions</a>
+                                <i className="icofont icofont-coins"></i> Intra-Bank Transactions</a>
                         </li>
                     </ul>
                     <div className="row list-choice-form d-flex pt-2 pl-2">
                         <div className='col-6 col-md-3 start-date-form pt-2'>
-                            <Form.Label> Start Date </Form.Label>
+                            <Form.Label> From: </Form.Label>
                             <div>
                                 <DatePicker
                                     selected={startDate}
@@ -90,7 +91,7 @@ function Dashboard(){
                             </div>
                         </div>
                         <div className='col-6 col-md-3 end-date-form pt-2'>
-                            <Form.Label>End Date</Form.Label>
+                            <Form.Label>To:</Form.Label>
                             <div>
                                 <DatePicker
                                     selected={endDate}
@@ -100,7 +101,7 @@ function Dashboard(){
                             </div>
                         </div>
                         <div className='col-6 col-md-3 selected-bank-form pt-2'>
-                            <Form.Label>Select Bank</Form.Label>
+                            <Form.Label>Select Bank:</Form.Label>
                             <div>
                                 <Select
                                     defaultValue=""
@@ -119,7 +120,7 @@ function Dashboard(){
                         </div>
                         <div className='col-6 col-md-3 total-transaction-amount-field pt-2'>
                             <Form.Label>Total Transaction Amount:</Form.Label>
-                            <div>{totalTransactionAmount}</div>
+                            <div>{formatMoney(totalTransactionAmount)} VND</div>
                         </div>
                     </div>
                     <div className="tab-content" id="pills-icontabContent">

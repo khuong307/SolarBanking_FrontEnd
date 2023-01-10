@@ -15,7 +15,6 @@ function EditEmployeeTab(props){
         if(e.code === 'Space') e.preventDefault()
     }
     const onSubmit = (data) => {
-        console.log(data)
         if (data.password != data.confirmPassword){
             alert('Password does not match!')
             return
@@ -113,8 +112,8 @@ function EditEmployeeTab(props){
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={props.clodeEditModal}>Close</Button>
-                    <Button variant="primary"  type="submit" >Save changes</Button>
+                    <button style={{fontFamily: "Jost"}} className="btn btn-light" onClick={props.clodeEditModal}>Cancel</button>
+                    <button style={{fontFamily: "Jost"}} className="btn btnLogin"  type="submit" >Save</button>
                 </Modal.Footer>
             </form>
         </Modal>

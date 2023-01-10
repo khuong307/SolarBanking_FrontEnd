@@ -3,16 +3,12 @@ import React from "react";
 import '/src/assets/css/datatables.css'
 import '/src/assets/css/datatable-extension.css'
 import '/src/assets/css/data-table.css'
+import {formatMoney} from "../../redux/helper_functions";
 function TableTransactionList(props){
 
     function loadData(){
         if (typeof props.transactionList == "object"){
-            $("#transactionTable").DataTable({
-                scrollX: true,
-                scrollCollapse: true,
-                scroller: true,
-                bDestroy: true
-            })
+            $("#transactionTable").DataTable()
             $("#transactionTable").DataTable().rows().remove().draw();
             for (const c of props.transactionList){
                 const ans = []
@@ -21,7 +17,7 @@ function TableTransactionList(props){
                 ans.push(c.src_bank_name)
                 ans.push(c.des_account_number)
                 ans.push(c.des_bank_name)
-                ans.push(c.transaction_amount)
+                ans.push(formatMoney(c.transaction_amount))
                 ans.push(new Date(c.transaction_created_at).toLocaleString())
                 ans.push(c.transaction_type_name[0].toUpperCase() + c.transaction_type_name.slice(1))
                 $("#transactionTable").DataTable().row.add(ans).draw(false)
@@ -40,11 +36,11 @@ function TableTransactionList(props){
                             <thead>
                             <tr>
                                 <th>Transaction ID</th>
-                                <th>Source Account Number</th>
-                                <th>Source Bank Name</th>
-                                <th>Destination Account Number</th>
-                                <th>Destination Bank Name</th>
-                                <th>Amount</th>
+                                <th>Sender Number</th>
+                                <th>Sender Bank</th>
+                                <th>Receiver Number</th>
+                                <th>Receiver Bank</th>
+                                <th>Amount (VND)</th>
                                 <th>Created Date</th>
                                 <th>Transaction Type</th>
                             </tr>

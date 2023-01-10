@@ -20,17 +20,12 @@ function TableEmployeeList(props){
     function loadData(){
         if (typeof props.employeeList == "object"){
             var i = 0;
-            $("#employeeTable").DataTable({
-                scrollX: true,
-                scrollCollapse: true,
-                scroller: true,
-                bDestroy: true
-            })
+            $("#employeeTable").DataTable()
             $("#employeeTable").DataTable().rows().remove().draw();
             for (const c of props.employeeList){
                 const ans = []
-                var editButton = `<div data-id="${c.user_id}" class="editRow mx-1" style="background: #53ffc3; color: white; height: 30px; width: 30px; border: 1px solid black; border-radius: 10%; display: flex; justify-content: center; align-items: center"><i style="font-size: 18px; line-height: 1" class="fa fa-pencil" data-id="${c.user_id}"></i></div>`                
-                var deleteButton = `<div data-id="${c.user_id}" class="deleteRow mx-1" style="background: #ff5370; color: white; height: 30px; width: 30px; border: 1px solid black; border-radius: 10%; display: flex; justify-content: center; align-items: center"><i style="font-size: 18px; line-height: 1" class="fa fa-trash" data-id="${c.user_id}"></i></div>`                
+                var editButton = `<button data-id="${c.user_id}" class="editRow mx-1 btn btnLogin"><i style="font-size: 13px; line-height: 1" class="fa fa-pencil" data-id="${c.user_id}"></i></button>`
+                var deleteButton = `<button data-id="${c.user_id}" class="deleteRow mx-1 btn btnLogin2"><i style="font-size: 13px; line-height: 1" class="fa fa-trash" data-id="${c.user_id}"></i></button>`
                 ans.push(++i)
                 ans.push(c.username)
                 ans.push(c.full_name)
@@ -114,8 +109,8 @@ function TableEmployeeList(props){
                             </Modal.Body>
 
                             <Modal.Footer>
-                                <Button variant="secondary" onClick={closeDeleteModal}>Close</Button>
-                                <Button variant="primary"  onClick={confirmDeleteUser}>Save changes</Button>
+                                <button className="btn btn-light" onClick={closeDeleteModal} style={{fontFamily: "Jost"}}>Cancel</button>
+                                <button className="btn btnLogin"  onClick={confirmDeleteUser} style={{fontFamily: "Jost"}}>Confirm</button>
                             </Modal.Footer>
                         </Modal>
                         {editModal && <EditEmployeeModal 

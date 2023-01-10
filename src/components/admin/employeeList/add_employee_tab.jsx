@@ -2,10 +2,9 @@ import React, {useState, useEffect } from 'react'
 import {useForm} from "react-hook-form";
 import {Helmet} from "react-helmet";
 import axiosInstance from "../../../utils/axiosConfig.js";
-// import "/src/assets/css/scrollable.css"
 
 function AddEmployeeTab(){
-    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm()
+    const { register, handleSubmit, formState: { errors }, reset } = useForm()
 
     //prevent space in username
     const preventSpace = function (e) {
@@ -19,7 +18,8 @@ function AddEmployeeTab(){
         } else {
             axiosInstance.post(`/admin/employee`, data).then((result)=>{
                 if (result.data.isSuccess == true){
-                    loadData()
+                    $("#btn-step-1").click()
+                    reset()
                     alert(result.data.message)
                 } else {
                     alert(result.data.message)
@@ -32,11 +32,10 @@ function AddEmployeeTab(){
     }
     
     return (
-        <div className="page-body mt-5">
+        <div className="">
             <div className="row">
                 <div className="col-lg-12" style={{fontFamily: "Jost"}}>
-                    <div className="card">
-                        <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
+                    <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
                             <div id="wizard" className="wizard-4" >
                                 <ul>
                                     <li>
@@ -132,7 +131,6 @@ function AddEmployeeTab(){
                                 </div>
                             </div>
                         </form>
-                    </div>
                 </div>
             </div>
             <Helmet defer={false}>
