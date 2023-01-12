@@ -23,6 +23,7 @@ function EditEmployeeTab(props){
                 if (result.data.isSuccess == true){
                     alert(result.data.message)
                     props.clodeEditModal()
+                    props.loadEmployeeList()
                 } else {
                     alert(result.data.message)
                 }

@@ -17,6 +17,7 @@ function TableEmployeeList(props){
     const [currentUserInfo, setCurrentUserInfo] = useState("")
     const closeDeleteModal = () => setDeleteModal(false);
     const clodeEditModal = () => setEditModal(false);
+    const loadEmployeeList = () =>  props.getEmployeeList()
     function loadData(){
         if (typeof props.employeeList == "object"){
             var i = 0;
@@ -38,12 +39,12 @@ function TableEmployeeList(props){
         }
     }
     function changeButton(e) {
-        if (e.target.className == "deleteRow mx-1" || e.target.className == "fa fa-trash") {
+        if (e.target.className == "deleteRow mx-1 btn btnLogin2" || e.target.className == "fa fa-trash") {
             event.target.dataset
             setCurrentUserId(event.target.getAttribute('data-id'))
             setDeleteModal(true)
         }
-        if (e.target.className == "editRow mx-1" || e.target.className == "fa fa-pencil") {
+        if (e.target.className == "editRow mx-1 btn btnLogin" || e.target.className == "fa fa-pencil") {
             event.target.dataset
             var userId = event.target.getAttribute('data-id')
             setCurrentUserId(userId)
@@ -73,7 +74,7 @@ function TableEmployeeList(props){
         }).catch((err)=>{
             alert(err)
         })
-        props.getEmployeeList()
+        loadEmployeeList()
     }
 
     setTimeout(loadData, 200)
@@ -114,8 +115,8 @@ function TableEmployeeList(props){
                             </Modal.Footer>
                         </Modal>
                         {editModal && <EditEmployeeModal 
-                            editModal={editModal} clodeEditModal={clodeEditModal} info={currentUserInfo}/>
-                        }
+                            editModal={editModal} clodeEditModal={clodeEditModal} info={currentUserInfo} loadEmployeeList={loadEmployeeList}/>
+                        }e
                         <Helmet>
                             <script src="/src/assets/js/datatables/jquery.dataTables.min.js"></script>
                             <script src="/src/assets/js/datatable-extension/dataTables.buttons.min.js"></script>
