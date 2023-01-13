@@ -101,7 +101,16 @@ function TableDebtListSelf(props){
                     ans.push(formatMoney(debt.debt_amount) + " VND")
                     ans.push(debt.debt_status)
                     ans.push(checkIsPaidRemoveButton(debt.debt_status, debt.debt_id))
-                    $("#paidDebtSelf").DataTable().order( [ 0, 'desc' ] ).row.add(ans).draw(false);
+                    const tmp = $("#paidDebtSelf").DataTable().order( [ 0, 'desc' ] ).row.add(ans).draw(false).node();
+                    if (debt.debt_status == "PAID"){
+                        $(tmp).attr('style', "color: black; background-color: #0dba66")
+                    }
+                    else if (debt.debt_status == "CANCEL"){
+                        $(tmp).attr('style', "color: black; background-color: #f0cf2e")
+                    }
+                    else if (debt.debt_status == "NOT PAID"){
+                        $(tmp).attr('style', "color: black; background-color: #e35673")
+                    }
                 });
                 for (const c of props.debtListSelf){
                     $("#edit-"+c.debt_id).click(
