@@ -80,7 +80,7 @@ function ForgotPasswordOtpForm(){
     }, [seconds]);
 
     return (
-        <div style={{backgroundImage: `url(/src/assets/img/background_login.png)`, backgroundSize: "cover", height: "110%", width: "105%"}}>
+        <div style={{backgroundImage: `url(/src/assets/img/background_login.png)`, backgroundSize: "cover", height: "100vh", width: "100vw"}}>
             <div className="row">
                 <div className="col-lg-12 d-inline-flex justify-content-center mt-2">
                     <img className="rounded-circle img-fluid img-100" src="/src/assets/img/solar_logo.png"/>
